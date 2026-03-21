@@ -1,0 +1,252 @@
+
+
+<section class="hero-section">
+  <div class="top-bar-placeholder">
+    <div class="logo">Bigbisort</div>
+    <div class="search-box">
+      <input type="text" placeholder="Search..." />
+      <button><i class="fas fa-search"></i></button>
+    </div>
+  </div>
+
+  <div class="hero-content">
+    <div class="hero-text-content">
+      <h1>Let's Grow <br> Together <span class="leaf-icon">🌱</span></h1>
+      <p class="tagline">Connect with Bigbisort – Your gateway to global agri-trade</p>
+      <p class="description">
+        Whether you're a farmer, buyer, or partner, <br />our team is here to help.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="https://wa.me/yourwhatsappnumber" target="_blank" class="hero-btn whatsapp-btn">
+          <i class="fab fa-whatsapp"></i> Chat on WhatsApp
+        </a>
+        <button class="hero-btn ai-chat-btn">
+          <i class="fas fa-robot"></i> Talk to Bigbisort AI
+        </button>
+        <a routerLink="/enquiry" class="hero-btn enquiry-btn">
+          <i class="fas fa-envelope"></i> Send Enquiry
+        </a>
+      </div>
+    </div>
+
+    <div class="hero-image-content">
+      <img src="assets/images/ContactUs/Glob3.png" alt="Globe showing India with chat bubbles" />
+    </div>
+  </div>
+</section>
+
+
+
+<section class="contact-channels-section">
+
+  <div class="header-content">
+    <h1 class="main-title">Choose the Right Channel to Reach Us</h1>
+    <p class="subtitle">We've made it easy for every kind of visitor.</p>
+   
+  </div>
+  
+
+<div class="channels-container">
+  <div 
+    class="channel-card" 
+    *ngFor="let channel of contactChannels" 
+    [ngClass]="channel.buttonClass"
+  >
+    
+    <div class="icon-area"> 
+
+      <img 
+        *ngIf="channel.icon.includes('/')" 
+        [src]="channel.icon" 
+        [alt]="channel.title + ' Icon'"
+
+        style="height: 50px; width: 50px;"
+      />
+      
+   <i class="material-symbols-outlined">{{ channel.icon }}</i>
+
+    </div>
+    
+    <h2 class="card-title">{{ channel.title }}</h2> 
+    
+    <p class="card-description">{{ channel.description }}</p>
+    
+<button 
+  [routerLink]="channel.route"
+  [ngClass]="['btn-channel', channel.buttonClass + '-btn']"
+  type="button" 
+>
+  {{ channel.buttonText }}
+</button>
+ 
+
+
+  </div>
+</div>
+</section>
+
+
+
+
+<section class="ai-cta-section">
+  <div class="ai-cta-content">
+    
+    <div class="ai-header">
+      <div class="logo-text">
+        <i class="ai-icon">🤖</i>
+        <h2>Meet Bigbisort AI — Powered by DeepSeek</h2>
+      </div>
+      <p class="ai-tagline">
+        Ask about pricing, logistics, order tracking, or farmer registration – 
+        AI will respond instantly.
+      </p>
+    </div>
+
+    <div class="ai-main-body">
+      
+      <div class="chat-interface">
+        <div class="chat-header">
+          <i class="material-symbols-outlined back-arrow">arrow_back_ios</i>
+          <span class="chat-title">Bigbisort AI</span>
+          <i class="material-symbols-outlined menu">more_vert</i>
+        </div>
+        <div class="chat-messages">
+          <div class="message-bubble bot">Hello! How can I assist you today?</div>
+          <div class="message-bubble user">I need export regulations for spices.</div>
+          <div class="message-bubble bot">As per india trade rules, spices must be accompanied by a phytosanitary certificate,...</div>
+        </div>
+        <div class="chat-input">
+          <input type="text" placeholder="Type a message..." disabled />
+          <i class="material-symbols-outlined mic">mic</i>
+        </div>
+      </div>
+
+      <div class="ai-features-list">
+        <ul>
+          <li *ngFor="let feature of aiFeatures">
+            <i class="material-symbols-outlined check-icon">check</i>
+            {{ feature }}
+          </li>
+        </ul>
+
+        <button class="cta-button">Ask Bigbisort AI</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+
+<section class="logged-in-buyers-section">
+  <div class="buyers-content-wrapper">
+    
+    <div class="buyers-header">
+
+      <h1 class="main-title">Logged-In Buyers — Chat Directly with Our Team</h1>
+      <p class="description">
+        Send your requirements instantly to our admin team. Your messages are
+        automatically sent to the Bigbisort export desk via email – so nothing
+        gets missed.
+      </p>
+    </div>
+
+    <div class="buyers-main-area">
+      
+      <div class="mock-chat-window">
+        <div class="chat-header">
+          <span class="chat-title">Chat</span>
+          <i class="material-symbols-outlined close-icon">close</i>
+        </div>
+        <div class="chat-messages">
+          <div class="message-bubble user">
+            Hi, I need 5 tons of fresh apples.
+            <span class="message-sender">Buyer</span>
+          </div>
+          <div class="message-bubble admin">
+            Hello! We can provide that.
+            When do you need it?
+            <span class="message-sender">Admin</span>
+          </div>
+        </div>
+        <div class="chat-input-area">
+          <input type="text" placeholder="Type a message..." disabled />
+          <i class="material-symbols-outlined send-icon">send</i>
+        </div>
+      </div>
+
+      <div class="buyers-features-right">
+        <div class="feature-tags">
+          <span 
+            *ngFor="let tag of loggedInBuyerTags" 
+            class="feature-tag" 
+            [ngClass]="tag.color"
+          >
+            {{ tag.text }}
+          </span>
+        </div>
+
+        <ul class="features-list">
+          <li>I secure instant</li>
+          <li>Personalized</li>
+        </ul>
+        </div>
+    </div>
+  </div>
+</section>
+
+
+<section class="regional-teams-section">
+  <div class="teams-wrapper">
+
+    <div class="teams-header">
+      <h1 class="main-title">Connect with Our Regional Teams</h1>
+      <p class="subtitle">Local experts helping global trade run smoothly.</p>
+    </div>
+
+    <div class="map-container">
+      
+      <div class="map-visual">
+        
+        <div class="map-pin shimla">
+          <span class="location-label">Shimla, HP</span>
+          <i class="material-symbols-outlined pin-icon">location_on</i>
+        </div>
+        
+        <div class="map-pin srinagar">
+          <span class="location-label">Srinagar, J&K</span>
+          <i class="material-symbols-outlined pin-icon">location_on</i>
+        </div>
+        
+        <div class="map-pin coimbatore">
+          <span class="location-label">Coimbatore, TN</span>
+          <i class="material-symbols-outlined pin-icon">location_on</i>
+        </div>
+        
+        <div class="map-pin chennai">
+          <span class="location-label">Chennai (HQ)</span>
+          <i class="material-symbols-outlined pin-icon">location_on</i>
+        </div>
+      </div>
+      
+    </div>
+
+    <table class="contact-table">
+      <thead>
+        <tr>
+          <th>Region</th>
+          <th>Focus Area</th>
+          <th>Contact</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let team of regionalTeams">
+          <td>{{ team.region }}</td>
+          <td>{{ team.focus }}</td>
+          <td><a [href]="'mailto:' + team.email">{{ team.email }}</a></td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
+</section>
