@@ -21,6 +21,31 @@ export class AuthService {
   }
 
   /**
+   * Seller Registration
+   */
+  registerSeller(data: any): Observable<any> {
+    const url = `${this.apiUrl}/auth/seller/sign-up`;
+    return this.http.post(url, data);
+  }
+
+  /**
+   * Admin Login
+   */
+  loginAdmin(username: string, password: string): Observable<any> {
+    const url = `${this.apiUrl}/api/admin/login`;
+    return this.http.post(url, { username, password });
+  }
+
+  /**
+   * Admin Registration
+   */
+  registerAdmin(data: any): Observable<any> {
+    const url = `${this.apiUrl}/api/admin/register`;
+    const headers = { 'ADMIN_SECRET': 'SUPER_SECRET_ADMIN_TOKEN_123' };
+    return this.http.post(url, data, { headers });
+  }
+
+  /**
    * Login for Buyer / Seller / Admin
    */
   login(

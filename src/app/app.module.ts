@@ -8,6 +8,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
+import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { SellerDashboardComponent } from './pages/seller-dashboard/seller-dashboard.component';
 import { BuyerDashboardComponent } from './pages/buyer-dashboard/buyer-dashboard.component';
@@ -36,6 +37,7 @@ import { PepperComponent } from './home-dashboard/30_Products/pepper/pepper.comp
 @NgModule({ declarations: [
         AppComponent,
         LoginComponent,
+        AdminLoginComponent,
         RegisterComponent,
         AdminDashboardComponent,
         SellerDashboardComponent,

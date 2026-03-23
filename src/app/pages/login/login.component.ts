@@ -188,11 +188,10 @@ private loginSeller() {
     });
   }
 
-  // REGISTER BUYER
+  // REGISTER USER (Buyer or Seller)
   register() {
     this.registerErrors = {};
 
-    if (!this.registerData.name) this.registerErrors.name = 'Name required';
     if (!this.registerData.userName) this.registerErrors.userName = 'Username required';
     if (!this.registerData.email) this.registerErrors.email = 'Email required';
     if (!this.registerData.phone) this.registerErrors.phone = 'Phone required';
@@ -200,16 +199,19 @@ private loginSeller() {
 
     if (Object.keys(this.registerErrors).length) return;
 
-    this.auth.registerBuyer(this.registerData).subscribe({
+    const request = this.loginType === 'seller' 
+      ? this.auth.registerSeller(this.registerData) 
+      : this.auth.registerBuyer(this.registerData);
+
+    request.subscribe({
       next: () => {
         alert('✅ Registration successful. Please login.');
         this.isRegisterVisible = false;
 
-        this.loginType = 'buyer';
         this.username = this.registerData.userName;
         this.password = this.registerData.password;
       },
-      error: () => alert('❌ Registration failed')
+      error: (err: any) => alert('❌ Registration failed')
     });
   }
 }
