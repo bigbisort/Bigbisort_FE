@@ -84,6 +84,24 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { expectedRole: 'SELLER' }
   },
+  {
+    path: 'seller/products',
+    loadComponent: () => import('./pages/seller/products/product-list/product-list.component').then(m => m.ProductListComponent),
+    canActivate: [RoleGuard],
+    data: { expectedRole: 'SELLER' }
+  },
+  {
+    path: 'seller/products/add-product',
+    loadComponent: () => import('./pages/seller/products/add-product/add-product.component').then(m => m.AddProductComponent),
+    canActivate: [RoleGuard],
+    data: { expectedRole: 'SELLER' }
+  },
+  {
+    path: 'seller/products/edit-product/:id',
+    loadComponent: () => import('./pages/seller/products/edit-product/edit-product.component').then(m => m.EditProductComponent),
+    canActivate: [RoleGuard],
+    data: { expectedRole: 'SELLER' }
+  },
 
  {
   path: 'buyer',
