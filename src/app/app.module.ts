@@ -7,7 +7,6 @@ import { AuthInterceptor } from './services/auth.interceptor';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { SellerDashboardComponent } from './pages/seller-dashboard/seller-dashboard.component';
@@ -33,12 +32,18 @@ import { PineappleComponent } from './home-dashboard/30_Products/pineapple/pinea
 import { CoconutComponent } from './home-dashboard/30_Products/coconut/coconut.component';
 import { PepperComponent } from './home-dashboard/30_Products/pepper/pepper.component';
 
+// Seller Onboarding Components
+import { OnboardingLayoutComponent } from './pages/seller-onboarding/onboarding-layout/onboarding-layout.component';
+import { Step1IdentityComponent } from './pages/seller-onboarding/step1-identity/step1-identity.component';
+import { Step2VerificationComponent } from './pages/seller-onboarding/step2-verification/step2-verification.component';
+import { Step3FarmComponent } from './pages/seller-onboarding/step3-farm/step3-farm.component';
+import { Step4ProductsComponent } from './pages/seller-onboarding/step4-products/step4-products.component';
+import { SearchableDropdownComponent } from './shared/components/searchable-dropdown/searchable-dropdown.component';
 
 @NgModule({ declarations: [
         AppComponent,
         LoginComponent,
         AdminLoginComponent,
-        RegisterComponent,
         AdminDashboardComponent,
         SellerDashboardComponent,
         BuyerDashboardComponent,
@@ -62,6 +67,13 @@ import { PepperComponent } from './home-dashboard/30_Products/pepper/pepper.comp
         PineappleComponent,
         CoconutComponent,
         PepperComponent,
+        // Seller Onboarding
+        OnboardingLayoutComponent,
+        Step1IdentityComponent,
+        Step2VerificationComponent,
+        Step3FarmComponent,
+        Step4ProductsComponent,
+        SearchableDropdownComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

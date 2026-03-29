@@ -63,6 +63,22 @@ export class AuthService {
     });
   }
 
+  /**
+   * Send OTP to mobile number
+   */
+  sendOtp(data: { mobile: string }): Observable<any> {
+    const url = `${this.apiUrl}/auth/send-otp`;
+    return this.http.post(url, { phoneNumber: '+91' + data.mobile, channel: 'sms' });
+  }
+
+  /**
+   * Verify OTP
+   */
+  verifyOtp(data: { mobile: string; otp: string }): Observable<any> {
+    const url = `${this.apiUrl}/auth/validate-otp`;
+    return this.http.post(url, { phoneNumber: '+91' + data.mobile, code: data.otp });
+  }
+
   // ✅ ROLE HANDLING
   setRole(role: string) {
     localStorage.setItem('role', role);
@@ -70,6 +86,27 @@ export class AuthService {
 
   getRole(): string | null {
     return localStorage.getItem('role');
+  }
+
+  // ✅ SELLER HELPERS
+  setSellerId(sellerId: string) {
+    localStorage.setItem('sellerId', sellerId);
+  }
+
+  getSellerId(): string | null {
+    return localStorage.getItem('sellerId');
+  }
+
+  setSellerName(name: string) {
+    localStorage.setItem('sellerName', name);
+  }
+
+  setSellerEmail(email: string) {
+    localStorage.setItem('sellerEmail', email);
+  }
+
+  setSellerPhone(phone: string) {
+    localStorage.setItem('sellerPhone', phone);
   }
 
   // ✅ BUYER HELPERS
@@ -89,9 +126,13 @@ export class AuthService {
     return sessionStorage.getItem('buyerName');
   }
 
-  // LOGOUT (no tokens involved)
+  // LOGOUT
   logout() {
     localStorage.removeItem('role');
+    localStorage.removeItem('sellerId');
+    localStorage.removeItem('sellerName');
+    localStorage.removeItem('sellerEmail');
+    localStorage.removeItem('sellerPhone');
     sessionStorage.removeItem('buyerId');
     sessionStorage.removeItem('buyerName');
   }

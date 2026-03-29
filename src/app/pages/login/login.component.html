@@ -45,7 +45,9 @@
 
       <!-- Links -->
       <div class="login-links">
-        <a href="#" (click)="showRegister($event)">Register</a>
+        <a href="#" (click)="showRegister($event)">
+          {{ loginType === 'seller' ? 'Register as Seller' : 'Register' }}
+        </a>
  |
         <!-- <a href="#" (click)="forgotPassword()">Forgot Password?</a> -->
       </div>

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
+import { OnboardingService } from 'src/app/services/onboarding.service';
 
 @Component({
     selector: 'app-login',
@@ -46,7 +47,8 @@ export class LoginComponent {
 
   constructor(
     private auth: AuthService,
-    private router: Router
+    private router: Router,
+    private onboardingService: OnboardingService
   ) {}
 
   setLoginType(type: 'buyer' | 'seller' | 'admin') {
@@ -66,6 +68,11 @@ export class LoginComponent {
 
   showRegister(event: Event) {
     event.preventDefault();
+    // If seller tab is active, redirect to onboarding step 1 (account creation happens there)
+    if (this.loginType === 'seller') {
+      this.router.navigate(['/onboarding/identity']);
+      return;
+    }
     this.isRegisterVisible = true;
   }
 
@@ -90,13 +97,11 @@ private loginBuyer() {
 
   this.auth.login(this.username, this.password, 'BUYER').subscribe({
     next: (res: any) => {
-    
 
       if (res.roles?.length) {
         this.auth.setRole(res.roles[0]); // BUYER
       }
 
-      // Debug (temporary)
       console.log('Saved role:', this.auth.getRole());
 
     this.router.navigateByUrl('/buyer').then(result => {
@@ -124,13 +129,34 @@ private loginSeller() {
         this.auth.setRole(res.roles[0]); // SELLER
       }
 
-      // Debug
-      console.log('Saved role:', this.auth.getRole());
-
-      // ✅ Navigate to seller dashboard
-      this.router.navigateByUrl('/seller').then(result => {
-        console.log('Seller navigation result:', result);
-      });
+      // Check onboarding status
+      const sellerId = this.auth.getSellerId();
+      if (sellerId) {
+        this.onboardingService.getOnboardingStatus(sellerId).subscribe({
+          next: (status: any) => {
+            if (status.currentStep && status.currentStep <= 4) {
+              // Onboarding incomplete — redirect to current step
+              const stepMap: { [key: number]: string } = {
+                1: 'identity',
+                2: 'verification',
+                3: 'farm',
+                4: 'products'
+              };
+              const route = stepMap[status.currentStep] || 'identity';
+              this.router.navigate([`/onboarding/${route}`]);
+            } else {
+              // Onboarding complete — go to dashboard
+              this.router.navigateByUrl('/seller');
+            }
+          },
+          error: () => {
+            // Fallback to dashboard
+            this.router.navigateByUrl('/seller');
+          }
+        });
+      } else {
+        this.router.navigateByUrl('/seller');
+      }
     },
     error: () => alert('❌ Invalid seller credentials')
   });

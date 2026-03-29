@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
-import { RegisterComponent } from './pages/register/register.component';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { BuyerDashboardComponent } from './pages/buyer-dashboard/buyer-dashboard.component';
@@ -26,13 +25,20 @@ import { PineappleComponent } from './home-dashboard/30_Products/pineapple/pinea
 import { CoconutComponent } from './home-dashboard/30_Products/coconut/coconut.component';
 import { PepperComponent } from './home-dashboard/30_Products/pepper/pepper.component';
 
+// Onboarding Components
+import { OnboardingLayoutComponent } from './pages/seller-onboarding/onboarding-layout/onboarding-layout.component';
+import { Step1IdentityComponent } from './pages/seller-onboarding/step1-identity/step1-identity.component';
+import { Step2VerificationComponent } from './pages/seller-onboarding/step2-verification/step2-verification.component';
+import { Step3FarmComponent } from './pages/seller-onboarding/step3-farm/step3-farm.component';
+import { Step4ProductsComponent } from './pages/seller-onboarding/step4-products/step4-products.component';
+
 const routes: Routes = [
 
 {
     path: '',
     component: HomeDashboardComponent,
     children: [
-      { path: '', redirectTo: 'home', pathMatch: 'full' },  // ✅ Home is default
+      { path: '', redirectTo: 'home', pathMatch: 'full' },
       { path: 'home', component: HomeComponent },
       { path: 'about', component: AboutUsComponent },
       { path: 'products', component: ProductsComponent },
@@ -40,24 +46,32 @@ const routes: Routes = [
       { path: 'category/:type', component: CategoryComponent },
       { path: 'login', component: LoginComponent },
       { path: 'prdland', component: PrdlandpgComponent },
-
-//from here onwards 38 prd38 route inintializise should declare 
-
-              { path: 'apple', component: AppleComponent },
-              { path: 'avocado', component: AvocadoComponent },
-              { path: 'carrot', component: CarrotComponent },
-              { path: 'banana', component: BananaComponent },
-              { path: 'pineapple', component: PineappleComponent },
-              { path: 'coconut', component: CoconutComponent },
-              { path: 'pepper', component: PepperComponent },
-
+      { path: 'apple', component: AppleComponent },
+      { path: 'avocado', component: AvocadoComponent },
+      { path: 'carrot', component: CarrotComponent },
+      { path: 'banana', component: BananaComponent },
+      { path: 'pineapple', component: PineappleComponent },
+      { path: 'coconut', component: CoconutComponent },
+      { path: 'pepper', component: PepperComponent },
     ]
   },
 
-  { path: '', redirectTo: 'login', pathMatch: 'full' },
   { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
   { path: 'YWRtaW4=', component: AdminLoginComponent },
+
+  // Seller Onboarding Wizard
+  {
+    path: 'onboarding',
+    component: OnboardingLayoutComponent,
+    children: [
+      { path: '', redirectTo: 'identity', pathMatch: 'full' },
+      { path: 'identity', component: Step1IdentityComponent },
+      { path: 'verification', component: Step2VerificationComponent },
+      { path: 'farm', component: Step3FarmComponent },
+      { path: 'products', component: Step4ProductsComponent },
+    ]
+  },
+
   {
     path: 'admin',
     component: AdminDashboardComponent,
@@ -70,12 +84,6 @@ const routes: Routes = [
     canActivate: [RoleGuard],
     data: { expectedRole: 'SELLER' }
   },
-  // {
-  //   path: 'buyer',
-  //   component: BuyerDashboardComponent,
-  //   canActivate: [RoleGuard],
-  //   data: { expectedRole: 'BUYER' }
-  // },
 
  {
   path: 'buyer',
@@ -101,14 +109,12 @@ const routes: Routes = [
   canActivate: [RoleGuard],
   data: { expectedRole: 'BUYER' }
 },
-{ 
+{
   path: 'buyer/categories',
   component: BuyersproductsComponent,
   canActivate: [RoleGuard],
   data: { expectedRole: 'BUYER' }
 },
-
-
 
 ];
 
