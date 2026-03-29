@@ -10,6 +10,7 @@ interface ProductBlock {
   description: string;
   harvestYear: string;
   harvestMonth: string;
+  harvestDay: string;
   quantity: string;
   unit: string;
   grade: string;
@@ -45,6 +46,7 @@ export class Step4ProductsComponent implements OnInit {
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
+  days = Array.from({length: 31}, (_, i) => (i + 1).toString());
   grades = ['Grade A', 'Grade B', 'Grade C', 'Premium'];
 
   errors: any = {};
@@ -115,6 +117,7 @@ export class Step4ProductsComponent implements OnInit {
       description: '',
       harvestYear: '',
       harvestMonth: '',
+      harvestDay: '',
       quantity: '',
       unit: 'Kg',
       grade: '',
@@ -208,6 +211,7 @@ export class Step4ProductsComponent implements OnInit {
     if (!product.variety) { this.errors[errKey].variety = 'Product Variety is required.'; valid = false; }
     if (!product.harvestYear) { this.errors[errKey].harvestYear = 'Harvest year is required.'; valid = false; }
     if (!product.harvestMonth) { this.errors[errKey].harvestMonth = 'Harvest month is required.'; valid = false; }
+    if (!product.harvestDay) { this.errors[errKey].harvestDay = 'Harvest day is required.'; valid = false; }
     if (!product.quantity) { this.errors[errKey].quantity = 'Estimated Quantity is required.'; valid = false; }
     if (!product.grade) { this.errors[errKey].grade = 'Grade is required.'; valid = false; }
 
@@ -217,7 +221,7 @@ export class Step4ProductsComponent implements OnInit {
   get canContinue(): boolean {
     return this.products.length > 0 && this.products.every(p =>
       !!p.category && !!p.product && !!p.variety &&
-      !!p.harvestYear && !!p.harvestMonth && !!p.quantity && !!p.grade
+      !!p.harvestYear && !!p.harvestMonth && !!p.harvestDay && !!p.quantity && !!p.grade
     );
   }
 
@@ -252,6 +256,7 @@ export class Step4ProductsComponent implements OnInit {
           description: product.description,
           harvestYear: product.harvestYear,
           harvestMonth: product.harvestMonth,
+          harvestDay: product.harvestDay,
           quantity: product.quantity,
           unit: product.unit,
           grade: product.grade,
