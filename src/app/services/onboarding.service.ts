@@ -53,11 +53,19 @@ export class OnboardingService {
       id: sellerId,
       authenticationType: 'SELLER',
       productRequestBeanList: [{
-        productName: data.product,
+        productName: data.productName,
         category: data.category,
-        subcategory: data.variety,
         description: data.description,
-        quantity: data.quantity
+        product_image: data.product_image,
+        varietiesRequestBeanList: [{
+          varietyName: data.varietyName,
+          description: data.description,
+          harvestDate: data.harvestDate,
+          estimatedQuantity: data.quantity,
+          quantityMeasurementType: data.unit,
+          grade: data.grade,
+          packingType: data.packagingType
+        }]
       }]
     };
     return this.http.post(`${this.apiUrl}/product/add`, payload);

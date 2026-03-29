@@ -229,6 +229,12 @@ export class Step4ProductsComponent implements OnInit {
     return this.errors[`product_${index}`] || {};
   }
 
+  getMonthNumber(monthName: string): string {
+    const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+    const idx = months.indexOf(monthName) + 1;
+    return idx.toString().padStart(2, '0');
+  }
+
   async saveAndContinue() {
     // Validate all products
     let allValid = true;
@@ -249,18 +255,35 @@ export class Step4ProductsComponent implements OnInit {
     try {
       // Save each product
       for (const product of this.products) {
+        let unitEnum = 'KG';
+        if (product.unit === 'Tonnes') unitEnum = 'TONNE';
+        if (product.unit === 'Quintal') unitEnum = 'QUINTAL';
+        
+        let gradeEnum = 'GRADE_A';
+        if (product.grade === 'Grade B') gradeEnum = 'GRADE_B';
+        if (product.grade === 'Grade C') gradeEnum = 'GRADE_C';
+        if (product.grade === 'Premium') gradeEnum = 'GRADE_EXTRA';
+
+        let packingEnum = 'BOX';
+        if (product.packaging === 'Loose') packingEnum = 'LOOSE';
+        if (product.packaging === 'Custom') packingEnum = 'CUSTOM';
+        
+        let base64Image = null;
+        if (product.imagePreview && product.imagePreview.includes('base64,')) {
+          base64Image = product.imagePreview.split('base64,')[1];
+        }
+
         const data = {
           category: product.category,
-          product: product.product,
-          variety: product.variety,
+          productName: product.product,
+          varietyName: product.variety,
           description: product.description,
-          harvestYear: product.harvestYear,
-          harvestMonth: product.harvestMonth,
-          harvestDay: product.harvestDay,
+          product_image: base64Image,
+          harvestDate: `${product.harvestYear}-${this.getMonthNumber(product.harvestMonth)}-${product.harvestDay.padStart(2, '0')}`,
           quantity: product.quantity,
-          unit: product.unit,
-          grade: product.grade,
-          packagingType: product.packaging
+          unit: unitEnum,
+          grade: gradeEnum,
+          packagingType: packingEnum
         };
 
         const res: any = await this.onboardingService.addProduct(this.sellerId, data).toPromise();
