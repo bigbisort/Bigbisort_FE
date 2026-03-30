@@ -83,9 +83,7 @@
               <input type="number" [(ngModel)]="quantity" placeholder="e.g. 5000" [class.error]="errors.quantity">
               <div class="unit-append">
                 <select [(ngModel)]="unit">
-                  <option value="Kg">Kg</option>
-                  <option value="Tonnes">Tonnes</option>
-                  <option value="Quintal">Quintal</option>
+                  <option *ngFor="let mUnit of measurementUnits" [value]="mUnit">{{mUnit}}</option>
                 </select>
               </div>
             </div>

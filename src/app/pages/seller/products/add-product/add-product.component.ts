@@ -42,6 +42,7 @@ export class AddProductComponent implements OnInit {
   categories: any[] = [];
   products: any[] = [];
   varieties: string[] = [];
+  measurementUnits: string[] = [];
 
   // Dropdown UI States
   productSearchTerm = '';
@@ -71,12 +72,23 @@ export class AddProductComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadCategories();
+    this.loadMeasurementUnits();
   }
 
   loadCategories() {
     this.onboardingService.getCatalogCategories().subscribe({
       next: (res) => { this.categories = res; },
       error: (err) => { console.error('Failed to load categories', err); }
+    });
+  }
+
+  loadMeasurementUnits() {
+    this.onboardingService.getMeasurementUnits().subscribe({
+      next: (res) => { 
+        this.measurementUnits = res; 
+        if(this.measurementUnits.includes('KG')) this.unit = 'KG'; 
+      },
+      error: (err) => { console.error('Failed to load measurement units', err); }
     });
   }
 
@@ -282,7 +294,7 @@ export class AddProductComponent implements OnInit {
           description: this.description || '',
           harvestDate: hardvestDate,
           estimatedQuantity: this.quantity ? this.quantity.toString() : '0',
-          quantityMeasurementType: this.unit === 'Kg' ? 'KILOGRAM' : (this.unit === 'Tonnes' ? 'TON' : 'QUINTAL'),
+          quantityMeasurementType: this.unit,
           grade: this.mapGrade(this.grade),
           packingType: this.packaging.toUpperCase(),
           productVideo: this.productVideoBase64 ? this.productVideoBase64.split(',')[1] : null,

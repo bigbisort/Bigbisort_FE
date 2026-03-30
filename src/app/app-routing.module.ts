@@ -80,9 +80,8 @@ const routes: Routes = [
   },
   {
     path: 'seller',
-    component: SellerDashboardComponent,
-    canActivate: [RoleGuard],
-    data: { expectedRole: 'SELLER' }
+    redirectTo: 'seller/products',
+    pathMatch: 'full'
   },
   {
     path: 'seller/products',

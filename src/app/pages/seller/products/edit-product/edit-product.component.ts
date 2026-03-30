@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 import { ProductService } from '../../../../services/product.service';
+import { OnboardingService } from '../../../../services/onboarding.service';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 
@@ -25,10 +26,12 @@ export class EditProductComponent implements OnInit {
   harvestMonth = '';
   harvestDay = '';
   quantity: number | null = null;
-  unit = 'Kg';
+  unit = 'KG';
   grade = '';
   packaging = 'Box';
   productStatus = '';
+
+  measurementUnits: string[] = [];
 
   // Media
   productImage: File | null = null;
@@ -51,6 +54,7 @@ export class EditProductComponent implements OnInit {
 
   constructor(
     private productService: ProductService,
+    private onboardingService: OnboardingService,
     private router: Router,
     private route: ActivatedRoute
   ) {}
@@ -58,10 +62,20 @@ export class EditProductComponent implements OnInit {
   ngOnInit(): void {
     this.productId = this.route.snapshot.paramMap.get('id') || '';
     if (this.productId) {
+      this.loadMeasurementUnits();
       this.loadProduct();
     } else {
       this.router.navigate(['/seller/products']);
     }
+  }
+
+  loadMeasurementUnits() {
+    this.onboardingService.getMeasurementUnits().subscribe({
+      next: (res) => { 
+        this.measurementUnits = res; 
+      },
+      error: (err) => { console.error('Failed to load measurement units', err); }
+    });
   }
 
   loadProduct() {
@@ -95,7 +109,8 @@ export class EditProductComponent implements OnInit {
            }
            
            this.quantity = v.estimatedQuantity ? parseInt(v.estimatedQuantity, 10) : null;
-           this.unit = v.quantityMeasurementType === 'TON' ? 'Tonnes' : (v.quantityMeasurementType === 'QUINTAL' ? 'Quintal' : 'Kg');
+           // If backend returns KILOGRAM, we might need a fallback, but the UI constraint is sending exactly as received if it's enum Name like KG or TONNE
+           this.unit = v.quantityMeasurementType || 'KG';
            this.grade = this.unmapGrade(v.grade);
            
            if (v.packingType) {
@@ -221,7 +236,7 @@ export class EditProductComponent implements OnInit {
           description: this.description || '',
           harvestDate: hardvestDate,
           estimatedQuantity: this.quantity ? this.quantity.toString() : '0',
-          quantityMeasurementType: this.unit === 'Kg' ? 'KILOGRAM' : (this.unit === 'Tonnes' ? 'TON' : 'QUINTAL'),
+          quantityMeasurementType: this.unit,
           grade: this.mapGrade(this.grade),
           packingType: this.packaging.toUpperCase()
         }]

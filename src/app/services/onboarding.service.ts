@@ -116,6 +116,10 @@ export class OnboardingService {
     return this.http.get(`${this.apiUrl}/api/ref/land-units`);
   }
 
+  getMeasurementUnits(): Observable<string[]> {
+    return this.http.get<string[]>(`${this.apiUrl}/api/ref/measurement-units`);
+  }
+
   getIrrigationTypes(): Observable<any> {
     return this.http.get(`${this.apiUrl}/api/ref/irrigation-types`);
   }

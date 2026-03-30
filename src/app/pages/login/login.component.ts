@@ -99,7 +99,14 @@ private loginBuyer() {
     next: (res: any) => {
 
       if (res.roles?.length) {
-        this.auth.setRole(res.roles[0]); // BUYER
+        let role = res.roles[0];
+        if (role.startsWith('ROLE_')) role = role.substring(5);
+        this.auth.setRole(role); // BUYER
+      }
+
+      if (res.userId) {
+        this.auth.setBuyerId(res.userId);
+        this.auth.setBuyerName(res.userName || '');
       }
 
       console.log('Saved role:', this.auth.getRole());
@@ -126,7 +133,15 @@ private loginSeller() {
 
       // ✅ SAVE ROLE
       if (res.roles?.length) {
-        this.auth.setRole(res.roles[0]); // SELLER
+        let role = res.roles[0];
+        if (role.startsWith('ROLE_')) role = role.substring(5);
+        this.auth.setRole(role); // SELLER
+      }
+
+      // ✅ SAVE SELLER ID
+      if (res.userId) {
+        this.auth.setSellerId(res.userId);
+        this.auth.setSellerName(res.userName || '');
       }
 
       // Check onboarding status
@@ -146,16 +161,16 @@ private loginSeller() {
               this.router.navigate([`/onboarding/${route}`]);
             } else {
               // Onboarding complete — go to dashboard
-              this.router.navigateByUrl('/seller');
+              this.router.navigateByUrl('/seller/products');
             }
           },
           error: () => {
             // Fallback to dashboard
-            this.router.navigateByUrl('/seller');
+            this.router.navigateByUrl('/seller/products');
           }
         });
       } else {
-        this.router.navigateByUrl('/seller');
+        this.router.navigateByUrl('/seller/products');
       }
     },
     error: () => alert('❌ Invalid seller credentials')
@@ -205,7 +220,9 @@ private loginSeller() {
 
         // ✅ SAVE ROLE
         if (res.roles?.length) {
-          this.auth.setRole(res.roles[0]);
+          let role = res.roles[0];
+          if (role.startsWith('ROLE_')) role = role.substring(5);
+          this.auth.setRole(role);
         }
 
         this.router.navigate(['/admin']);
