@@ -1,4 +1,6 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
     selector: 'app-root',
@@ -8,4 +10,15 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'bigbisort-frontend';
+
+  constructor(public auth: AuthService, private router: Router) {}
+
+  isLoggedIn(): boolean {
+    return !!this.auth.getRole();
+  }
+
+  logout() {
+    this.auth.logout();
+    this.router.navigate(['/home']);
+  }
 }

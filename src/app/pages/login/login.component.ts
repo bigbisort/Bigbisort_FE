@@ -139,8 +139,8 @@ private loginSeller() {
       }
 
       // ✅ SAVE SELLER ID
-      if (res.userId) {
-        this.auth.setSellerId(res.userId);
+      if (res.sellerId || res.userId) {
+        this.auth.setSellerId(res.sellerId || res.userId);
         this.auth.setSellerName(res.userName || '');
       }
 

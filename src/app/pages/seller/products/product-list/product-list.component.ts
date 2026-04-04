@@ -107,7 +107,7 @@ export class ProductListComponent implements OnInit {
   }
 
   navigateToEdit(product: any) {
-    this.router.navigate(['/seller/products/edit-product', product.id]);
+    this.router.navigate(['/seller/products/edit-product', product.productId || product.id]);
   }
 
   getStatus(product: any): string {

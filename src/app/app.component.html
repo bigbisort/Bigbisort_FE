@@ -1,5 +1,18 @@
+<nav class="navbar">
+  <div class="nav-left">
+     <a routerLink="/home" class="logo">
+      <img src="assets/images/logo/logo.png" alt="Bigbisort Logo" />
+    </a>
+    <a routerLink="/home" routerLinkActive="active-link">Home</a>
+    <a routerLink="/about" routerLinkActive="active-link">About</a>
+    <a routerLink="/products" routerLinkActive="active-link">Products</a>
+    <a routerLink="/contact" routerLinkActive="active-link">Contact</a>
+  </div>
+  <div class="nav-right">
+    <a *ngIf="!isLoggedIn()" routerLink="/login" routerLinkActive="active-link" class="login-link">Login</a>
+    <a *ngIf="isLoggedIn()" (click)="logout()" class="login-link" style="cursor: pointer;">Logout</a>
+  </div>
+</nav>
 
 <router-outlet></router-outlet>
-
-
 <app-footer></app-footer>
