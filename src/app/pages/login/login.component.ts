@@ -161,16 +161,16 @@ private loginSeller() {
               this.router.navigate([`/onboarding/${route}`]);
             } else {
               // Onboarding complete — go to dashboard
-              this.router.navigateByUrl('/seller/products');
+              this.router.navigateByUrl('/seller/dashboard');
             }
           },
           error: () => {
             // Fallback to dashboard
-            this.router.navigateByUrl('/seller/products');
+            this.router.navigateByUrl('/seller/dashboard');
           }
         });
       } else {
-        this.router.navigateByUrl('/seller/products');
+        this.router.navigateByUrl('/seller/dashboard');
       }
     },
     error: () => alert('❌ Invalid seller credentials')

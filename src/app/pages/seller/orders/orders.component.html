@@ -1,0 +1,93 @@
+<div class="orders-container">
+  <!-- Top Bar: Title & Greeting (Greeting is part of general layout but we can put it here if not in main layout top header) -->
+  <!-- Assuming the layout manages top header. We'll just put the title "Orders" if needed, though mockup has "Orders" and greeting inside the main area. Let's see. -->
+  <div class="page-header">
+    <h2 class="page-title">Orders</h2>
+    <div class="header-right">
+       <!-- Greeting already in layout, but added here to match mockup perfectly if desired -->
+    </div>
+  </div>
+
+  <div class="orders-content">
+    
+    <!-- Filter bar -->
+    <div class="filter-bar">
+      <div class="search-wrap">
+        <i class="bi bi-search"></i>
+        <input type="text" placeholder="Search by product or buyer..." [(ngModel)]="searchTerm" (input)="onSearch()" />
+      </div>
+      
+      <div class="status-wrap">
+        <select [(ngModel)]="selectedStatus" (change)="onStatusChange()">
+          <option *ngFor="let status of statusOptions" [value]="status">{{status}}</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Table -->
+    <div class="table-card">
+      <table *ngIf="paginatedOrders.length > 0">
+        <thead>
+          <tr>
+            <th>PRODUCT NAME</th>
+            <th>BUYER NAME</th>
+            <th>QUANTITY</th>
+            <th>REQUEST DATE</th>
+            <th>STATUS</th>
+            <th>ACTIONS</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of paginatedOrders">
+            <td>
+              <div class="product-info">
+                <span class="p-name">{{order.productName}}</span>
+                <span class="p-sub">{{order.productSubtitle}}</span>
+              </div>
+            </td>
+            <td>{{order.buyerName}}</td>
+            <td>{{order.quantity}}</td>
+            <td>{{order.requestDate}}</td>
+            <td>
+              <span class="status-badge" [ngClass]="{
+                'badge-pending': order.status === 'Pending',
+                'badge-approved': order.status === 'Approved',
+                'badge-rejected': order.status === 'Rejected'
+              }">{{order.status}}</span>
+            </td>
+            <td>
+              <div class="action-buttons">
+                <button class="btn-view" (click)="view(order)">View</button>
+                <ng-container *ngIf="order.status === 'Pending'">
+                  <button class="btn-approve" (click)="approve(order)">Approve</button>
+                  <button class="btn-reject" (click)="reject(order)">Reject</button>
+                </ng-container>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+
+      <!-- Empty State -->
+      <div class="empty-state" *ngIf="paginatedOrders.length === 0">
+        <div class="alert alert-success d-flex align-items-center" role="alert" style="background-color: #e8f5e9; border: 1px solid #c8e6c9; color: #1b5e20;">
+          <i class="bi bi-info-circle me-2"></i>
+          <div>Empty state: shows "No Orders Available" with illustration placeholder</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Pagination -->
+    <div class="pagination-footer" *ngIf="paginatedOrders.length > 0">
+      <span class="page-info">Page {{currentPage}} of {{totalPages}}</span>
+      <div class="page-controls">
+        <button [disabled]="currentPage === 1" (click)="prevPage()">&lsaquo;</button>
+        <button *ngFor="let p of getPageNumbers()" [class.active]="p === currentPage" (click)="goToPage(p)">
+          {{p}}
+        </button>
+        <button [disabled]="currentPage === totalPages" (click)="nextPage()">&rsaquo;</button>
+      </div>
+    </div>
+
+  </div>
+</div>

@@ -5,6 +5,7 @@ import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { BuyerDashboardComponent } from './pages/buyer-dashboard/buyer-dashboard.component';
 import { SellerDashboardComponent } from './pages/seller-dashboard/seller-dashboard.component';
+import { SellerLayoutComponent } from './pages/seller-layout/seller-layout.component';
 import { RoleGuard } from './guards/role.guard';
 import { BuyerOrderComponent } from './pages/buyer-dashboard/buyer-order/buyer-order.component';
 import { HomeComponent } from './home-dashboard/home/home.component';
@@ -80,26 +81,33 @@ const routes: Routes = [
   },
   {
     path: 'seller',
-    redirectTo: 'seller/products',
-    pathMatch: 'full'
-  },
-  {
-    path: 'seller/products',
-    loadComponent: () => import('./pages/seller/products/product-list/product-list.component').then(m => m.ProductListComponent),
+    component: SellerLayoutComponent,
     canActivate: [RoleGuard],
-    data: { expectedRole: 'SELLER' }
-  },
-  {
-    path: 'seller/products/add-product',
-    loadComponent: () => import('./pages/seller/products/add-product/add-product.component').then(m => m.AddProductComponent),
-    canActivate: [RoleGuard],
-    data: { expectedRole: 'SELLER' }
-  },
-  {
-    path: 'seller/products/edit-product/:id',
-    loadComponent: () => import('./pages/seller/products/edit-product/edit-product.component').then(m => m.EditProductComponent),
-    canActivate: [RoleGuard],
-    data: { expectedRole: 'SELLER' }
+    data: { expectedRole: 'SELLER' },
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: SellerDashboardComponent },
+      {
+        path: 'products',
+        loadComponent: () => import('./pages/seller/products/product-list/product-list.component').then(m => m.ProductListComponent)
+      },
+      {
+        path: 'products/add-product',
+        loadComponent: () => import('./pages/seller/products/add-product/add-product.component').then(m => m.AddProductComponent)
+      },
+      {
+        path: 'products/edit-product/:id',
+        loadComponent: () => import('./pages/seller/products/edit-product/edit-product.component').then(m => m.EditProductComponent)
+      },
+      {
+        path: 'orders',
+        loadComponent: () => import('./pages/seller/orders/orders.component').then(m => m.OrdersComponent)
+      },
+      {
+        path: 'payments',
+        loadComponent: () => import('./pages/seller/payments/payments.component').then(m => m.PaymentsComponent)
+      }
+    ]
   },
 
  {

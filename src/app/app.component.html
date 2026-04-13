@@ -1,4 +1,4 @@
-<nav class="navbar">
+<nav class="navbar" *ngIf="!isDashboardRoute()">
   <div class="nav-left">
      <a routerLink="/home" class="logo">
       <img src="assets/images/logo/logo.png" alt="Bigbisort Logo" />
@@ -15,4 +15,4 @@
 </nav>
 
 <router-outlet></router-outlet>
-<app-footer></app-footer>
+<app-footer *ngIf="!isDashboardRoute()"></app-footer>

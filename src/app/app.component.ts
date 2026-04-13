@@ -21,4 +21,9 @@ export class AppComponent {
     this.auth.logout();
     this.router.navigate(['/home']);
   }
+
+  isDashboardRoute(): boolean {
+    const url = this.router.url;
+    return url.startsWith('/seller') || url.startsWith('/buyer') || url.startsWith('/admin') || url.startsWith('/onboarding');
+  }
 }
