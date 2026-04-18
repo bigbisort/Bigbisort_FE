@@ -15,7 +15,8 @@ export class AdminLoginComponent {
 
   isRegisterVisible = false;
   registerData = {
-    userName: '', email: '', phone: '', password: '', name: '', city: '', state: '', zip: '', country: '', address: ''
+    userName: '', email: '', phone: '', password: '', name: '', city: '', state: '', zip: '',
+    country: 'India', countryCode: '+91', address: ''
   };
   registerErrors: any = {};
 
