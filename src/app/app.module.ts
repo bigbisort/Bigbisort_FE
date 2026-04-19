@@ -32,6 +32,7 @@ import { PineappleComponent } from './home-dashboard/30_Products/pineapple/pinea
 import { CoconutComponent } from './home-dashboard/30_Products/coconut/coconut.component';
 import { PepperComponent } from './home-dashboard/30_Products/pepper/pepper.component';
 import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.component';
+import { AdminSellerManagementComponent } from './pages/admin-seller-management/admin-seller-management.component';
 
 // Seller Onboarding Components
 import { OnboardingLayoutComponent } from './pages/seller-onboarding/onboarding-layout/onboarding-layout.component';
@@ -47,6 +48,7 @@ import { SearchableDropdownComponent } from './shared/components/searchable-drop
         AdminLoginComponent,
         AdminDashboardComponent,
         AdminLayoutComponent,
+        AdminSellerManagementComponent,
         SellerDashboardComponent,
         BuyerDashboardComponent,
         HeaderComponent,
