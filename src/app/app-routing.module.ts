@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './pages/login/login.component';
 import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
+import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { BuyerDashboardComponent } from './pages/buyer-dashboard/buyer-dashboard.component';
 import { SellerDashboardComponent } from './pages/seller-dashboard/seller-dashboard.component';
@@ -75,9 +76,13 @@ const routes: Routes = [
 
   {
     path: 'admin',
-    component: AdminDashboardComponent,
+    component: AdminLayoutComponent,
     canActivate: [RoleGuard],
-    data: { expectedRole: 'ADMIN' }
+    data: { expectedRole: 'ADMIN' },
+    children: [
+      { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
+      { path: 'dashboard', component: AdminDashboardComponent },
+    ]
   },
   {
     path: 'seller',

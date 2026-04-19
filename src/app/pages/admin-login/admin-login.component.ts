@@ -34,9 +34,22 @@ export class AdminLoginComponent {
     this.auth.loginAdmin(this.adminUsername, this.adminPassword).subscribe({
       next: (res: any) => {
         if (res.roles?.length) {
-          this.auth.setRole(res.roles[0]); // ADMIN
+          let role = res.roles[0];
+          if (role.startsWith('ROLE_')) {
+            role = role.substring(5);
+          }
+          this.auth.setRole(role); // ADMIN
         }
-        this.router.navigateByUrl('/admin');
+        
+        if (res.userName) {
+          localStorage.setItem('adminName', res.userName);
+        }
+        
+        if (res.accessToken) {
+          this.auth.setToken(res.accessToken);
+        }
+        
+        this.router.navigateByUrl('/admin/dashboard');
       },
       error: () => alert('❌ Invalid admin credentials')
     });

@@ -88,6 +88,15 @@ export class AuthService {
     return localStorage.getItem('role');
   }
 
+  // ✅ TOKEN HANDLING
+  setToken(token: string) {
+    localStorage.setItem('accessToken', token);
+  }
+
+  getToken(): string | null {
+    return localStorage.getItem('accessToken');
+  }
+
   // ✅ SELLER HELPERS
   setSellerId(sellerId: string) {
     localStorage.setItem('sellerId', sellerId);
@@ -128,7 +137,9 @@ export class AuthService {
 
   // LOGOUT
   logout() {
+    localStorage.removeItem('accessToken');
     localStorage.removeItem('role');
+    localStorage.removeItem('adminName');
     localStorage.removeItem('sellerId');
     localStorage.removeItem('sellerName');
     localStorage.removeItem('sellerEmail');

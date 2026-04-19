@@ -87,6 +87,51 @@ export class LoginComponent {
     if (this.loginType === 'admin') this.loginAdmin();
   }
 
+  /**
+   * Redirect based on the actual role stored after login.
+   * This ensures admins always land on /admin even if they used the buyer/seller form.
+   */
+  private redirectByRole(): void {
+    const role = this.auth.getRole();
+    console.log('🔀 Redirecting for role:', role);
+
+    if (role === 'ADMIN' || role === 'SUPER_ADMIN' || role === 'OPS') {
+      this.router.navigateByUrl('/admin/dashboard');
+    } else if (role === 'SELLER') {
+      this.handleSellerRedirect();
+    } else {
+      // BUYER or fallback
+      this.router.navigateByUrl('/buyer');
+    }
+  }
+
+  private handleSellerRedirect(): void {
+    const sellerId = this.auth.getSellerId();
+    if (sellerId) {
+      this.onboardingService.getOnboardingStatus(sellerId).subscribe({
+        next: (status: any) => {
+          if (status.currentStep && status.currentStep <= 4) {
+            const stepMap: { [key: number]: string } = {
+              1: 'identity',
+              2: 'verification',
+              3: 'farm',
+              4: 'products'
+            };
+            const route = stepMap[status.currentStep] || 'identity';
+            this.router.navigate([`/onboarding/${route}`]);
+          } else {
+            this.router.navigateByUrl('/seller/dashboard');
+          }
+        },
+        error: () => {
+          this.router.navigateByUrl('/seller/dashboard');
+        }
+      });
+    } else {
+      this.router.navigateByUrl('/seller/dashboard');
+    }
+  }
+
 // BUYER LOGIN
 private loginBuyer() {
   this.loginErrors = {};
@@ -101,7 +146,7 @@ private loginBuyer() {
       if (res.roles?.length) {
         let role = res.roles[0];
         if (role.startsWith('ROLE_')) role = role.substring(5);
-        this.auth.setRole(role); // BUYER
+        this.auth.setRole(role);
       }
 
       if (res.userId) {
@@ -109,12 +154,12 @@ private loginBuyer() {
         this.auth.setBuyerName(res.userName || '');
       }
 
+      if (res.accessToken) {
+        this.auth.setToken(res.accessToken);
+      }
+
       console.log('Saved role:', this.auth.getRole());
-
-    this.router.navigateByUrl('/buyer').then(result => {
-  console.log('Navigation result:', result);
-});
-
+      this.redirectByRole();
     },
     error: () => alert('❌ Invalid buyer credentials')
   });
@@ -135,7 +180,7 @@ private loginSeller() {
       if (res.roles?.length) {
         let role = res.roles[0];
         if (role.startsWith('ROLE_')) role = role.substring(5);
-        this.auth.setRole(role); // SELLER
+        this.auth.setRole(role);
       }
 
       // ✅ SAVE SELLER ID
@@ -144,66 +189,16 @@ private loginSeller() {
         this.auth.setSellerName(res.userName || '');
       }
 
-      // Check onboarding status
-      const sellerId = this.auth.getSellerId();
-      if (sellerId) {
-        this.onboardingService.getOnboardingStatus(sellerId).subscribe({
-          next: (status: any) => {
-            if (status.currentStep && status.currentStep <= 4) {
-              // Onboarding incomplete — redirect to current step
-              const stepMap: { [key: number]: string } = {
-                1: 'identity',
-                2: 'verification',
-                3: 'farm',
-                4: 'products'
-              };
-              const route = stepMap[status.currentStep] || 'identity';
-              this.router.navigate([`/onboarding/${route}`]);
-            } else {
-              // Onboarding complete — go to dashboard
-              this.router.navigateByUrl('/seller/dashboard');
-            }
-          },
-          error: () => {
-            // Fallback to dashboard
-            this.router.navigateByUrl('/seller/dashboard');
-          }
-        });
-      } else {
-        this.router.navigateByUrl('/seller/dashboard');
+      if (res.accessToken) {
+        this.auth.setToken(res.accessToken);
       }
+
+      console.log('Saved role:', this.auth.getRole());
+      this.redirectByRole();
     },
     error: () => alert('❌ Invalid seller credentials')
   });
 }
-
-
-  // SELLER LOGIN
-  // private loginSeller() {
-  //   this.loginErrors = {};
-
-  //   if (!this.phone) this.loginErrors.phone = 'Phone required';
-  //   if (!this.otp) this.loginErrors.otp = 'OTP required';
-  //   if (Object.keys(this.loginErrors).length) return;
-
-  //   this.auth.login(this.phone, this.otp, 'SELLER').subscribe({
-  //     next: (res: any) => {
-  //       alert('✅ Seller login successful');
-
-  //       // ✅ SAVE ROLE
-  //       if (res.roles?.length) {
-  //         this.auth.setRole(res.roles[0]);
-  //       }
-
-  //       this.router.navigate(['/seller']);
-  //     },
-  //     error: () => alert('❌ Invalid seller credentials')
-  //   });
-  // }
-
-
-  // SELLER LOGIN (username + password)
-
 
 
   // ADMIN LOGIN
@@ -216,8 +211,6 @@ private loginSeller() {
 
     this.auth.login(this.adminUsername, this.adminPassword, 'ADMIN').subscribe({
       next: (res: any) => {
-        alert('✅ Admin login successful');
-
         // ✅ SAVE ROLE
         if (res.roles?.length) {
           let role = res.roles[0];
@@ -225,7 +218,16 @@ private loginSeller() {
           this.auth.setRole(role);
         }
 
-        this.router.navigate(['/admin']);
+        if (res.userName) {
+          localStorage.setItem('adminName', res.userName);
+        }
+
+        if (res.accessToken) {
+          this.auth.setToken(res.accessToken);
+        }
+
+        console.log('Saved role:', this.auth.getRole());
+        this.redirectByRole();
       },
       error: () => alert('❌ Invalid admin credentials')
     });

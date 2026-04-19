@@ -18,6 +18,12 @@ canActivate(route: ActivatedRouteSnapshot): boolean {
   console.log('Expected role:', expectedRole);
   console.log('Stored role:', storedRole);
 
+  // Admin route accepts ADMIN, SUPER_ADMIN, and OPS roles
+  if (expectedRole === 'ADMIN' && (storedRole === 'ADMIN' || storedRole === 'SUPER_ADMIN' || storedRole === 'OPS')) {
+    console.log('✅ Admin role matched – access granted');
+    return true;
+  }
+
   if (storedRole === expectedRole) {
     console.log('✅ Role matched – access granted');
     return true;
