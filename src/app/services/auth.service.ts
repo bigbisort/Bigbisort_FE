@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 import { environment } from 'src/environments/environment';
 
 @Injectable({
@@ -9,8 +9,13 @@ import { environment } from 'src/environments/environment';
 export class AuthService {
 
   private apiUrl = environment.apiBaseUrl;
+  public tokenExpired$ = new Subject<boolean>();
 
   constructor(private http: HttpClient) {}
+
+  notifyTokenExpired() {
+    this.tokenExpired$.next(true);
+  }
 
   /**
    * Buyer Registration

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AdminSellerListDto, AdminSellerDetailDto, AdminSellerManagementService } from 'src/app/services/admin-seller-management.service';
 
 @Component({
@@ -14,11 +14,22 @@ export class AdminSellerManagementComponent implements OnInit {
   totalSellers = 0;
   
   // Filters and Pagination
-  activeTab = 'All Sellers';
-  tabs = ['All Sellers', 'Verified', 'Pending', 'Rejected', 'Suspended'];
+  selectedStatus = '';
   searchQuery = '';
-  selectedCountry = 'All Countries';
-  countries = ['All Countries', 'India', 'USA', 'UK', 'Australia'];
+  
+  statusOptions = [
+    { value: '', label: 'All Sellers' },
+    { value: 'PENDING_ONBOARDING', label: 'Pending Onboarding' },
+    { value: 'PENDING', label: 'Pending' },
+    { value: 'IN_REVIEW', label: 'In-Review' },
+    { value: 'ONBOARDING_COMPLETE', label: 'Onboarding Complete' },
+    { value: 'ACTIVE', label: 'Active' },
+    { value: 'VERIFIED', label: 'Verified' },
+    { value: 'SUSPENDED', label: 'Suspended' },
+    { value: 'REJECTED', label: 'Rejected' },
+    { value: 'APPROVED', label: 'Approved' },
+    { value: 'COMPLIANCE_ISSUE', label: 'Compliance Issue' }
+  ];
   
   pageSize = 10;
   currentPage = 0;
@@ -35,21 +46,29 @@ export class AdminSellerManagementComponent implements OnInit {
     return this.selectedSellerIds.size > 0;
   }
   
+  // Action Menu State
+  activeMenuId: string | null = null;
+  
   // Editing Notes
   isEditingNotes = false;
   noteValue = '';
 
   constructor(private sellerService: AdminSellerManagementService) {}
 
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event): void {
+    const target = event.target as HTMLElement;
+    if (!target.closest('.action-menu-container')) {
+      this.activeMenuId = null;
+    }
+  }
+
   ngOnInit(): void {
     this.loadSellers();
   }
 
   loadSellers(): void {
-    const status = this.activeTab !== 'All Sellers' ? this.activeTab : '';
-    const country = this.selectedCountry !== 'All Countries' ? this.selectedCountry : '';
-    
-    this.sellerService.getSellers(status, country, this.searchQuery, this.currentPage, this.pageSize).subscribe({
+    this.sellerService.getSellers(this.selectedStatus, this.searchQuery, this.currentPage, this.pageSize).subscribe({
       next: (res) => {
         this.sellers = res.content;
         this.totalSellers = res.totalElements;
@@ -63,8 +82,7 @@ export class AdminSellerManagementComponent implements OnInit {
   }
 
   // ==== FILTERS ====
-  setTab(tab: string) {
-    this.activeTab = tab;
+  onStatusChange() {
     this.currentPage = 0;
     this.loadSellers();
   }
@@ -74,11 +92,7 @@ export class AdminSellerManagementComponent implements OnInit {
     this.loadSellers();
   }
 
-  onChangeCountry(event: Event) {
-    this.selectedCountry = (event.target as HTMLSelectElement).value;
-    this.currentPage = 0;
-    this.loadSellers();
-  }
+
 
   onPageSizeChange(size: number) {
     this.pageSize = size;
@@ -142,6 +156,32 @@ export class AdminSellerManagementComponent implements OnInit {
     if (!status) return '';
     if (status === 'COMPLIANCE_ISSUE') return 'Compliance Issue';
     return status.charAt(0).toUpperCase() + status.slice(1).toLowerCase();
+  }
+
+  // ==== ROW ACTION MENU ====
+  toggleActionMenu(id: string, event: Event) {
+    event.stopPropagation();
+    this.activeMenuId = this.activeMenuId === id ? null : id;
+  }
+
+  viewSeller(id: string, event: Event) {
+    event.stopPropagation();
+    this.activeMenuId = null;
+    this.openSellerDetails(id);
+  }
+
+  editSeller(id: string, event: Event) {
+    event.stopPropagation();
+    this.activeMenuId = null;
+    alert('Edit seller functionality not fully implemented yet.');
+  }
+
+  deleteSeller(id: string, event: Event) {
+    event.stopPropagation();
+    this.activeMenuId = null;
+    if (confirm('Are you sure you want to delete this seller?')) {
+      alert('Delete seller functionality not fully implemented yet.');
+    }
   }
 
   // ==== ACTIONS ====

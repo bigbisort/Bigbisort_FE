@@ -16,3 +16,19 @@
 
 <router-outlet></router-outlet>
 <app-footer *ngIf="!isDashboardRoute()"></app-footer>
+
+<!-- Token Expired Modal -->
+<div class="session-modal-overlay" *ngIf="showTokenExpiredModal">
+  <div class="session-modal">
+    <div class="modal-icon">
+      <i class="bi bi-exclamation-triangle-fill text-warning"></i>
+    </div>
+    <div class="modal-content-text">
+      <h3>Session Expired</h3>
+      <p>Token expired, please login again</p>
+    </div>
+    <div class="modal-footer-actions">
+      <button class="btn-ok" (click)="handleTokenExpiredOk()">OK</button>
+    </div>
+  </div>
+</div>

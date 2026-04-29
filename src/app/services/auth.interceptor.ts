@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { HttpEvent, HttpHandler, HttpInterceptor, HttpRequest, HttpErrorResponse } from '@angular/common/http';
+import { Observable, throwError } from 'rxjs';
+import { catchError } from 'rxjs/operators';
 import { AuthService } from './auth.service';
 
 @Injectable()
@@ -13,16 +14,25 @@ export class AuthInterceptor implements HttpInterceptor {
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
     const token = this.authService.getToken();
+    let requestToForward = req;
 
     if (token) {
-      // Clone the request and attach the Authorization header if token exists
-      const clonedReq = req.clone({
+      requestToForward = req.clone({
         headers: req.headers.set('Authorization', `Bearer ${token}`)
       });
-      return next.handle(clonedReq);
     }
 
-    // No token, proceed without it
-    return next.handle(req);
+    return next.handle(requestToForward).pipe(
+      catchError((error: HttpErrorResponse) => {
+        if (error.status === 401 && error.error) {
+          const isTokenExpired = error.error.error === 'Token expired' || 
+                                 (error.error.message && error.error.message.includes('Token expired'));
+          if (isTokenExpired) {
+            this.authService.notifyTokenExpired();
+          }
+        }
+        return throwError(() => error);
+      })
+    );
   }
 }

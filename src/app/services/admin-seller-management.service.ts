@@ -35,7 +35,7 @@ export class AdminSellerManagementService {
 
   constructor(private http: HttpClient) {}
 
-  getSellers(status?: string, country?: string, query?: string, page: number = 0, size: number = 10): Observable<any> {
+  getSellers(status?: string, query?: string, page: number = 0, size: number = 10): Observable<any> {
     let params = new HttpParams()
       .set('page', page.toString())
       .set('size', size.toString());
@@ -44,7 +44,6 @@ export class AdminSellerManagementService {
       let mappedStatus = status.toUpperCase().replace(' ', '_');
       params = params.set('status', mappedStatus);
     }
-    if (country) params = params.set('country', country);
     if (query) params = params.set('q', query);
 
     return this.http.get<any>(this.apiUrl, { params });

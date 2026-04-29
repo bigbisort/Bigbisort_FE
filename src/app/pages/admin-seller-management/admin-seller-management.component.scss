@@ -32,49 +32,37 @@ $cream-bg: #fdfaf3;
   margin-bottom: 20px;
 }
 
-.tabs {
+.filter-status-dropdown {
   display: flex;
-  gap: 10px;
-  background: transparent;
+  align-items: center;
 }
 
-.tab-btn {
+.status-select {
   background: $white;
   border: 1px solid $border;
-  padding: 8px 16px;
+  padding: 8px 36px 8px 16px;
   border-radius: 8px;
   font-size: 13px;
   font-weight: 500;
-  color: $gray;
+  color: $dark-green;
   cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%232a4732%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+  background-repeat: no-repeat, repeat;
+  background-position: right .7em top 50%, 0 0;
+  background-size: .65em auto, 100%;
   transition: all 0.2s;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-
-  &.active {
-    background: $dark-green;
-    color: $white;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+  
+  &:hover {
     border-color: $dark-green;
   }
   
-  &:hover:not(.active) {
-    background: $gray-bg;
+  &:focus {
+    outline: none;
+    border-color: $dark-green;
+    box-shadow: 0 0 0 3px rgba($dark-green, 0.1);
   }
-}
-
-.badge-count {
-  background: rgba($amber, 0.2);
-  color: darken($amber, 15%);
-  padding: 2px 6px;
-  border-radius: 10px;
-  font-size: 11px;
-  font-weight: 700;
-}
-
-.tab-btn.active .badge-count {
-  background: rgba(255,255,255,0.2);
-  color: $white;
 }
 
 .actions-right {
@@ -115,7 +103,7 @@ $cream-bg: #fdfaf3;
   background: $white;
   border: 1px solid $border;
   border-radius: 12px;
-  overflow: hidden;
+  // Removed overflow: hidden so dropdown menus don't get cut off
 }
 
 .table-header-controls {
@@ -124,6 +112,7 @@ $cream-bg: #fdfaf3;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  border-radius: 11px 11px 0 0;
   
   .table-title {
     color: $white;
@@ -170,7 +159,6 @@ $cream-bg: #fdfaf3;
   }
 
   tbody tr {
-    cursor: pointer;
     transition: background 0.1s;
     
     &:hover {
@@ -188,6 +176,15 @@ $cream-bg: #fdfaf3;
   color: $text-main;
   font-size: 14px;
   margin-bottom: 2px;
+
+  &.clickable {
+    cursor: pointer;
+    transition: color 0.1s;
+    &:hover {
+      color: $dark-green;
+      text-decoration: underline;
+    }
+  }
 }
 
 .seller-id-status {
@@ -261,6 +258,82 @@ $cream-bg: #fdfaf3;
   &:hover {
     color: $dark-green;
   }
+}
+
+// Action Menu Dropdown
+.action-cell {
+  position: relative;
+}
+
+.action-menu-container {
+  position: relative;
+  display: inline-block;
+}
+
+.action-dropdown {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: $white;
+  border: 1px solid $border;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  min-width: 160px;
+  z-index: 100;
+  padding: 8px 0;
+  margin-top: 4px;
+  animation: fadeIn 0.2s ease-in-out;
+
+  .action-item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 10px 16px;
+    background: none;
+    border: none;
+    font-size: 13px;
+    color: $text-main;
+    cursor: pointer;
+    text-align: left;
+    transition: background 0.1s;
+    
+    i {
+      margin-right: 10px;
+      font-size: 15px;
+      color: $gray;
+    }
+
+    &:hover {
+      background: $gray-bg;
+      color: $dark-green;
+      
+      i {
+        color: $dark-green;
+      }
+    }
+    
+    &.text-danger {
+      color: $red;
+      i { color: $red; }
+      
+      &:hover {
+        background: $red-bg;
+        color: darken($red, 10%);
+        i { color: darken($red, 10%); }
+      }
+    }
+  }
+
+  .action-divider {
+    height: 1px;
+    background: $border;
+    margin: 4px 0;
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 // ═══════════════════════════════════════════
