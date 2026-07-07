@@ -11,11 +11,17 @@
 
     <div class="header-right">
       <i class="bi bi-bell-fill mx-3 text-warning"></i>
-      <span class="user-greeting">Hello, Fresh Farm!</span>
-      <div class="user-avatar">
-        <i class="bi bi-person-fill"></i>
+      <span class="user-greeting">Hello, {{ sellerName }}!</span>
+      <div class="user-menu-wrapper">
+        <div class="user-avatar" (click)="toggleUserMenu()">
+          <i class="bi bi-person-fill"></i>
+        </div>
+        <div class="user-dropdown" *ngIf="showUserMenu">
+          <button class="logout-option" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </div>
       </div>
-      <i class="bi bi-three-dots ms-3"></i>
     </div>
   </header>
 

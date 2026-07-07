@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class WatchListService {
-  private baseUrl = 'http://localhost:8081/bigbisort-imp-exp/watch-list';
+  private baseUrl = `${environment.apiBaseUrl}/watch-list`;
 
   constructor(private http: HttpClient) {}
 
@@ -19,5 +20,13 @@ export class WatchListService {
   getWatchList(buyerId: string): Observable<any> {
     const payload = { buyerId };
     return this.http.post(`${this.baseUrl}/filter`, payload);
+  }
+
+  removeFromWatchList(buyerId: string, productId: string): Observable<any> {
+    return this.http.delete(`${this.baseUrl}/remove`, { params: { buyerId, productId } });
+  }
+
+  getSavedProductIds(buyerId: string): Observable<string[]> {
+    return this.http.get<string[]>(`${this.baseUrl}/ids`, { params: { buyerId } });
   }
 }

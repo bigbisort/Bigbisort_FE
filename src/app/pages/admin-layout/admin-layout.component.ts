@@ -26,6 +26,7 @@ export class AdminLayoutComponent {
 
   notificationCount = 5;
   searchQuery = '';
+  showUserMenu = false;
 
   constructor(
     private auth: AuthService,
@@ -54,6 +55,10 @@ export class AdminLayoutComponent {
 
   onSearch(): void {
     console.log('🔍 Search:', this.searchQuery);
+  }
+
+  toggleUserMenu(): void {
+    this.showUserMenu = !this.showUserMenu;
   }
 
   logout(): void {

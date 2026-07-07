@@ -149,16 +149,17 @@ private loginBuyer() {
         this.auth.setRole(role);
       }
 
-      if (res.userId) {
-        this.auth.setBuyerId(res.userId);
+      if (res.buyerId) {
+        this.auth.setBuyerId(res.buyerId);
         this.auth.setBuyerName(res.userName || '');
+        this.auth.setBuyerCountry(res.buyerCountry || '');
+        this.auth.setBuyerCompany(res.buyerCompany || '');
       }
 
       if (res.accessToken) {
         this.auth.setToken(res.accessToken);
       }
 
-      console.log('Saved role:', this.auth.getRole());
       this.redirectByRole();
     },
     error: () => alert('❌ Invalid buyer credentials')

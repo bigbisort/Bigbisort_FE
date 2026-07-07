@@ -15,6 +15,7 @@ export class SellerDashboardComponent implements OnInit {
   summary: any = null;
   products: any[] = [];
   sellerId = '';
+  sellerName = '';
 
   constructor(
     private sellerService: SellerService,
@@ -25,6 +26,7 @@ export class SellerDashboardComponent implements OnInit {
 
   ngOnInit(): void {
     this.sellerId = this.authService.getSellerId() || '';
+    this.sellerName = this.authService.getSellerName() || '';
     if (this.sellerId) {
       this.sellerService.getDashboardSummary(this.sellerId).subscribe({
         next: (data) => {

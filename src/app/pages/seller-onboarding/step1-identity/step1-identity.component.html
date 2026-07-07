@@ -87,6 +87,18 @@
         </div>
       </div>
 
+      <!-- Username Field (only for new registration) -->
+      <div *ngIf="!isExistingSeller" class="form-row" style="margin-top: 20px;">
+        <div class="form-group">
+          <label>Username <span class="required">*</span></label>
+          <div class="input-with-icon">
+            <span class="icon">🆔</span>
+            <input type="text" [(ngModel)]="username" placeholder="Choose a username" [class.error]="errors.username" />
+          </div>
+          <div *ngIf="errors.username" class="error-msg">{{ errors.username }}</div>
+        </div>
+      </div>
+
       <!-- Password Fields (only for new registration) -->
       <div *ngIf="!isExistingSeller" class="form-row" style="margin-top: 20px;">
         <div class="form-group">
@@ -227,6 +239,7 @@
             <span *ngIf="!fullName">Full Name</span>
             <span *ngIf="!email || !isValidEmail(email)">Valid Email</span>
             <span *ngIf="!mobileVerified">Mobile Verification</span>
+            <span *ngIf="!isExistingSeller && !username">Username</span>
             <span *ngIf="!isExistingSeller && !password">Password</span>
             <span *ngIf="!isExistingSeller && password && !isStrongPassword(password)">Stronger Password</span>
             <span *ngIf="!isExistingSeller && password && confirmPassword && password !== confirmPassword">Matching Passwords</span>

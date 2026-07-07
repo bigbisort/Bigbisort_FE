@@ -6,6 +6,7 @@ import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.componen
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { AdminSellerManagementComponent } from './pages/admin-seller-management/admin-seller-management.component';
 import { BuyerDashboardComponent } from './pages/buyer-dashboard/buyer-dashboard.component';
+import { BuyerLayoutComponent } from './pages/buyer-layout/buyer-layout.component';
 import { SellerDashboardComponent } from './pages/seller-dashboard/seller-dashboard.component';
 import { SellerLayoutComponent } from './pages/seller-layout/seller-layout.component';
 import { RoleGuard } from './guards/role.guard';
@@ -18,7 +19,6 @@ import { HomeDashboardComponent } from './home-dashboard/home-dashboard.componen
 import { CategoryComponent } from './home-dashboard/category/category.component';
 import { NewArrivalsComponent } from './pages/buyer-dashboard/new-arrivals/new-arrivals.component';
 import { WatchListComponent } from './pages/buyer-dashboard/watch-list/watch-list.component';
-import { BuyersproductsComponent } from './pages/buyer-dashboard/buyersproducts/buyersproducts.component';
 import { PrdlandpgComponent } from './home-dashboard/prdlandpg/prdlandpg.component';
 import { AppleComponent } from './home-dashboard/30_Products/apple/apple.component';
 import { AvocadoComponent } from './home-dashboard/30_Products/avocado/avocado.component';
@@ -119,9 +119,16 @@ const routes: Routes = [
 
  {
   path: 'buyer',
-  component: BuyerDashboardComponent,
+  component: BuyerLayoutComponent,
   canActivate: [RoleGuard],
-  data: { expectedRole: 'BUYER' }
+  data: { expectedRole: 'BUYER' },
+  children: [
+    { path: '', component: BuyerDashboardComponent },
+    {
+      path: 'explore',
+      loadComponent: () => import('./pages/buyer-dashboard/explore-products/explore-products.component').then(m => m.ExploreProductsComponent)
+    },
+  ]
 },
 {
   path: 'buyer/orders',
@@ -141,13 +148,6 @@ const routes: Routes = [
   canActivate: [RoleGuard],
   data: { expectedRole: 'BUYER' }
 },
-{
-  path: 'buyer/categories',
-  component: BuyersproductsComponent,
-  canActivate: [RoleGuard],
-  data: { expectedRole: 'BUYER' }
-},
-
 ];
 
 @NgModule({

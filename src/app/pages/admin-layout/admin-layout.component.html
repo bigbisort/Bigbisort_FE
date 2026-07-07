@@ -56,8 +56,18 @@
           <i class="bi bi-bell-fill"></i>
           <span class="notification-badge" *ngIf="notificationCount > 0">{{ notificationCount }}</span>
         </div>
-        <div class="avatar-menu" (click)="logout()">
-          <span>{{ adminName.charAt(0).toUpperCase() }}</span>
+        <div class="user-menu-wrapper">
+          <div class="user-trigger" (click)="toggleUserMenu()">
+            <span class="user-greeting">{{ adminName }}</span>
+            <div class="avatar-menu">
+              <span>{{ adminName.charAt(0).toUpperCase() }}</span>
+            </div>
+          </div>
+          <div class="user-dropdown" *ngIf="showUserMenu">
+            <button class="logout-option" (click)="logout()">
+              <i class="bi bi-box-arrow-right"></i> Logout
+            </button>
+          </div>
         </div>
       </div>
     </header>

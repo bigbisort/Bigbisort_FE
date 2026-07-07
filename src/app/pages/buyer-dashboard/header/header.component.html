@@ -12,7 +12,14 @@
     <!-- Right: User -->
     <div class="user-area">
       <span>{{ buyerName }}</span>
-      <img src="https://www.svgrepo.com/show/506800/avatar.svg" alt="User" />
+      <div class="user-menu-wrapper">
+        <img class="user-avatar" src="https://www.svgrepo.com/show/506800/avatar.svg" alt="User" (click)="toggleUserMenu()" />
+        <div class="user-dropdown" *ngIf="showUserMenu">
+          <button class="logout-option" (click)="logout()">
+            <i class="bi bi-box-arrow-right"></i> Logout
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 </div>

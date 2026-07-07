@@ -115,6 +115,10 @@ export class AuthService {
     localStorage.setItem('sellerName', name);
   }
 
+  getSellerName(): string | null {
+    return localStorage.getItem('sellerName');
+  }
+
   setSellerEmail(email: string) {
     localStorage.setItem('sellerEmail', email);
   }
@@ -140,6 +144,22 @@ export class AuthService {
     return sessionStorage.getItem('buyerName');
   }
 
+  setBuyerCountry(country: string) {
+    sessionStorage.setItem('buyerCountry', country);
+  }
+
+  getBuyerCountry(): string | null {
+    return sessionStorage.getItem('buyerCountry');
+  }
+
+  setBuyerCompany(company: string) {
+    sessionStorage.setItem('buyerCompany', company);
+  }
+
+  getBuyerCompany(): string | null {
+    return sessionStorage.getItem('buyerCompany');
+  }
+
   // LOGOUT
   logout() {
     localStorage.removeItem('accessToken');
@@ -151,5 +171,7 @@ export class AuthService {
     localStorage.removeItem('sellerPhone');
     sessionStorage.removeItem('buyerId');
     sessionStorage.removeItem('buyerName');
+    sessionStorage.removeItem('buyerCountry');
+    sessionStorage.removeItem('buyerCompany');
   }
 }

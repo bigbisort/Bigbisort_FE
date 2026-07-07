@@ -21,6 +21,7 @@ export class Step1IdentityComponent implements OnInit {
 
   // Form fields
   fullName = '';
+  username = '';
   email = '';
   mobile = '';
   password = '';
@@ -255,9 +256,10 @@ export class Step1IdentityComponent implements OnInit {
            !!this.state && !!this.district && !!this.village && !!this.pincode &&
            !this.isSubmitting;
 
-    // New seller also needs password
+    // New seller also needs username and password
     if (!this.isExistingSeller) {
-      return base && this.isStrongPassword(this.password) && this.password === this.confirmPassword;
+      return base && !!this.username &&
+             this.isStrongPassword(this.password) && this.password === this.confirmPassword;
     }
     return base;
   }
@@ -275,8 +277,9 @@ export class Step1IdentityComponent implements OnInit {
     if (!this.pincode) this.errors.pincode = 'Pincode is required.';
     else if (this.pincode.length !== 6) this.errors.pincode = 'Please enter a valid 6-digit pincode.';
 
-    // Password validation for new sellers
+    // Username & password validation for new sellers
     if (!this.isExistingSeller) {
+      if (!this.username) this.errors.username = 'Username is required.';
       if (!this.password) this.errors.password = 'Password is required.';
       else if (!this.isStrongPassword(this.password)) this.errors.password = 'Min 8 chars with 1 uppercase, 1 number, 1 special character.';
       if (!this.confirmPassword) this.errors.confirmPassword = 'Please confirm your password.';
@@ -303,7 +306,7 @@ export class Step1IdentityComponent implements OnInit {
   private createSellerAccount() {
     const signupData = {
       name: this.fullName.trim(),
-      userName: this.email, // Use email as username
+      userName: this.username.trim(),
       email: this.email,
       phone: this.mobile,
       password: this.password,
@@ -339,7 +342,7 @@ export class Step1IdentityComponent implements OnInit {
         } else if (msg.toLowerCase().includes('email')) {
           this.errors.email = 'This email is already registered.';
         } else if (msg.toLowerCase().includes('username') || msg.toLowerCase().includes('user name')) {
-          this.errors.email = 'This email is already registered.';
+          this.errors.username = 'This username is already taken.';
         } else {
           this.errors.general = msg || 'Registration failed. Please try again.';
         }
