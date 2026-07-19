@@ -128,25 +128,10 @@ const routes: Routes = [
       path: 'explore',
       loadComponent: () => import('./pages/buyer-dashboard/explore-products/explore-products.component').then(m => m.ExploreProductsComponent)
     },
+    { path: 'orders', component: BuyerOrderComponent },
+    { path: 'newarr', component: NewArrivalsComponent },
+    { path: 'WL', component: WatchListComponent },
   ]
-},
-{
-  path: 'buyer/orders',
-  component: BuyerOrderComponent,
-  canActivate: [RoleGuard],
-  data: { expectedRole: 'BUYER' }
-},
-{
-  path: 'buyer/newarr',
-  component: NewArrivalsComponent,
-  canActivate: [RoleGuard],
-  data: { expectedRole: 'BUYER' }
-},
-{
-  path: 'buyer/WL',
-  component: WatchListComponent,
-  canActivate: [RoleGuard],
-  data: { expectedRole: 'BUYER' }
 },
 ];
 
