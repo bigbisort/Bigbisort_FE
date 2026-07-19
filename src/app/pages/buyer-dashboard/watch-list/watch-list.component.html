@@ -83,7 +83,7 @@
               (click)="toggleCompare(item.productResponseBeans.productId)">
               ⚖
             </button>
-            <button class="btn-quote" (click)="requestQuoteForAll()">Request Quote</button>
+            <button class="btn-quote" (click)="requestQuote(item)">Request Quote</button>
             <button
               *ngIf="!isRecentlyViewedTab"
               class="btn-remove-icon"

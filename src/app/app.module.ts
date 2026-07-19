@@ -45,6 +45,8 @@ import { StatusBadgeComponent } from './shared/components/status-badge/status-ba
 import { PaginationComponent } from './shared/components/pagination/pagination.component';
 import { OrderRowComponent } from './pages/buyer-dashboard/buyer-order/order-row/order-row.component';
 import { OrderDetailsPanelComponent } from './pages/buyer-dashboard/buyer-order/order-details-panel/order-details-panel.component';
+import { MessagesComponent } from './pages/buyer-dashboard/messages/messages.component';
+import { AdminBuyerInteractionsComponent } from './pages/admin-buyer-interactions/admin-buyer-interactions.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -85,7 +87,9 @@ import { OrderDetailsPanelComponent } from './pages/buyer-dashboard/buyer-order/
         StatusBadgeComponent,
         PaginationComponent,
         OrderRowComponent,
-        OrderDetailsPanelComponent
+        OrderDetailsPanelComponent,
+        MessagesComponent,
+        AdminBuyerInteractionsComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

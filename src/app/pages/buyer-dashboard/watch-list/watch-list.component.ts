@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { forkJoin, of } from 'rxjs';
 import { WatchListService } from 'src/app/pages/buyer-dashboard/service/watch-list.service';
 import { ProductViewService } from 'src/app/pages/buyer-dashboard/service/product-view.service';
+import { MessagingService } from 'src/app/services/messaging.service';
 import { AuthService } from 'src/app/services/auth.service';
 import { WatchListItem, WatchProduct } from './watch-list.model';
 import { moqLabel, minPrice, priceRangeLabel } from './watchlist-display.util';
@@ -42,6 +43,7 @@ export class WatchListComponent implements OnInit {
   constructor(
     private watchListService: WatchListService,
     private productViewService: ProductViewService,
+    private messagingService: MessagingService,
     private authService: AuthService
   ) {}
 
@@ -293,8 +295,27 @@ export class WatchListComponent implements OnInit {
     });
   }
 
+  requestQuote(item: WatchListItem): void {
+    if (!this.buyerId) return;
+    const product = item.productResponseBeans;
+    this.messagingService
+      .requestQuote(this.buyerId, [{ productId: product.productId, productName: product.productName }])
+      .subscribe({
+        next: () => alert(`Quote request sent for ${product.productName}. You can track replies in Messages.`),
+        error: (err) => console.error('Error sending quote request:', err),
+      });
+  }
+
   requestQuoteForAll(): void {
-    // TODO(backend): no request-for-quote endpoint exists yet for buyer product enquiries.
+    if (!this.buyerId || this.allItems.length === 0) return;
+    const products = this.allItems.map((i) => ({
+      productId: i.productResponseBeans.productId,
+      productName: i.productResponseBeans.productName,
+    }));
+    this.messagingService.requestQuote(this.buyerId, products).subscribe({
+      next: () => alert(`Quote request sent for ${products.length} product(s). You can track replies in Messages.`),
+      error: (err) => console.error('Error sending bulk quote request:', err),
+    });
   }
 
   contactSupport(): void {
