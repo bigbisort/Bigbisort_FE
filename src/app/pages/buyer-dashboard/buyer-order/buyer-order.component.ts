@@ -1,95 +1,116 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { BuyerOrderService } from '../service/buyer-order.service';
 import { AuthService } from 'src/app/services/auth.service';
+import { BuyerOrder, UiOrderStatus } from './buyer-order.model';
+import { toUiStatus } from './status-mapping.util';
+import { resolveAmount } from './order-mock.util';
+
+type TabValue = 'ALL' | UiOrderStatus;
+
+interface Tab {
+  label: string;
+  value: TabValue;
+}
+
+const PAGE_SIZE = 8;
 
 @Component({
-    selector: 'app-buyer-order',
-    templateUrl: './buyer-order.component.html',
-    styleUrls: ['./buyer-order.component.scss'],
-    standalone: false
+  selector: 'app-buyer-order',
+  templateUrl: './buyer-order.component.html',
+  styleUrls: ['./buyer-order.component.scss'],
+  standalone: false,
 })
-export class BuyerOrderComponent {
- searchTerm: string = '';
- 
+export class BuyerOrderComponent implements OnInit {
+  tabs: Tab[] = [
+    { label: 'All Orders', value: 'ALL' },
+    { label: 'Processing', value: 'PROCESSING' },
+    { label: 'Shipped', value: 'SHIPPED' },
+    { label: 'Delivered', value: 'DELIVERED' },
+    { label: 'Cancelled', value: 'CANCELLED' },
+  ];
 
-orderStatusCounts = {
-  DELIVERED: 0,
-  RETURNED: 0,
-  CANCELLED: 0,
-  IN_TRANSIT: 0
-};
-totalOrders: number = 0;
+  activeTab: TabValue = 'ALL';
+  allOrders: BuyerOrder[] = [];
+  selectedOrder: BuyerOrder | null = null;
+  currentPage = 1;
+  loading = false;
 
-
-  buyerOrderList: any[] = [];
-
-  constructor(private buyerOrderService: BuyerOrderService,private authService: AuthService) {}
+  constructor(
+    private buyerOrderService: BuyerOrderService,
+    private authService: AuthService
+  ) {}
 
   ngOnInit(): void {
-    this.loadBuyerOrders();
-    this.loadOrderStatusCounts();
+    this.loadOrders();
   }
 
-loadBuyerOrders(): void {
-    const buyerId = this.authService.getBuyerId(); // ✅ Get from sessionStorage
-
+  loadOrders(): void {
+    const buyerId = this.authService.getBuyerId();
     if (!buyerId) {
-      console.warn('⚠️ Buyer ID not found in sessionStorage.');
+      console.warn('Buyer ID not found in sessionStorage.');
       return;
     }
 
-    const payload = { buyerId };
-
-    this.buyerOrderService.filterBuyerOrders(payload).subscribe({
+    this.loading = true;
+    this.buyerOrderService.filterBuyerOrders({ buyerId }).subscribe({
       next: (response) => {
-        this.buyerOrderList = response?._embedded?.buyerOrderResponseBeanList || [];
-        console.log('✅ Orders:', this.buyerOrderList);
+        this.allOrders = response?._embedded?.buyerOrderResponseBeanList || [];
+        this.loading = false;
       },
       error: (err) => {
-        console.error('❌ Error fetching buyer orders:', err);
-      }
+        console.error('Error fetching buyer orders:', err);
+        this.loading = false;
+      },
     });
   }
 
-
-loadOrderStatusCounts() {
-  console.log('Calling loadOrderStatusCounts()');
-
-  const buyerId = '8abd6741-00d7-499f-90e3-8b906c08916d'; // set manually here
-  console.log('buyerId from hardcoded value:', buyerId);
-
-  if (!buyerId) {
-    console.error('Buyer ID not found. Cannot fetch order status counts.');
-    return;
+  uiStatus(order: BuyerOrder): UiOrderStatus {
+    return toUiStatus(order);
   }
 
-  this.buyerOrderService.getOrderStatusCounts(buyerId).subscribe({
-    next: (res) => {
-      console.log('API success:', res);
-      this.orderStatusCounts = res.buyerOrderStatusCounts || {};
-      this.totalOrders = res.totalOrders || 0;
-    },
-    error: (err) => {
-      console.error('Error fetching order status counts:', err);
+  amountFor(order: BuyerOrder): number {
+    return resolveAmount(order);
+  }
+
+  get filteredOrders(): BuyerOrder[] {
+    if (this.activeTab === 'ALL') {
+      return this.allOrders;
     }
-  });
-}
+    return this.allOrders.filter((order) => toUiStatus(order) === this.activeTab);
+  }
 
+  get totalPages(): number {
+    return Math.max(1, Math.ceil(this.filteredOrders.length / PAGE_SIZE));
+  }
 
+  get pagedOrders(): BuyerOrder[] {
+    const start = (this.currentPage - 1) * PAGE_SIZE;
+    return this.filteredOrders.slice(start, start + PAGE_SIZE);
+  }
 
-filteredOrders(): any[] {
-  if (!this.searchTerm) return this.buyerOrderList;
+  get rangeStart(): number {
+    return this.filteredOrders.length === 0 ? 0 : (this.currentPage - 1) * PAGE_SIZE + 1;
+  }
 
-  const term = this.searchTerm.toLowerCase();
+  get rangeEnd(): number {
+    return Math.min(this.currentPage * PAGE_SIZE, this.filteredOrders.length);
+  }
 
-  return this.buyerOrderList.filter(order =>
-    order.orderId?.toLowerCase().includes(term) ||
-    order.billingCompanyName?.toLowerCase().includes(term) ||
-    order.shippingName?.toLowerCase().includes(term) ||
-    order.buyerInfoBean?.name?.toLowerCase().includes(term) ||
-    order.buyerInfoBean?.email?.toLowerCase().includes(term)
-  );
-}
-  
+  onTabChange(tab: TabValue): void {
+    this.activeTab = tab;
+    this.currentPage = 1;
+    this.selectedOrder = null;
+  }
 
+  onPageChange(page: number): void {
+    this.currentPage = page;
+  }
+
+  onRowClick(order: BuyerOrder): void {
+    this.selectedOrder = order;
+  }
+
+  onClosePanel(): void {
+    this.selectedOrder = null;
+  }
 }

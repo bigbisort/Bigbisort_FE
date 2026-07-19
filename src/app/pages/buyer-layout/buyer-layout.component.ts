@@ -1,20 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { FormsModule } from '@angular/forms';
 import { Router, RouterModule } from '@angular/router';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
   selector: 'app-buyer-layout',
   standalone: true,
-  imports: [RouterModule, CommonModule, FormsModule],
+  imports: [RouterModule, CommonModule],
   templateUrl: './buyer-layout.component.html',
   styleUrl: './buyer-layout.component.scss',
 })
 export class BuyerLayoutComponent implements OnInit {
   showUserMenu = false;
   buyerName = '';
-  searchQuery = '';
 
   notificationCount = 5;
   messageCount = 3;
@@ -37,12 +35,6 @@ export class BuyerLayoutComponent implements OnInit {
 
   toggleUserMenu(): void {
     this.showUserMenu = !this.showUserMenu;
-  }
-
-  onSearch(): void {
-    if (this.searchQuery.trim()) {
-      this.router.navigate(['/buyer/explore'], { queryParams: { search: this.searchQuery.trim() } });
-    }
   }
 
   logout(): void {

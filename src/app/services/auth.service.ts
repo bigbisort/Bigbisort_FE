@@ -102,6 +102,24 @@ export class AuthService {
     return localStorage.getItem('accessToken');
   }
 
+  // ✅ USER ID (generic account id, present for buyer/seller/admin alike)
+  setUserId(userId: string) {
+    sessionStorage.setItem('userId', userId);
+  }
+
+  getUserId(): string | null {
+    return sessionStorage.getItem('userId');
+  }
+
+  // ✅ ADMIN HELPERS
+  setAdminId(adminId: string) {
+    sessionStorage.setItem('adminId', adminId);
+  }
+
+  getAdminId(): string | null {
+    return sessionStorage.getItem('adminId');
+  }
+
   // ✅ SELLER HELPERS
   setSellerId(sellerId: string) {
     localStorage.setItem('sellerId', sellerId);
@@ -169,6 +187,8 @@ export class AuthService {
     localStorage.removeItem('sellerName');
     localStorage.removeItem('sellerEmail');
     localStorage.removeItem('sellerPhone');
+    sessionStorage.removeItem('userId');
+    sessionStorage.removeItem('adminId');
     sessionStorage.removeItem('buyerId');
     sessionStorage.removeItem('buyerName');
     sessionStorage.removeItem('buyerCountry');

@@ -149,6 +149,10 @@ private loginBuyer() {
         this.auth.setRole(role);
       }
 
+      if (res.userId) {
+        this.auth.setUserId(res.userId);
+      }
+
       if (res.buyerId) {
         this.auth.setBuyerId(res.buyerId);
         this.auth.setBuyerName(res.userName || '');
@@ -182,6 +186,10 @@ private loginSeller() {
         let role = res.roles[0];
         if (role.startsWith('ROLE_')) role = role.substring(5);
         this.auth.setRole(role);
+      }
+
+      if (res.userId) {
+        this.auth.setUserId(res.userId);
       }
 
       // ✅ SAVE SELLER ID
@@ -221,6 +229,14 @@ private loginSeller() {
 
         if (res.userName) {
           localStorage.setItem('adminName', res.userName);
+        }
+
+        if (res.userId) {
+          this.auth.setUserId(res.userId);
+        }
+
+        if (res.adminId) {
+          this.auth.setAdminId(res.adminId);
         }
 
         if (res.accessToken) {

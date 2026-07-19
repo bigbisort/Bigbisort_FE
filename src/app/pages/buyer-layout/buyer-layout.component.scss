@@ -173,34 +173,6 @@ nav {
   gap: 24px;
 }
 
-.search {
-  flex: 1;
-  max-width: 520px;
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid rgba(255, 255, 255, 0.18);
-  border-radius: 10px;
-  padding: 10px 16px;
-  color: #EDEFEA;
-  font-size: 13.5px;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-
-  span { color: #AEBBA9; }
-
-  input {
-    flex: 1;
-    background: none;
-    border: none;
-    outline: none;
-    color: #EDEFEA;
-    font-size: 13.5px;
-    font-family: 'Inter', sans-serif;
-
-    &::placeholder { color: #AEBBA9; }
-  }
-}
-
 .top-right {
   margin-left: auto;
   display: flex;

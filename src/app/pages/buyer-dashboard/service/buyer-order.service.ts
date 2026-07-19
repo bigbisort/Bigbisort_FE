@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from 'src/environments/environment';
@@ -11,8 +11,14 @@ export class BuyerOrderService {
 
   constructor(private http: HttpClient) {}
 
-  filterBuyerOrders(payload: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/filter`, payload);
+  // TODO(backend): /filter has no status query param, so tab filtering (Processing/Shipped/
+  // Delivered/Cancelled) can't happen server-side yet. We fetch one bounded batch (size=200,
+  // covering realistic buyer order history) and do filtering + pagination client-side over it.
+  // Also note: without an explicit size, Spring Data defaults to page size 20 — the previous
+  // page silently only ever showed the buyer's most recent 20 orders.
+  filterBuyerOrders(payload: any, page = 0, size = 200): Observable<any> {
+    const params = new HttpParams().set('page', page).set('size', size);
+    return this.http.post<any>(`${this.baseUrl}/filter`, payload, { params });
   }
 
   getOrderStatusCounts(buyerId: string): Observable<any> {

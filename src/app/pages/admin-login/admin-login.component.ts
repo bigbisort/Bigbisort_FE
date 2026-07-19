@@ -44,11 +44,19 @@ export class AdminLoginComponent {
         if (res.userName) {
           localStorage.setItem('adminName', res.userName);
         }
-        
+
+        if (res.userId) {
+          this.auth.setUserId(res.userId);
+        }
+
+        if (res.adminId) {
+          this.auth.setAdminId(res.adminId);
+        }
+
         if (res.accessToken) {
           this.auth.setToken(res.accessToken);
         }
-        
+
         this.router.navigateByUrl('/admin/dashboard');
       },
       error: () => alert('❌ Invalid admin credentials')

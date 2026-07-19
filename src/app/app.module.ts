@@ -41,6 +41,10 @@ import { Step2VerificationComponent } from './pages/seller-onboarding/step2-veri
 import { Step3FarmComponent } from './pages/seller-onboarding/step3-farm/step3-farm.component';
 import { Step4ProductsComponent } from './pages/seller-onboarding/step4-products/step4-products.component';
 import { SearchableDropdownComponent } from './shared/components/searchable-dropdown/searchable-dropdown.component';
+import { StatusBadgeComponent } from './shared/components/status-badge/status-badge.component';
+import { PaginationComponent } from './shared/components/pagination/pagination.component';
+import { OrderRowComponent } from './pages/buyer-dashboard/buyer-order/order-row/order-row.component';
+import { OrderDetailsPanelComponent } from './pages/buyer-dashboard/buyer-order/order-details-panel/order-details-panel.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -77,7 +81,11 @@ import { SearchableDropdownComponent } from './shared/components/searchable-drop
         Step2VerificationComponent,
         Step3FarmComponent,
         Step4ProductsComponent,
-        SearchableDropdownComponent
+        SearchableDropdownComponent,
+        StatusBadgeComponent,
+        PaginationComponent,
+        OrderRowComponent,
+        OrderDetailsPanelComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

@@ -5,6 +5,7 @@ import { ActivatedRoute } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { ProductService } from '../service/product.service';
 import { WatchListService } from '../service/watch-list.service';
+import { ProductViewService } from '../service/product-view.service';
 import { Product, ProductFilter } from '../buyersproducts/product.model';
 import { getProductDisplay, getTagLabel, getTagColor, titleCase } from '../shared/product-display.util';
 
@@ -45,6 +46,7 @@ export class ExploreProductsComponent implements OnInit {
     private authService: AuthService,
     private productService: ProductService,
     private watchListService: WatchListService,
+    private productViewService: ProductViewService,
     private route: ActivatedRoute
   ) {}
 
@@ -182,9 +184,17 @@ export class ExploreProductsComponent implements OnInit {
       next: (product) => {
         this.selectedProduct = product;
         this.activeTab = 'details';
+        this.recordProductView(productId);
       },
       error: () => (this.selectedProduct = null)
     });
+  }
+
+  private recordProductView(productId: string): void {
+    if (!this.buyerId) return;
+    // Fire-and-forget: viewing a product is tracked for the "Recently Viewed" list on the
+    // Saved/Wishlist page, but a failure here must never block viewing the product itself.
+    this.productViewService.recordView(this.buyerId, productId).subscribe({ error: () => {} });
   }
 
   closeDetails(): void {
