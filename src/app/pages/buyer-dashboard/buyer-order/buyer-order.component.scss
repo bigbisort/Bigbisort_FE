@@ -1,42 +1,104 @@
+.buyer-order-container {
+  padding: 1.25rem;
+  font-family: 'Segoe UI', sans-serif;
+}
+
 .page-header {
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+
+  .breadcrumb {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin-bottom: 0.5rem;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
 }
 
 .stats-container {
   display: flex;
+  flex-wrap: wrap;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 
   .stat-card {
+    flex: 1 1 200px;
+    min-width: 180px;
     padding: 1rem;
     border-radius: 10px;
-    flex: 1;
-    color: white;
-    font-weight: bold;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.06);
     text-align: center;
+    font-size: 1rem;
+    font-weight: 700;
+    color: #333;
+
+    strong {
+      display: block;
+      margin-top: 0.5rem;
+      font-size: 1.5rem;
+    }
 
     &.total { background-color: #d1f7d6; color: #2b7a2b; }
     &.in-transit { background-color: #dce9f9; color: #3d6fa8; }
-    &.delivered { background-color: #1c6c4d; }
+    &.delivered { background-color: #1c6c4d; color: #fff; }
     &.cancelled { background-color: #f8d3d3; color: #ab2b2b; }
   }
 }
 
+.search-bar {
+  display: flex;
+  justify-content: flex-start;
+  margin-bottom: 1.5rem;
 
+  input {
+    width: 100%;
+    max-width: 280px;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 0.875rem;
+  }
+}
+
+.table-wrapper {
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+}
 
 .order-table {
   width: 100%;
   border-collapse: collapse;
-  th, td {
-    padding: 0.75rem;
+
+  th {
+    padding: 0.75rem 1rem;
+    background-color: #f3f4f6;
     text-align: left;
-    border-bottom: 1px solid #ccc;
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+    white-space: nowrap;
   }
 
-  td img {
-    width: 30px;
-    margin-right: 10px;
-    vertical-align: middle;
+  td {
+    padding: 0.75rem 1rem;
+    text-align: left;
+    border-bottom: 1px solid #eee;
+    color: #333;
+
+    img {
+      width: 30px;
+      margin-right: 0.625rem;
+      vertical-align: middle;
+    }
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
   }
 
   .in-transit { color: #3d6fa8; }
@@ -45,94 +107,30 @@
 }
 
 .btn-view {
-  background-color: #e0f3ff;
-  border: none;
   padding: 0.5rem 1rem;
+  border: none;
+  border-radius: 6px;
+  background-color: #e0f3ff;
   cursor: pointer;
 }
 
-.stats-container {
-  display: flex;
-  justify-content: space-around;
-  margin: 20px 0;
-  gap: 16px;
-  flex-wrap: wrap;
-}
+@media (max-width: 768px) {
+  .buyer-order-container {
+    padding: 1rem;
+  }
 
-.stat-card {
-  flex: 1;
-  min-width: 180px;
-  padding: 16px;
-  text-align: center;
-  background: #f4f4f4;
-  border-radius: 10px;
-  font-size: 16px;
-  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.1);
+  .stats-container .stat-card {
+    flex: 1 1 45%;
+    min-width: 140px;
+  }
 
-  strong {
-    display: block;
-    font-size: 24px;
-    margin-top: 6px;
+  .search-bar input {
+    max-width: 100%;
   }
 }
 
-.total {
-  background-color: #ffe699;
-}
-
-.in-transit {
-  background-color: #cfe2ff;
-}
-
-.delivered {
-  background-color: #d4edda;
-}
-
-.cancelled {
-  background-color: #f8d7da;
-}
-
-
-.search-bar {
-  margin: 20px 0;
-  display: flex;
-  justify-content: flex-start;
-
-  input {
-    padding: 8px 12px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    width: 250px;
-    font-size: 14px;
-  }
-}
-
-.table-wrapper {
-  overflow-x: auto;
-  margin-bottom: 20px;
-}
-
-.order-table {
-  width: 100%;
-  border-collapse: collapse;
-  font-family: 'Segoe UI', sans-serif;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
-
-  th {
-    background-color: #f3f4f6;
-    padding: 12px;
-    text-align: left;
-    font-weight: 600;
-    border-bottom: 2px solid #ddd;
-  }
-
-  td {
-    padding: 12px;
-    border-bottom: 1px solid #eee;
-    color: #333;
-  }
-
-  tr:hover {
-    background-color: #f9f9f9;
+@media (max-width: 480px) {
+  .stats-container .stat-card {
+    flex: 1 1 100%;
   }
 }
