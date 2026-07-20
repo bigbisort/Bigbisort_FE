@@ -6,6 +6,7 @@ import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.componen
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { AdminSellerManagementComponent } from './pages/admin-seller-management/admin-seller-management.component';
 import { AdminBuyerInteractionsComponent } from './pages/admin-buyer-interactions/admin-buyer-interactions.component';
+import { AdminProductManagementComponent } from './pages/admin-product-management/admin-product-management.component';
 import { MessagesComponent } from './pages/buyer-dashboard/messages/messages.component';
 import { BuyerDashboardComponent } from './pages/buyer-dashboard/buyer-dashboard.component';
 import { BuyerLayoutComponent } from './pages/buyer-layout/buyer-layout.component';
@@ -86,6 +87,7 @@ const routes: Routes = [
       { path: '', redirectTo: 'dashboard', pathMatch: 'full' },
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'sellers', component: AdminSellerManagementComponent },
+      { path: 'products', component: AdminProductManagementComponent },
       { path: 'interactions', component: AdminBuyerInteractionsComponent },
     ]
   },

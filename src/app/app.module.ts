@@ -47,6 +47,7 @@ import { OrderRowComponent } from './pages/buyer-dashboard/buyer-order/order-row
 import { OrderDetailsPanelComponent } from './pages/buyer-dashboard/buyer-order/order-details-panel/order-details-panel.component';
 import { MessagesComponent } from './pages/buyer-dashboard/messages/messages.component';
 import { AdminBuyerInteractionsComponent } from './pages/admin-buyer-interactions/admin-buyer-interactions.component';
+import { AdminProductManagementComponent } from './pages/admin-product-management/admin-product-management.component';
 
 @NgModule({ declarations: [
         AppComponent,
@@ -89,7 +90,8 @@ import { AdminBuyerInteractionsComponent } from './pages/admin-buyer-interaction
         OrderRowComponent,
         OrderDetailsPanelComponent,
         MessagesComponent,
-        AdminBuyerInteractionsComponent
+        AdminBuyerInteractionsComponent,
+        AdminProductManagementComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
