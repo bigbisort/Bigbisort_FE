@@ -30,11 +30,44 @@ export class AdminProductManagementComponent implements OnInit {
 
   categories: string[] = [];
   private categoriesLoaded = false;
+  categoryFilter = '';
+
+  readonly rowStatusOptions: { value: string; label: string }[] = [
+    { value: 'APPROVED', label: 'Approved' },
+    { value: 'REJECTED', label: 'Rejected' },
+    { value: 'DRAFT', label: 'Draft' },
+    { value: 'PENDING_UPDATES', label: 'Pending Updates' },
+  ];
 
   constructor(private productService: AdminProductManagementService) {}
 
   ngOnInit(): void {
     this.loadProducts();
+    this.loadCategories();
+  }
+
+  private loadCategories(): void {
+    if (this.categoriesLoaded) return;
+    this.productService.getCategories().subscribe({
+      next: (categories) => {
+        this.categories = categories;
+        this.categoriesLoaded = true;
+      },
+      error: (err) => console.error('Error loading categories', err),
+    });
+  }
+
+  // Backend has no category query param on the list endpoint, so this filters the current page client-side.
+  get displayedProducts(): AdminProductListDto[] {
+    if (!this.categoryFilter) return this.products;
+    return this.products.filter((p) => p.category === this.categoryFilter);
+  }
+
+  refresh(): void {
+    this.loadCategories();
+    if (this.activeTab === 'REVIEW' || this.activeTab === 'APPROVED') {
+      this.loadProducts();
+    }
   }
 
   private statusForTab(): string | undefined {
@@ -63,14 +96,8 @@ export class AdminProductManagementComponent implements OnInit {
     this.closeDetails();
     if (tab === 'REVIEW' || tab === 'APPROVED') {
       this.loadProducts();
-    } else if (tab === 'CATEGORIES' && !this.categoriesLoaded) {
-      this.productService.getCategories().subscribe({
-        next: (categories) => {
-          this.categories = categories;
-          this.categoriesLoaded = true;
-        },
-        error: (err) => console.error('Error loading categories', err),
-      });
+    } else if (tab === 'CATEGORIES') {
+      this.loadCategories();
     }
   }
 
@@ -102,6 +129,18 @@ export class AdminProductManagementComponent implements OnInit {
 
   closeDetails(): void {
     this.selectedProduct = null;
+  }
+
+  onRowStatusChange(product: AdminProductListDto, event: Event): void {
+    const select = event.target as HTMLSelectElement;
+    const newStatus = select.value;
+    select.value = '';
+    if (!newStatus || newStatus === product.status) return;
+
+    this.productService.updateStatus(product.id, newStatus).subscribe({
+      next: () => this.loadProducts(),
+      error: (err) => console.error('Error updating status', err),
+    });
   }
 
   setDetailTab(tab: 'submission' | 'notes' | 'history'): void {

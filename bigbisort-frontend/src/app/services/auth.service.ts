@@ -47,6 +47,15 @@ export class AuthService {
     return localStorage.getItem('role');
   }
 
+  // ✅ TOKEN HANDLING
+  setAccessToken(token: string) {
+    sessionStorage.setItem('accessToken', token);
+  }
+
+  getAccessToken(): string | null {
+    return sessionStorage.getItem('accessToken');
+  }
+
   // ✅ BUYER HELPERS
   setBuyerId(buyerId: string) {
     sessionStorage.setItem('buyerId', buyerId);
@@ -64,10 +73,11 @@ export class AuthService {
     return sessionStorage.getItem('buyerName');
   }
 
-  // LOGOUT (no tokens involved)
+  // LOGOUT
   logout() {
     localStorage.removeItem('role');
     sessionStorage.removeItem('buyerId');
     sessionStorage.removeItem('buyerName');
+    sessionStorage.removeItem('accessToken');
   }
 }

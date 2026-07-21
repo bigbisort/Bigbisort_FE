@@ -23,6 +23,17 @@
   <ng-container *ngIf="activeTab === 'REVIEW' || activeTab === 'APPROVED'">
     <div class="main-row">
       <div class="list-col" [class.narrow]="selectedProduct">
+        <div class="queue-header-bar">
+          <div class="qh-left">
+            <span class="qh-title">{{ activeTab === 'REVIEW' ? 'Product Review Queue' : 'Approved Products' }} ({{ totalProducts }})</span>
+            <button class="qh-refresh" title="Refresh" (click)="refresh()"><i class="bi bi-arrow-clockwise"></i></button>
+          </div>
+          <select class="qh-category-select" [(ngModel)]="categoryFilter">
+            <option value="">All Categories</option>
+            <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+          </select>
+        </div>
+
         <div class="toolbar">
           <input
             type="text"
@@ -33,41 +44,43 @@
           <button class="btn-outline" (click)="onSearch()">Search</button>
         </div>
 
-        <div class="table-wrapper" *ngIf="products.length > 0">
+        <div class="table-wrapper" *ngIf="displayedProducts.length > 0">
           <table>
             <thead>
               <tr>
-                <th>Product / Seller</th>
+                <th>Product</th>
+                <th>Listed By</th>
                 <th>Quantity</th>
                 <th>Date Added</th>
-                <th></th>
+                <th>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr *ngFor="let p of products" (click)="openProductDetails(p.id)" [class.active]="selectedProduct?.id === p.id">
+              <tr *ngFor="let p of displayedProducts" (click)="openProductDetails(p.id)" [class.active]="selectedProduct?.id === p.id">
                 <td>
                   <div class="p-name">{{ p.productName }}</div>
-                  <div class="p-seller"><i class="bi bi-shop"></i> {{ p.sellerName }}</div>
                   <span class="tag" *ngIf="p.qualityGrade">{{ p.qualityGrade }}</span>
                   <span class="tag" [ngClass]="statusClass(p.status)">{{ statusLabel(p.status) }}</span>
                 </td>
+                <td><i class="bi bi-shop"></i> {{ p.sellerName || '—' }}</td>
                 <td>{{ p.quantitySummary }}</td>
                 <td>{{ p.createdAt | date: 'MMM d, y' }}</td>
                 <td class="cell-action">
-                  <button
-                    class="btn-quick-approve"
-                    title="Quick approve"
-                    *ngIf="p.status === 'PENDING_APPROVAL'"
-                    (click)="$event.stopPropagation()">
-                    <i class="bi bi-check2"></i>
-                  </button>
+                  <select
+                    class="status-select"
+                    title="Update status"
+                    (click)="$event.stopPropagation()"
+                    (change)="onRowStatusChange(p, $event)">
+                    <option value="" selected disabled>Set status…</option>
+                    <option *ngFor="let opt of rowStatusOptions" [value]="opt.value">{{ opt.label }}</option>
+                  </select>
                 </td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <div class="empty-state" *ngIf="products.length === 0">
+        <div class="empty-state" *ngIf="displayedProducts.length === 0">
           {{ activeTab === 'REVIEW' ? 'No products waiting for review.' : 'No approved products yet.' }}
         </div>
 
@@ -77,24 +90,6 @@
           <button [disabled]="(currentPage + 1) * pageSize >= totalProducts" (click)="goToPage(currentPage + 1)">›</button>
         </div>
 
-        <!-- Bottom summary cards (mockup 5.1.4) -->
-        <div class="summary-cards" *ngIf="!selectedProduct">
-          <div class="summary-card">
-            <div class="sc-title">Approved Products</div>
-            <div class="sc-desc">Live to buyers. Editable by admin only.</div>
-            <button class="btn-outline" (click)="setTab('APPROVED')">View All</button>
-          </div>
-          <div class="summary-card">
-            <div class="sc-title">Product Media Review</div>
-            <div class="sc-desc">Check images, videos, and flag poor quality.</div>
-            <button class="btn-outline" (click)="setTab('MEDIA')">Review Media</button>
-          </div>
-          <div class="summary-card">
-            <div class="sc-title">Product Categorization</div>
-            <div class="sc-desc">Manage categories, products, varieties, and grades.</div>
-            <button class="btn-outline" (click)="setTab('CATEGORIES')">Manage Categories</button>
-          </div>
-        </div>
       </div>
 
       <!-- Detail panel -->
@@ -150,7 +145,7 @@
         </div>
 
         <div class="detail-actions">
-          <button class="btn-approve" [disabled]="saving" (click)="approve()">Approve</button>
+          <button class="btn-approve" *ngIf="selectedProduct.status !== 'APPROVED'" [disabled]="saving" (click)="approve()">Approve</button>
           <button class="btn-changes" [disabled]="saving" (click)="requestChanges()">Request Changes</button>
           <button class="btn-reject" [disabled]="saving" (click)="reject()">Reject</button>
         </div>

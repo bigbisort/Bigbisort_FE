@@ -31,6 +31,7 @@ import { CarrotComponent } from './home-dashboard/30_Products/carrot/carrot.comp
 import { PineappleComponent } from './home-dashboard/30_Products/pineapple/pineapple.component';
 import { CoconutComponent } from './home-dashboard/30_Products/coconut/coconut.component';
 import { PepperComponent } from './home-dashboard/30_Products/pepper/pepper.component';
+import { ProductManagementComponent } from './pages/admin-dashboard/product-management/product-management.component';
 
 
 @NgModule({ declarations: [
@@ -60,6 +61,7 @@ import { PepperComponent } from './home-dashboard/30_Products/pepper/pepper.comp
         PineappleComponent,
         CoconutComponent,
         PepperComponent,
+        ProductManagementComponent,
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,

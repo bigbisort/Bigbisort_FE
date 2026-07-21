@@ -182,6 +182,11 @@ private loginSeller() {
           this.auth.setRole(res.roles[0]);
         }
 
+        // ✅ SAVE TOKEN (required for admin API calls, e.g. Product Management)
+        if (res.accessToken) {
+          this.auth.setAccessToken(res.accessToken);
+        }
+
         this.router.navigate(['/admin']);
       },
       error: () => alert('❌ Invalid admin credentials')

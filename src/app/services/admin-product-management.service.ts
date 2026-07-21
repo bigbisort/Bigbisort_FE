@@ -73,4 +73,8 @@ export class AdminProductManagementService {
   updateNotes(id: string, notes: string): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}/notes`, { notes });
   }
+
+  updateStatus(id: string, status: string): Observable<void> {
+    return this.http.patch<void>(`${this.apiUrl}/${id}/status`, { status });
+  }
 }
