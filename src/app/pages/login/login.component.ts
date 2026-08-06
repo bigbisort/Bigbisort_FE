@@ -11,7 +11,7 @@ import { OnboardingService } from 'src/app/services/onboarding.service';
 })
 export class LoginComponent {
 
-  loginType: 'buyer' | 'seller' | 'admin' = 'buyer';
+  loginType: 'buyer' | 'seller' = 'buyer';
 
   // Buyer
   username = '';
@@ -20,10 +20,6 @@ export class LoginComponent {
   // Seller
   phone = '';
   otp = '';
-
-  // Admin
-  adminUsername = '';
-  adminPassword = '';
 
   loginErrors: any = {};
 
@@ -51,7 +47,7 @@ export class LoginComponent {
     private onboardingService: OnboardingService
   ) {}
 
-  setLoginType(type: 'buyer' | 'seller' | 'admin') {
+  setLoginType(type: 'buyer' | 'seller') {
     this.loginType = type;
     this.clearFields();
   }
@@ -61,8 +57,6 @@ export class LoginComponent {
     this.password = '';
     this.phone = '';
     this.otp = '';
-    this.adminUsername = '';
-    this.adminPassword = '';
     this.loginErrors = {};
   }
 
@@ -84,7 +78,6 @@ export class LoginComponent {
   login() {
     if (this.loginType === 'buyer') this.loginBuyer();
     if (this.loginType === 'seller') this.loginSeller();
-    if (this.loginType === 'admin') this.loginAdmin();
   }
 
   /**
@@ -209,46 +202,6 @@ private loginSeller() {
   });
 }
 
-
-  // ADMIN LOGIN
-  private loginAdmin() {
-    this.loginErrors = {};
-
-    if (!this.adminUsername) this.loginErrors.adminUsername = 'Username required';
-    if (!this.adminPassword) this.loginErrors.adminPassword = 'Password required';
-    if (Object.keys(this.loginErrors).length) return;
-
-    this.auth.login(this.adminUsername, this.adminPassword, 'ADMIN').subscribe({
-      next: (res: any) => {
-        // ✅ SAVE ROLE
-        if (res.roles?.length) {
-          let role = res.roles[0];
-          if (role.startsWith('ROLE_')) role = role.substring(5);
-          this.auth.setRole(role);
-        }
-
-        if (res.userName) {
-          localStorage.setItem('adminName', res.userName);
-        }
-
-        if (res.userId) {
-          this.auth.setUserId(res.userId);
-        }
-
-        if (res.adminId) {
-          this.auth.setAdminId(res.adminId);
-        }
-
-        if (res.accessToken) {
-          this.auth.setToken(res.accessToken);
-        }
-
-        console.log('Saved role:', this.auth.getRole());
-        this.redirectByRole();
-      },
-      error: () => alert('❌ Invalid admin credentials')
-    });
-  }
 
   // REGISTER USER (Buyer or Seller)
   register() {

@@ -12,11 +12,6 @@
         <input type="radio" name="loginType" value="seller" [(ngModel)]="loginType" />
         Seller
       </label>
-      <label>
-        <input type="radio" name="loginType" value="admin" [(ngModel)]="loginType" />
-        Admin
-      </label>
-
     </div>
 
     <!-- Form inputs -->
@@ -37,12 +32,6 @@
          <div *ngIf="loginType === 'seller'">
         <input [(ngModel)]="username" placeholder="seller Uname" />
         <input [(ngModel)]="password" type="password" placeholder="Password" />
-      </div>
-
-      <!-- Admin -->
-      <div *ngIf="loginType === 'admin'">
-        <input [(ngModel)]="adminUsername" placeholder="Admin Username" />
-        <input [(ngModel)]="adminPassword" type="password" placeholder="Admin Password" />
       </div>
 
       <button (click)="login()">Login</button>
