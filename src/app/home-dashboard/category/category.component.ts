@@ -17,22 +17,21 @@ export class CategoryComponent implements OnInit {
     { name: 'Potato', image: 'assets/images/Prdimg/pot2.jpg' },
     { name: 'Carrot', image: 'assets/images/Prdimg/ca1.jpg' },
     { name: 'Onion', image: 'assets/images/Prdimg/on1.jpg' },
-    
-    
   ],
   fruits: [
-    { name: 'Apple', image: 'assets/images/items/apple.jpg' },
-    { name: 'Banana', image: 'assets/images/items/banana.jpg' },
-    { name: 'Orange', image: 'assets/images/items/orange.jpg' },
-    { name: 'Grapes', image: 'assets/images/items/grapes.jpg' }
+    { name: 'Apple', image: 'assets/images/Prdpage/Apple/apbasket.png' },
+    { name: 'Avocado', image: 'assets/images/Prdpage/Avo/avo.jpg' },
+    { name: 'Banana', image: 'assets/images/Prdpage/Banana/ba.jpg' },
+    { name: 'Pineapple', image: 'assets/images/Prdpage/Pineapple/ip.png' }
   ],
   spices: [
-    { name: 'Turmeric', image: 'assets/images/items/turmeric.jpg' },
-    { name: 'Cinnamon', image: 'assets/images/items/cinnamon.jpg' },
-    { name: 'Cloves', image: 'assets/images/items/cloves.jpg' }
+    { name: 'Black Pepper', image: 'assets/images/Prdpage/Pepper/bp.jpg' },
+    { name: 'White Pepper', image: 'assets/images/Prdpage/Pepper/wp.jpg' }
   ],
-  sweeteners: [
-    { name: 'Sugar', image: 'assets/images/items/sugar.jpg' },
+  coconut: [
+    { name: 'Coconut', image: 'assets/images/Prdpage/Coconut/co2.jpg' },
+    { name: 'Tender Coconut', image: 'assets/images/Prdpage/Coconut/c.jpg' },
+    { name: 'Dry Coconut (Copra)', image: 'assets/images/Prdpage/Coconut/cor.png' }
   ]
 };
 

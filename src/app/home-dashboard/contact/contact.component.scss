@@ -10,48 +10,6 @@
   overflow: hidden; /* Ensures globe image doesn't cause scroll issues */
 }
 
-.top-bar-placeholder {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto 30px auto; /* Center with bottom margin */
-  background-color: #fddb3a; /* Yellow background for the bar */
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional shadow */
-  color: #044d00; /* Dark green text for contrast on yellow */
-}
-
-.top-bar-placeholder .logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.top-bar-placeholder .search-box {
-  display: flex;
-  align-items: center;
-}
-
-.top-bar-placeholder .search-box input {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  border-radius: 5px;
-  margin-right: 5px;
-  font-size: 16px;
-  width: 60rem; /* Adjust as needed */
-}
-
-.top-bar-placeholder .search-box button {
-  background-color: #044d00; /* Dark green button */
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
 .hero-content {
   display: flex;
   flex-wrap: wrap; /* Allows wrapping on smaller screens */
@@ -119,12 +77,13 @@
   font-size: 20px;
 }
 
-.whatsapp-btn {
-  background-color: #25d366; /* WhatsApp green */
+.message-btn {
+  background-color: #25d366;
   color: white;
+  border: none;
 }
 
-.whatsapp-btn:hover {
+.message-btn:hover {
   background-color: #128c7e;
   transform: translateY(-2px);
 }
@@ -132,11 +91,36 @@
 .ai-chat-btn {
   background-color: #044d00; /* Dark green */
   color: white;
+  border: none;
 }
 
 .ai-chat-btn:hover {
   background-color: #002200;
   transform: translateY(-2px);
+}
+
+.ai-chat-btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.ai-chat-btn[disabled]:hover {
+  background-color: #044d00;
+  transform: none;
+}
+
+.preview-badge {
+  display: inline-block;
+  background: #fddb3a;
+  color: #044d00;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 3px 9px;
+  border-radius: 999px;
+  margin-left: 10px;
+  vertical-align: middle;
 }
 
 .enquiry-btn {
@@ -177,14 +161,6 @@
 @media (max-width: 768px) {
   .hero-section {
     padding: 15px;
-  }
-  .top-bar-placeholder {
-    flex-direction: column;
-    margin-bottom: 20px;
-    gap: 10px;
-  }
-  .top-bar-placeholder .search-box input {
-    width: 100%; /* Full width on small screens */
   }
   .hero-content {
     flex-direction: column; /* Stack text and image vertically */
@@ -388,6 +364,93 @@ $bg-partner: #cbf4c8;
 /* (Optional) Add a hover effect for better UX */
 .farmer-btn:hover {
   background-color: #3ed83e75;
+}
+
+/* --- Contact form section --- */
+.contact-form-section {
+  background-color: #044d00;
+  color: #fff;
+  padding: 70px 20px;
+
+  .form-wrapper {
+    max-width: 640px;
+    margin: 0 auto;
+    text-align: center;
+  }
+
+  .main-title {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .subtitle {
+    color: #cfe9c6;
+    margin-bottom: 36px;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    text-align: left;
+  }
+
+  label {
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    display: block;
+  }
+
+  input,
+  select,
+  textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border-radius: 8px;
+    border: 1px solid transparent;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+    color: #08350a;
+
+    &:focus {
+      outline: none;
+      border-color: #fddb3a;
+    }
+  }
+
+  textarea {
+    min-height: 120px;
+    resize: vertical;
+  }
+
+  .submit-btn {
+    align-self: flex-start;
+    background-color: #fddb3a;
+    color: #044d00;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+
+    &:hover {
+      background-color: #ffee58;
+      transform: translateY(-2px);
+    }
+  }
+
+  @media (max-width: 600px) {
+    padding: 48px 16px;
+
+    .submit-btn {
+      align-self: stretch;
+    }
+  }
 }
 
 /* --- Button Styling (Used for all buttons) --- */

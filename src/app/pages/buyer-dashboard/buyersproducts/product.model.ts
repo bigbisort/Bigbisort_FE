@@ -29,7 +29,10 @@ export interface Product {
   category: string;
   subcategory?: string;
   description: string;
-  image_url: string;
+  /** @deprecated the backend never populates this — see product_image below */
+  image_url?: string;
+  /** Base64-encoded product photo (ProductResponseBean#productImage, JSON key `product_image`). */
+  product_image?: string;
   country?: string;
   productTag?: string;
   inStock?: boolean;

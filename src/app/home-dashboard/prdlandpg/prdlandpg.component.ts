@@ -8,39 +8,22 @@ import { Component, OnInit } from '@angular/core';
 })
 export class PrdlandpgComponent implements OnInit {
 
-  // filter categories
-  categories = ['All', 'Fruits', 'Vegetables', 'Coffee', 'Sweetener'];
+  // filter categories — same taxonomy used on Home/Products/Category
+  categories = ['All', 'Fruits', 'Vegetables', 'Spices', 'Coconut'];
 
   // selected filter
   selectedCategory: string = 'All';
 
-  // product list (can later come from API)
-  products = [                                             
-    { name: 'Apple', category: 'Fruits',   image: 'assets/images/Prdimg/app1.jpg',link: '/apple' } ,
-
-    { name: 'Avocado', category: 'Vegetables',  image: 'assets/images/Prdimg/av3.jpg',link: '/avocado' },
-
-    { name: 'Carrot', category: 'Vegetables',  image: 'assets/images/Prdimg/carrs1.png',link: '/carrot' },
-
-    { name: 'Banana', category: 'Fruits',  image: 'assets/images/Prdimg/dp1.png',link: '/banana' },
-
-    { name: 'Pineapple', category: 'Fruits',  image: 'assets/images/Prdpage/Pineapple/ip.png',link: '/pineapple' },
-
-    { name: 'Coconut', category: 'Fruits',  image: 'assets/images/Prdpage/Coconut/coc.avif',link: '/coconut' },
-
-    { name: 'pepper', category: 'Fruits',  image: 'assets/images/Prdpage/Pepper/ld1.png',link: '/pepper' },
- 
-
-
-
-
-
-
-
-    { name: 'Carrot', category: 'Vegetables', price: 40, image: 'assets/images/carrot.jpg' },
-    { name: 'Broccoli', category: 'Vegetables', price: 80, image: 'assets/images/broccoli.jpg' },
-    { name: 'Arabica Coffee', category: 'Coffee', price: 200, image: 'assets/images/coffee.jpg' },
-    { name: 'Brown Sugar', category: 'Sweetener', price: 90, image: 'assets/images/sugar.jpg' }
+  // product list — real, routed products only (see 30_Products/*), with
+  // the same images used on Home/Products/Category for consistency.
+  products = [
+    { name: 'Apple', category: 'Fruits', image: 'assets/images/Prdpage/Apple/apbasket.png', link: '/apple' },
+    { name: 'Avocado', category: 'Fruits', image: 'assets/images/Prdpage/Avo/avo.jpg', link: '/avocado' },
+    { name: 'Banana', category: 'Fruits', image: 'assets/images/Prdpage/Banana/ba.jpg', link: '/banana' },
+    { name: 'Pineapple', category: 'Fruits', image: 'assets/images/Prdpage/Pineapple/ip.png', link: '/pineapple' },
+    { name: 'Carrot', category: 'Vegetables', image: 'assets/images/Prdimg/ca1.jpg', link: '/carrot' },
+    { name: 'Pepper', category: 'Spices', image: 'assets/images/Prdpage/Pepper/bp.jpg', link: '/pepper' },
+    { name: 'Coconut', category: 'Coconut', image: 'assets/images/Prdpage/Coconut/co2.jpg', link: '/coconut' }
   ];
 
   filteredProducts: any[] = [];
@@ -57,6 +40,4 @@ export class PrdlandpgComponent implements OnInit {
       : this.products.filter(p => p.category === category);
   }
 
-
-  
 }

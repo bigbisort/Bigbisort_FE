@@ -89,7 +89,14 @@
 
     <div class="footer-text">
       <h4>Trusted by Our Regional Teams</h4>
-      <p>Local experts</p>
+      <p>Local experts helping global trade run smoothly, across four states.</p>
+    </div>
+
+    <div class="regional-teams-grid">
+      <div class="regional-team-card" *ngFor="let team of regionalTeams">
+        <h5>{{ team.region }}</h5>
+        <p>{{ team.focus }}</p>
+      </div>
     </div>
   </div>
 </section>
@@ -143,25 +150,25 @@
 
       <!-- Top-left: Farmer -->
       <div class="node node-farmer">
-        <img src="assets/images/impact/farmer.png" alt="Farmer" />
+        <div class="node-icon"><i class="fas fa-seedling" aria-hidden="true"></i></div>
         <p class="node-text">Farmers showcase their crops before harvest on Bigisort</p>
       </div>
 
       <!-- Top-right: Buyer -->
       <div class="node node-buyer">
-        <img src="assets/images/impact/buyer.png" alt="Global Buyers" />
+        <div class="node-icon"><i class="fas fa-cart-shopping" aria-hidden="true"></i></div>
         <p class="node-text">Global Buyers select quality produce directly from farmers</p>
       </div>
 
       <!-- Bottom-left: Export team -->
       <div class="node node-export">
-        <img src="assets/images/impact/export-team.png" alt="Export team" />
+        <div class="node-icon"><i class="fas fa-truck-fast" aria-hidden="true"></i></div>
         <p class="node-text">Our export team supports with logistics & regulations</p>
       </div>
 
       <!-- Bottom-center/right: Shared profit -->
       <div class="node node-shared">
-        <img src="assets/images/impact/shared-profit.png" alt="Shared profit" />
+        <div class="node-icon"><i class="fas fa-hand-holding-dollar" aria-hidden="true"></i></div>
         <p class="node-text">Shared profit benefits the farming community</p>
       </div>
 

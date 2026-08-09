@@ -3,40 +3,6 @@
 
 @use "sass:color";
 
-
-
-.features-section {
-  text-align: center;
-  padding: 3rem 1rem;
-  background-color: #f7f7f7;
-
-  h2 {
-    margin-bottom: 2rem;
-  }
-
-  .features-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 2rem;
-
-    .feature-card {
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.05);
-      max-width: 250px;
-      text-align: center;
-
-      i {
-        font-size: 2rem;
-        color: #007b5e;
-        margin-bottom: 1rem;
-      }
-    }
-  }
-}
-
 .about-preview {
   padding: 3rem 1rem;
   text-align: center;
@@ -287,9 +253,15 @@ $secondary-color: #2cc84d;
     overflow: hidden;
     box-shadow: 0 6px 15px rgba(0,0,0,0.08);
     transition: transform 0.3s ease;
+    cursor: pointer;
 
-    &:hover {
+    &:hover, &:focus-visible {
       transform: translateY(-5px);
+    }
+
+    &:focus-visible {
+      outline: 3px solid #2cc84d;
+      outline-offset: 2px;
     }
 
     img {

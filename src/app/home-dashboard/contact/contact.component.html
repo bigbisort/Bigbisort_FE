@@ -1,14 +1,6 @@
 
 
 <section class="hero-section">
-  <div class="top-bar-placeholder">
-    <div class="logo">Bigbisort</div>
-    <div class="search-box">
-      <input type="text" placeholder="Search..." />
-      <button><i class="fas fa-search"></i></button>
-    </div>
-  </div>
-
   <div class="hero-content">
     <div class="hero-text-content">
       <h1>Let's Grow <br> Together <span class="leaf-icon">🌱</span></h1>
@@ -18,15 +10,15 @@
       </p>
 
       <div class="hero-buttons">
-        <a href="https://wa.me/yourwhatsappnumber" target="_blank" class="hero-btn whatsapp-btn">
-          <i class="fab fa-whatsapp"></i> Chat on WhatsApp
-        </a>
-        <button class="hero-btn ai-chat-btn">
+        <button class="hero-btn message-btn" (click)="selectChannel('General Enquiry')">
+          <i class="fas fa-comment-dots"></i> Send us a Message
+        </button>
+        <button class="hero-btn ai-chat-btn" disabled title="Coming soon">
           <i class="fas fa-robot"></i> Talk to Bigbisort AI
         </button>
-        <a routerLink="/enquiry" class="hero-btn enquiry-btn">
+        <button class="hero-btn enquiry-btn" (click)="selectChannel('Buyer Enquiry')">
           <i class="fas fa-envelope"></i> Send Enquiry
-        </a>
+        </button>
       </div>
     </div>
 
@@ -43,43 +35,43 @@
   <div class="header-content">
     <h1 class="main-title">Choose the Right Channel to Reach Us</h1>
     <p class="subtitle">We've made it easy for every kind of visitor.</p>
-   
+
   </div>
-  
+
 
 <div class="channels-container">
-  <div 
-    class="channel-card" 
-    *ngFor="let channel of contactChannels" 
+  <div
+    class="channel-card"
+    *ngFor="let channel of contactChannels"
     [ngClass]="channel.buttonClass"
   >
-    
-    <div class="icon-area"> 
 
-      <img 
-        *ngIf="channel.icon.includes('/')" 
-        [src]="channel.icon" 
+    <div class="icon-area">
+
+      <img
+        *ngIf="channel.icon.includes('/')"
+        [src]="channel.icon"
         [alt]="channel.title + ' Icon'"
 
         style="height: 50px; width: 50px;"
       />
-      
+
    <i class="material-symbols-outlined">{{ channel.icon }}</i>
 
     </div>
-    
-    <h2 class="card-title">{{ channel.title }}</h2> 
-    
+
+    <h2 class="card-title">{{ channel.title }}</h2>
+
     <p class="card-description">{{ channel.description }}</p>
-    
-<button 
-  [routerLink]="channel.route"
+
+<button
+  (click)="selectChannel(channel.title)"
   [ngClass]="['btn-channel', channel.buttonClass + '-btn']"
-  type="button" 
+  type="button"
 >
   {{ channel.buttonText }}
 </button>
- 
+
 
 
   </div>
@@ -87,24 +79,64 @@
 </section>
 
 
+<!-- Working contact form. Every CTA on this page (WhatsApp, hero buttons,
+     channel cards, footer phone) routes here until a live chat/WhatsApp
+     number is wired in — one real way to reach the team beats four fake ones. -->
+<section class="contact-form-section" id="contact-form">
+  <div class="form-wrapper">
+    <h2 class="main-title">Send Us a Message</h2>
+    <p class="subtitle">Pick what this is about, and we'll route it to the right desk.</p>
+
+    <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
+      <div>
+        <label for="topic">This enquiry is about</label>
+        <select id="topic" name="topic" [(ngModel)]="contactData.topic">
+          <option>General Enquiry</option>
+          <option>Buyer Enquiry</option>
+          <option>Farmer Support</option>
+          <option>Partnerships</option>
+          <option>Tech / AI Support</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="name">Your Name</label>
+        <input id="name" name="name" type="text" [(ngModel)]="contactData.name" required placeholder="e.g. Priya Raman" />
+      </div>
+
+      <div>
+        <label for="email">Email Address</label>
+        <input id="email" name="email" type="email" [(ngModel)]="contactData.email" required placeholder="you@company.com" />
+      </div>
+
+      <div>
+        <label for="message">Message</label>
+        <textarea id="message" name="message" [(ngModel)]="contactData.message" required placeholder="Tell us what you need — product, quantity, destination, or how we can help."></textarea>
+      </div>
+
+      <button type="submit" class="submit-btn" [disabled]="contactForm.invalid">Send Message</button>
+    </form>
+  </div>
+</section>
 
 
 <section class="ai-cta-section">
   <div class="ai-cta-content">
-    
+
     <div class="ai-header">
       <div class="logo-text">
         <i class="ai-icon">🤖</i>
         <h2>Meet Bigbisort AI — Powered by DeepSeek</h2>
+        <span class="preview-badge">Preview</span>
       </div>
       <p class="ai-tagline">
-        Ask about pricing, logistics, order tracking, or farmer registration – 
-        AI will respond instantly.
+        Ask about pricing, logistics, order tracking, or farmer registration –
+        AI will respond instantly. This is a preview of what's coming; it isn't live yet.
       </p>
     </div>
 
     <div class="ai-main-body">
-      
+
       <div class="chat-interface">
         <div class="chat-header">
           <i class="material-symbols-outlined back-arrow">arrow_back_ios</i>
@@ -117,7 +149,7 @@
           <div class="message-bubble bot">As per india trade rules, spices must be accompanied by a phytosanitary certificate,...</div>
         </div>
         <div class="chat-input">
-          <input type="text" placeholder="Type a message..." disabled />
+          <input type="text" placeholder="Coming soon..." disabled />
           <i class="material-symbols-outlined mic">mic</i>
         </div>
       </div>
@@ -130,7 +162,7 @@
           </li>
         </ul>
 
-        <button class="cta-button">Ask Bigbisort AI</button>
+        <button class="cta-button" (click)="selectChannel('Tech / AI Support')">Notify Me When It's Live</button>
       </div>
     </div>
   </div>
@@ -140,19 +172,19 @@
 
 <section class="logged-in-buyers-section">
   <div class="buyers-content-wrapper">
-    
+
     <div class="buyers-header">
 
-      <h1 class="main-title">Logged-In Buyers — Chat Directly with Our Team</h1>
+      <h1 class="main-title">Logged-In Buyers — Chat Directly with Our Team <span class="preview-badge">Preview</span></h1>
       <p class="description">
-        Send your requirements instantly to our admin team. Your messages are
-        automatically sent to the Bigbisort export desk via email – so nothing
-        gets missed.
+        Once you sign in, send your requirements instantly to our admin team.
+        Messages are routed to the Bigbisort export desk automatically — so
+        nothing gets missed. Example conversation shown below.
       </p>
     </div>
 
     <div class="buyers-main-area">
-      
+
       <div class="mock-chat-window">
         <div class="chat-header">
           <span class="chat-title">Chat</span>
@@ -170,16 +202,16 @@
           </div>
         </div>
         <div class="chat-input-area">
-          <input type="text" placeholder="Type a message..." disabled />
+          <input type="text" placeholder="Sign in to chat..." disabled />
           <i class="material-symbols-outlined send-icon">send</i>
         </div>
       </div>
 
       <div class="buyers-features-right">
         <div class="feature-tags">
-          <span 
-            *ngFor="let tag of loggedInBuyerTags" 
-            class="feature-tag" 
+          <span
+            *ngFor="let tag of loggedInBuyerTags"
+            class="feature-tag"
             [ngClass]="tag.color"
           >
             {{ tag.text }}
@@ -187,8 +219,7 @@
         </div>
 
         <ul class="features-list">
-          <li>I secure instant</li>
-          <li>Personalized</li>
+          <li *ngFor="let feature of loggedInBuyerFeatures">{{ feature }}</li>
         </ul>
         </div>
     </div>
@@ -205,30 +236,30 @@
     </div>
 
     <div class="map-container">
-      
+
       <div class="map-visual">
-        
+
         <div class="map-pin shimla">
           <span class="location-label">Shimla, HP</span>
           <i class="material-symbols-outlined pin-icon">location_on</i>
         </div>
-        
+
         <div class="map-pin srinagar">
           <span class="location-label">Srinagar, J&K</span>
           <i class="material-symbols-outlined pin-icon">location_on</i>
         </div>
-        
+
         <div class="map-pin coimbatore">
           <span class="location-label">Coimbatore, TN</span>
           <i class="material-symbols-outlined pin-icon">location_on</i>
         </div>
-        
+
         <div class="map-pin chennai">
           <span class="location-label">Chennai (HQ)</span>
           <i class="material-symbols-outlined pin-icon">location_on</i>
         </div>
       </div>
-      
+
     </div>
 
     <table class="contact-table">

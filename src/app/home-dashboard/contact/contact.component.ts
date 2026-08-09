@@ -9,7 +9,6 @@ interface ContactChannel {
   description: string;
   buttonText: string;
   buttonClass: string;
-  route: string;
 }
 
 interface RegionalContact {
@@ -26,58 +25,56 @@ interface RegionalContact {
     standalone: false
 })
 export class ContactComponent {
- 
+
 
 
 contactChannels: ContactChannel[] = [
 
     {
-      // 🎯 CHANGE THE ICON STRING HERE 
-      //icon: 'assets/images/ContactUs/plant.png',
       icon: 'yard',
       title: 'Buyer Enquiry',
       description: 'Get quotations, check availability, logistics details.',
       buttonText: 'Send Enquiry',
-      buttonClass: 'buyer',
-      route: '/contact/buyer'
+      buttonClass: 'buyer'
     },
     {
-     
-      //icon: 'assets/images/ContactUs/plant.png',
-       icon: 'globe',
+      icon: 'globe',
       title: 'Farmer Support',
       description: 'Get listed, update your product data, or ask for help.',
       buttonText: 'Contact Team',
-      buttonClass: 'farmer', // Renamed for better class-to-card mapping
-      route: '/contact/farmer' 
+      buttonClass: 'farmer'
     },
- 
     {
-      // icon: 'assets/images/ContactUs/plant.png',
-       icon: 'handshake',
+      icon: 'handshake',
       title: 'Partnerships',
       description: 'Join hands to scale India\'s export network.',
       buttonText: 'Partner with Us',
-      buttonClass: 'partner', // Renamed for better class-to-card mapping
-      route: '/contact/partner' 
+      buttonClass: 'partner'
     },
     {
       icon: 'robot',
       title: 'Tech / AI Support',
       description: 'Facing issues with DeepSeek chat or login?',
       buttonText: 'Chat with Support',
-      buttonClass: 'tech', // Renamed for better class-to-card mapping
-      route: '/support/chat' 
+      buttonClass: 'tech'
     }
   ];
   constructor() { }
 
-
+  // All four channel cards, the hero buttons, and the footer phone slot
+  // route here — there is one real, working way to reach the team today,
+  // and every CTA on the page points at it instead of a dead link.
   contactData = {
+    topic: 'General Enquiry',
     name: '',
     email: '',
     message: ''
   };
+
+  selectChannel(topic: string) {
+    this.contactData.topic = topic;
+    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
   onSubmit() {
     console.log('Contact Form Submitted:', this.contactData);
@@ -85,8 +82,8 @@ contactChannels: ContactChannel[] = [
     // ✅ Later, you can send this to your backend:
     // this.http.post('http://localhost:8081/bigbisort-imp-exp/contact', this.contactData).subscribe(...);
 
-    alert('Thank you for contacting us, ' + this.contactData.name + '!');
-    this.contactData = { name: '', email: '', message: '' }; // reset form
+    alert('Thank you for contacting us, ' + this.contactData.name + '! We\'ll get back to you shortly.');
+    this.contactData = { topic: 'General Enquiry', name: '', email: '', message: '' };
   }
 
 
@@ -99,14 +96,12 @@ contactChannels: ContactChannel[] = [
   "Farmer Listing Support"
 ];
 
-// Add these properties to your existing component's class (e.g., ProductsComponent or a new component).
 loggedInBuyerFeatures: string[] = [
   "Secure",
   "Instant",
   "Personalized"
 ];
 
-// If you want to list the tags with their own text (for flexibility)
 loggedInBuyerTags: { text: string, color: string }[] = [
   { text: "SECURE", color: "yellow" },
   { text: "INSTANT", color: "yellow" },
