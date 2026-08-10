@@ -64,8 +64,8 @@
           <p>{{ product.grade }}</p>
           <p>{{ product.priceLabel }}</p>
           <div class="actions">
-            <button class="btn-add">Add now</button>
-            <button class="btn-enquire">Enquire</button>
+            <button class="btn-add" (click)="enquire(product)">Add now</button>
+            <button class="btn-enquire" (click)="enquire(product)">Enquire</button>
           </div>
         </div>
       </div>
@@ -87,6 +87,7 @@
         <p><strong>MOQ:</strong> {{ fp.moq }}</p>
         <p><strong>Packaging:</strong> {{ fp.packaging }}</p>
         <p><strong>Payment Terms:</strong> {{ fp.paymentTerms }}</p>
+        <button class="enquire-btn" (click)="enquire(fp)">Enquire</button>
       </div>
     </div>
   </div>
@@ -155,7 +156,7 @@
       </div>
 
       <!-- Enquiry Button -->
-      <button class="enquire-btn">Enquire</button>
+      <button class="enquire-btn" (click)="enquire(prod)">Enquire</button>
     </div>
   </div>
 

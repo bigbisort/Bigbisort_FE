@@ -1,7 +1,9 @@
 import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Router } from '@angular/router';
 import { ProductService } from '../../pages/buyer-dashboard/service/product.service';
 import { Product } from '../../pages/buyer-dashboard/buyersproducts/product.model';
 import { getProductDisplay, getTagLabel, getTagColor, titleCase } from '../../pages/buyer-dashboard/shared/product-display.util';
+import { AuthService } from '../../services/auth.service';
 
 interface DisplayProduct {
   id: string;
@@ -40,7 +42,11 @@ interface CategoryTile {
 })
 export class ProductsComponent implements OnInit {
 
-  constructor(private productService: ProductService) {}
+  constructor(
+    private productService: ProductService,
+    private auth: AuthService,
+    private router: Router
+  ) {}
 
   @ViewChild('carousel', { static: false }) carousel!: ElementRef;
 
@@ -187,6 +193,24 @@ export class ProductsComponent implements OnInit {
       (this.selectedFilter === 'ALL' || p.tag === this.selectedFilter) &&
       (!category || p.category.toLowerCase() === category)
     );
+  }
+
+  /**
+   * "Enquire" / "Add now" on any product card. There's no RFQ backend yet
+   * (see the product-page audit notes), so a logged-in buyer is routed to
+   * the one real, working enquiry channel — the Contact form — pre-filled
+   * with which product this is about. A guest is sent to log in first and
+   * comes straight back here via returnUrl.
+   */
+  enquire(product: DisplayProduct): void {
+    if (!this.auth.getRole()) {
+      this.router.navigate(['/login'], { queryParams: { returnUrl: this.router.url } });
+      return;
+    }
+    this.router.navigate(['/contact'], {
+      queryParams: { topic: 'Buyer Enquiry', product: product.name },
+      fragment: 'contact-form'
+    });
   }
 
   scrollLeft(): void {

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 
@@ -24,7 +26,7 @@ interface RegionalContact {
     styleUrls: ['./contact.component.scss'],
     standalone: false
 })
-export class ContactComponent {
+export class ContactComponent implements OnInit {
 
 
 
@@ -59,7 +61,7 @@ contactChannels: ContactChannel[] = [
       buttonClass: 'tech'
     }
   ];
-  constructor() { }
+  constructor(private route: ActivatedRoute, private auth: AuthService) { }
 
   // All four channel cards, the hero buttons, and the footer phone slot
   // route here — there is one real, working way to reach the team today,
@@ -70,6 +72,24 @@ contactChannels: ContactChannel[] = [
     email: '',
     message: ''
   };
+
+  ngOnInit(): void {
+    // Arriving from a product's "Enquire" button (?topic=...&product=...) —
+    // pre-fill the form instead of making the buyer retype what they clicked.
+    const params = this.route.snapshot.queryParamMap;
+    const topic = params.get('topic');
+    const product = params.get('product');
+    if (topic) {
+      this.contactData.topic = topic;
+    }
+    if (product) {
+      this.contactData.message = `Regarding: ${product}\n\n`;
+    }
+    const buyerName = this.auth.getBuyerName();
+    if (buyerName) {
+      this.contactData.name = buyerName;
+    }
+  }
 
   selectChannel(topic: string) {
     this.contactData.topic = topic;

@@ -1,7 +1,8 @@
-import { Component } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { OnboardingService } from 'src/app/services/onboarding.service';
+import { GoogleAuthService } from 'src/app/services/google-auth.service';
 
 @Component({
     selector: 'app-login',
@@ -9,7 +10,7 @@ import { OnboardingService } from 'src/app/services/onboarding.service';
     styleUrls: ['./login.component.scss'],
     standalone: false
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
 
   loginType: 'buyer' | 'seller' = 'buyer';
 
@@ -41,11 +42,29 @@ export class LoginComponent {
 
   registerErrors: any = {};
 
+  // Where to send the user after a successful login — set when a guest was
+  // redirected here from a gated action (e.g. "Enquire" on a product).
+  private returnUrl: string | null = null;
+
   constructor(
     private auth: AuthService,
     private router: Router,
-    private onboardingService: OnboardingService
+    private route: ActivatedRoute,
+    private onboardingService: OnboardingService,
+    private googleAuth: GoogleAuthService
   ) {}
+
+  ngOnInit(): void {
+    this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    this.renderGoogleButton();
+  }
+
+  private renderGoogleButton(): void {
+    // Deferred a tick so the *ngIf-gated button container exists in the DOM.
+    setTimeout(() => {
+      this.googleAuth.renderButton('google-signin-btn', (idToken) => this.handleGoogleCredential(idToken));
+    });
+  }
 
   setLoginType(type: 'buyer' | 'seller') {
     this.loginType = type;
@@ -72,12 +91,33 @@ export class LoginComponent {
 
   cancelRegister() {
     this.isRegisterVisible = false;
+    this.renderGoogleButton();
   }
 
   // MAIN LOGIN
   login() {
     if (this.loginType === 'buyer') this.loginBuyer();
     if (this.loginType === 'seller') this.loginSeller();
+  }
+
+  /**
+   * "Sign in with Google" — the authenticationType is whichever tab
+   * (buyer/seller) is active at the moment the user completes the Google
+   * flow, since one button serves both.
+   */
+  private handleGoogleCredential(idToken: string): void {
+    const authType = this.loginType === 'seller' ? 'SELLER' : 'BUYER';
+    this.auth.googleLogin(idToken, authType).subscribe({
+      next: (res: any) => {
+        if (!res?.accessToken) {
+          alert('❌ ' + (res?.message || 'Google sign-in failed'));
+          return;
+        }
+        this.applyLoginResponse(res, authType);
+        this.afterLogin();
+      },
+      error: () => alert('❌ Google sign-in failed')
+    });
   }
 
   /**
@@ -96,6 +136,15 @@ export class LoginComponent {
       // BUYER or fallback
       this.router.navigateByUrl('/buyer');
     }
+  }
+
+  /** After any successful login: honor a pending returnUrl, else fall back to the role default. */
+  private afterLogin(): void {
+    if (this.returnUrl) {
+      this.router.navigateByUrl(this.returnUrl);
+      return;
+    }
+    this.redirectByRole();
   }
 
   private handleSellerRedirect(): void {
@@ -125,6 +174,37 @@ export class LoginComponent {
     }
   }
 
+  /** Shared response handling for buyer/seller login, whether by password or Google. */
+  private applyLoginResponse(res: any, authType: 'BUYER' | 'SELLER'): void {
+    if (res.roles?.length) {
+      let role = res.roles[0];
+      if (role.startsWith('ROLE_')) role = role.substring(5);
+      this.auth.setRole(role);
+    }
+
+    if (res.userId) {
+      this.auth.setUserId(res.userId);
+    }
+
+    if (authType === 'BUYER') {
+      if (res.buyerId) {
+        this.auth.setBuyerId(res.buyerId);
+        this.auth.setBuyerName(res.userName || '');
+        this.auth.setBuyerCountry(res.buyerCountry || '');
+        this.auth.setBuyerCompany(res.buyerCompany || '');
+      }
+    } else {
+      if (res.sellerId || res.userId) {
+        this.auth.setSellerId(res.sellerId || res.userId);
+        this.auth.setSellerName(res.userName || '');
+      }
+    }
+
+    if (res.accessToken) {
+      this.auth.setToken(res.accessToken);
+    }
+  }
+
 // BUYER LOGIN
 private loginBuyer() {
   this.loginErrors = {};
@@ -135,29 +215,8 @@ private loginBuyer() {
 
   this.auth.login(this.username, this.password, 'BUYER').subscribe({
     next: (res: any) => {
-
-      if (res.roles?.length) {
-        let role = res.roles[0];
-        if (role.startsWith('ROLE_')) role = role.substring(5);
-        this.auth.setRole(role);
-      }
-
-      if (res.userId) {
-        this.auth.setUserId(res.userId);
-      }
-
-      if (res.buyerId) {
-        this.auth.setBuyerId(res.buyerId);
-        this.auth.setBuyerName(res.userName || '');
-        this.auth.setBuyerCountry(res.buyerCountry || '');
-        this.auth.setBuyerCompany(res.buyerCompany || '');
-      }
-
-      if (res.accessToken) {
-        this.auth.setToken(res.accessToken);
-      }
-
-      this.redirectByRole();
+      this.applyLoginResponse(res, 'BUYER');
+      this.afterLogin();
     },
     error: () => alert('❌ Invalid buyer credentials')
   });
@@ -173,30 +232,9 @@ private loginSeller() {
 
   this.auth.login(this.username, this.password, 'SELLER').subscribe({
     next: (res: any) => {
-
-      // ✅ SAVE ROLE
-      if (res.roles?.length) {
-        let role = res.roles[0];
-        if (role.startsWith('ROLE_')) role = role.substring(5);
-        this.auth.setRole(role);
-      }
-
-      if (res.userId) {
-        this.auth.setUserId(res.userId);
-      }
-
-      // ✅ SAVE SELLER ID
-      if (res.sellerId || res.userId) {
-        this.auth.setSellerId(res.sellerId || res.userId);
-        this.auth.setSellerName(res.userName || '');
-      }
-
-      if (res.accessToken) {
-        this.auth.setToken(res.accessToken);
-      }
-
+      this.applyLoginResponse(res, 'SELLER');
       console.log('Saved role:', this.auth.getRole());
-      this.redirectByRole();
+      this.afterLogin();
     },
     error: () => alert('❌ Invalid seller credentials')
   });
@@ -214,8 +252,8 @@ private loginSeller() {
 
     if (Object.keys(this.registerErrors).length) return;
 
-    const request = this.loginType === 'seller' 
-      ? this.auth.registerSeller(this.registerData) 
+    const request = this.loginType === 'seller'
+      ? this.auth.registerSeller(this.registerData)
       : this.auth.registerBuyer(this.registerData);
 
     request.subscribe({
@@ -225,6 +263,7 @@ private loginSeller() {
 
         this.username = this.registerData.userName;
         this.password = this.registerData.password;
+        this.renderGoogleButton();
       },
       error: (err: any) => alert('❌ Registration failed')
     });

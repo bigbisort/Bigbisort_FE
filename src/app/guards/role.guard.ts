@@ -10,7 +10,7 @@ export class RoleGuard  {
 
 
 
-canActivate(route: ActivatedRouteSnapshot): boolean {
+canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
   const expectedRole = route.data['expectedRole'];
   const storedRole = localStorage.getItem('role');
 
@@ -30,7 +30,7 @@ canActivate(route: ActivatedRouteSnapshot): boolean {
   }
 
   console.log('❌ Role mismatch – redirecting to login');
-  this.router.navigate(['/login']);
+  this.router.navigate(['/login'], { queryParams: { returnUrl: state.url } });
   return false;
 }
 

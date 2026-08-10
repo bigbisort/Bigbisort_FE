@@ -69,6 +69,24 @@ export class AuthService {
   }
 
   /**
+   * Google Sign-In for Buyer / Seller / Admin. Posts the Google ID token to
+   * the backend, which verifies it with Google and either logs in an
+   * existing account or provisions a new one (except ADMIN — see backend
+   * GoogleOAuth2Service, admin accounts are never auto-created).
+   *
+   * Note: on failure the backend still responds 200 with a `message`
+   * describing the problem rather than an HTTP error status — callers must
+   * check `res.accessToken`, not just subscribe to `error`.
+   */
+  googleLogin(
+    idToken: string,
+    authenticationType: 'BUYER' | 'SELLER' | 'ADMIN'
+  ): Observable<any> {
+    const url = `${this.apiUrl}/auth/google-login`;
+    return this.http.post(url, { idToken, authenticationType });
+  }
+
+  /**
    * Send OTP to mobile number
    */
   sendOtp(data: { mobile: string }): Observable<any> {
