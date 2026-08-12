@@ -1,6 +1,5 @@
 export const environment = {
   production: true,
   apiBaseUrl: 'https://api.bigbisort.com/api',  // 👈 Example production URL
-  // TODO: replace with the real production OAuth Client ID.
-  googleClientId: 'YOUR_GOOGLE_OAUTH_CLIENT_ID'
+  googleClientId: '1063456149323-1tsum2ug1i536aqnhp1pehuio28ui163.apps.googleusercontent.com'
 };
