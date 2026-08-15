@@ -53,13 +53,51 @@ export class AddProductComponent implements OnInit {
   showVarietyDropdown = false;
 
   // Constants
-  years = ['2026', '2027', '2028', '2029'];
-  months = [
+  private readonly today = new Date();
+  private readonly allMonths = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
-  days = Array.from({length: 31}, (_, i) => (i + 1).toString().padStart(2, '0'));
+  years = Array.from({ length: 5 }, (_, i) => (this.today.getFullYear() + i).toString());
   grades = ['Grade A', 'Grade B', 'Grade C', 'Premium'];
+
+  // Expected Harvest must always be today or a future date, so these narrow as the
+  // seller picks year/month: the current year only offers the current month onward,
+  // and the current year+month only offers today's day onward.
+  get months(): string[] {
+    const currentYear = this.today.getFullYear();
+    if (Number(this.harvestYear) !== currentYear) return this.allMonths;
+    return this.allMonths.slice(this.today.getMonth());
+  }
+
+  get days(): string[] {
+    const year = Number(this.harvestYear);
+    const monthIndex = this.allMonths.indexOf(this.harvestMonth);
+    const daysInMonth = year && monthIndex >= 0 ? new Date(year, monthIndex + 1, 0).getDate() : 31;
+
+    const isCurrentYearMonth =
+      year === this.today.getFullYear() && monthIndex === this.today.getMonth();
+    const startDay = isCurrentYearMonth ? this.today.getDate() : 1;
+
+    return Array.from({ length: daysInMonth - startDay + 1 }, (_, i) =>
+      (startDay + i).toString().padStart(2, '0')
+    );
+  }
+
+  onHarvestYearChange(): void {
+    if (this.harvestMonth && !this.months.includes(this.harvestMonth)) {
+      this.harvestMonth = '';
+      this.harvestDay = '';
+    } else if (this.harvestDay && !this.days.includes(this.harvestDay)) {
+      this.harvestDay = '';
+    }
+  }
+
+  onHarvestMonthChange(): void {
+    if (this.harvestDay && !this.days.includes(this.harvestDay)) {
+      this.harvestDay = '';
+    }
+  }
 
   isSubmitting = false;
   errors: any = {};
@@ -255,7 +293,7 @@ export class AddProductComponent implements OnInit {
   }
 
   getMonthNumber(monthName: string): string {
-    const m = this.months.indexOf(monthName) + 1;
+    const m = this.allMonths.indexOf(monthName) + 1;
     return m < 10 ? '0' + m : '' + m;
   }
 

@@ -40,13 +40,63 @@ export class EditProductComponent implements OnInit {
   farmImageBase64: string | null = null;
 
   // Constants
-  years = ['2026', '2027', '2028', '2029'];
-  months = [
+  private readonly today = new Date();
+  private readonly allMonths = [
     'January', 'February', 'March', 'April', 'May', 'June',
     'July', 'August', 'September', 'October', 'November', 'December'
   ];
-  days = Array.from({length: 31}, (_, i) => (i + 1).toString().padStart(2, '0'));
   grades = ['Grade A', 'Grade B', 'Grade C', 'Premium'];
+
+  // Expected Harvest must always be today or a future date for anything the seller newly
+  // picks — but this form also loads an already-saved harvest date, which may already be in
+  // the past by the time the product is edited. Each getter below narrows to current/future
+  // options while still keeping the product's existing saved value selectable so it doesn't
+  // silently disappear from the dropdown when the page loads.
+  get years(): string[] {
+    const currentYear = this.today.getFullYear();
+    const base = Array.from({ length: 5 }, (_, i) => (currentYear + i).toString());
+    if (this.harvestYear && !base.includes(this.harvestYear)) return [this.harvestYear, ...base];
+    return base;
+  }
+
+  get months(): string[] {
+    const currentYear = this.today.getFullYear();
+    if (Number(this.harvestYear) !== currentYear) return this.allMonths;
+    const base = this.allMonths.slice(this.today.getMonth());
+    if (this.harvestMonth && !base.includes(this.harvestMonth)) return [this.harvestMonth, ...base];
+    return base;
+  }
+
+  get days(): string[] {
+    const year = Number(this.harvestYear);
+    const monthIndex = this.allMonths.indexOf(this.harvestMonth);
+    const daysInMonth = year && monthIndex >= 0 ? new Date(year, monthIndex + 1, 0).getDate() : 31;
+
+    const isCurrentYearMonth =
+      year === this.today.getFullYear() && monthIndex === this.today.getMonth();
+    const startDay = isCurrentYearMonth ? this.today.getDate() : 1;
+
+    const base = Array.from({ length: daysInMonth - startDay + 1 }, (_, i) =>
+      (startDay + i).toString().padStart(2, '0')
+    );
+    if (this.harvestDay && !base.includes(this.harvestDay)) return [this.harvestDay, ...base];
+    return base;
+  }
+
+  onHarvestYearChange(): void {
+    if (this.harvestMonth && !this.months.includes(this.harvestMonth)) {
+      this.harvestMonth = '';
+      this.harvestDay = '';
+    } else if (this.harvestDay && !this.days.includes(this.harvestDay)) {
+      this.harvestDay = '';
+    }
+  }
+
+  onHarvestMonthChange(): void {
+    if (this.harvestDay && !this.days.includes(this.harvestDay)) {
+      this.harvestDay = '';
+    }
+  }
 
   isSubmitting = false;
   isLoading = true;
@@ -103,7 +153,7 @@ export class EditProductComponent implements OnInit {
               if (parts.length === 3) {
                  this.harvestYear = parts[0];
                  const monthIdx = parseInt(parts[1], 10) - 1;
-                 if (monthIdx >= 0 && monthIdx < 12) this.harvestMonth = this.months[monthIdx];
+                 if (monthIdx >= 0 && monthIdx < 12) this.harvestMonth = this.allMonths[monthIdx];
                  this.harvestDay = parts[2];
               }
            }
@@ -202,7 +252,7 @@ export class EditProductComponent implements OnInit {
   }
 
   getMonthNumber(monthName: string): string {
-    const m = this.months.indexOf(monthName) + 1;
+    const m = this.allMonths.indexOf(monthName) + 1;
     return m < 10 ? '0' + m : '' + m;
   }
 

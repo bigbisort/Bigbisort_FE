@@ -30,18 +30,28 @@
           </div>
           <select class="qh-category-select" [(ngModel)]="categoryFilter">
             <option value="">All Categories</option>
-            <option *ngFor="let c of categories" [value]="c">{{ c }}</option>
+            <option *ngFor="let c of categories" [value]="c.key">{{ c.label }}</option>
           </select>
         </div>
 
         <div class="toolbar">
-          <input
-            type="text"
-            class="search-input"
-            placeholder="Search by product or seller…"
-            [(ngModel)]="searchQuery"
-            (keyup.enter)="onSearch()" />
-          <button class="btn-outline" (click)="onSearch()">Search</button>
+          <div class="filter-row">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search by product name…"
+              [(ngModel)]="productNameQuery"
+              (keyup.enter)="onSearch()" />
+          </div>
+          <div class="filter-row">
+            <input
+              type="text"
+              class="search-input"
+              placeholder="Search by seller name…"
+              [(ngModel)]="sellerNameQuery"
+              (keyup.enter)="onSearch()" />
+            <button class="btn-outline" (click)="onSearch()">Search</button>
+          </div>
         </div>
 
         <div class="table-wrapper" *ngIf="displayedProducts.length > 0">
@@ -49,7 +59,7 @@
             <thead>
               <tr>
                 <th>Product</th>
-                <th>Listed By</th>
+                <th>Seller Name</th>
                 <th>Quantity</th>
                 <th>Date Added</th>
                 <th>Action</th>
@@ -62,7 +72,7 @@
                   <span class="tag" *ngIf="p.qualityGrade">{{ p.qualityGrade }}</span>
                   <span class="tag" [ngClass]="statusClass(p.status)">{{ statusLabel(p.status) }}</span>
                 </td>
-                <td><i class="bi bi-shop"></i> {{ p.sellerName || '—' }}</td>
+                <td>{{ p.sellerName || '—' }}</td>
                 <td>{{ p.quantitySummary }}</td>
                 <td>{{ p.createdAt | date: 'MMM d, y' }}</td>
                 <td class="cell-action">
@@ -81,7 +91,12 @@
         </div>
 
         <div class="empty-state" *ngIf="displayedProducts.length === 0">
-          {{ activeTab === 'REVIEW' ? 'No products waiting for review.' : 'No approved products yet.' }}
+          <ng-container *ngIf="categoryFilter && products.length > 0; else noProductsMsg">
+            No "{{ categoryFilter }}" products on this page. Clear the category filter or check another page to see the rest.
+          </ng-container>
+          <ng-template #noProductsMsg>
+            {{ activeTab === 'REVIEW' ? 'No products waiting for review.' : 'No approved products yet.' }}
+          </ng-template>
         </div>
 
         <div class="pagination" *ngIf="totalProducts > 0">
@@ -171,10 +186,10 @@
     <p>
       Categories today are a free-text field on each product, not a managed category/variety/grade
       tree. Full category CRUD would need a real <code>product_categories</code> table — out of
-      scope for this pass. Existing categories currently in use:
+      scope for this pass. Categories available from the product catalog:
     </p>
     <div class="category-chip-list">
-      <span class="chip" *ngFor="let c of categories">{{ c }}</span>
+      <span class="chip" *ngFor="let c of categories">{{ c.label }}</span>
     </div>
   </div>
 </div>

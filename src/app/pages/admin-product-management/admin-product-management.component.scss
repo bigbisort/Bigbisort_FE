@@ -126,8 +126,14 @@ $white: #fff;
 
 .toolbar {
   display: flex;
+  flex-direction: column;
   gap: 10px;
   margin-bottom: 14px;
+}
+
+.filter-row {
+  display: flex;
+  gap: 10px;
 }
 
 .search-input {

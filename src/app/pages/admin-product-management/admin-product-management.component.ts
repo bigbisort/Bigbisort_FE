@@ -4,6 +4,12 @@ import {
   AdminProductListDto,
   AdminProductManagementService,
 } from 'src/app/services/admin-product-management.service';
+import { OnboardingService } from 'src/app/services/onboarding.service';
+
+interface ProductCategoryOption {
+  key: string;
+  label: string;
+}
 
 type ReviewTab = 'REVIEW' | 'APPROVED' | 'MEDIA' | 'CATEGORIES';
 
@@ -19,7 +25,8 @@ export class AdminProductManagementComponent implements OnInit {
   products: AdminProductListDto[] = [];
   totalProducts = 0;
 
-  searchQuery = '';
+  productNameQuery = '';
+  sellerNameQuery = '';
   pageSize = 10;
   currentPage = 0;
 
@@ -28,7 +35,7 @@ export class AdminProductManagementComponent implements OnInit {
   noteValue = '';
   saving = false;
 
-  categories: string[] = [];
+  categories: ProductCategoryOption[] = [];
   private categoriesLoaded = false;
   categoryFilter = '';
 
@@ -39,16 +46,22 @@ export class AdminProductManagementComponent implements OnInit {
     { value: 'PENDING_UPDATES', label: 'Pending Updates' },
   ];
 
-  constructor(private productService: AdminProductManagementService) {}
+  constructor(
+    private productService: AdminProductManagementService,
+    private onboardingService: OnboardingService
+  ) {}
 
   ngOnInit(): void {
     this.loadProducts();
     this.loadCategories();
   }
 
+  // Same catalog list the seller "Add Product" page uses, so filter options always match the
+  // categories a product could actually have been saved with — instead of whatever raw, possibly
+  // inconsistent category strings happen to already exist on products in the DB.
   private loadCategories(): void {
     if (this.categoriesLoaded) return;
-    this.productService.getCategories().subscribe({
+    this.onboardingService.getCatalogCategories().subscribe({
       next: (categories) => {
         this.categories = categories;
         this.categoriesLoaded = true;
@@ -60,7 +73,7 @@ export class AdminProductManagementComponent implements OnInit {
   // Backend has no category query param on the list endpoint, so this filters the current page client-side.
   get displayedProducts(): AdminProductListDto[] {
     if (!this.categoryFilter) return this.products;
-    return this.products.filter((p) => p.category === this.categoryFilter);
+    return this.products.filter((p) => (p.category || '').toUpperCase() === this.categoryFilter.toUpperCase());
   }
 
   refresh(): void {
@@ -77,22 +90,25 @@ export class AdminProductManagementComponent implements OnInit {
   }
 
   loadProducts(): void {
-    this.productService.getProducts(this.statusForTab(), this.searchQuery, this.currentPage, this.pageSize).subscribe({
-      next: (res) => {
-        this.products = res.content;
-        this.totalProducts = res.totalElements;
-      },
-      error: (err) => {
-        console.error('Error loading products', err);
-        this.products = [];
-        this.totalProducts = 0;
-      },
-    });
+    this.productService
+      .getProducts(this.statusForTab(), this.productNameQuery, this.sellerNameQuery, this.currentPage, this.pageSize)
+      .subscribe({
+        next: (res) => {
+          this.products = res.content;
+          this.totalProducts = res.totalElements;
+        },
+        error: (err) => {
+          console.error('Error loading products', err);
+          this.products = [];
+          this.totalProducts = 0;
+        },
+      });
   }
 
   setTab(tab: ReviewTab): void {
     this.activeTab = tab;
     this.currentPage = 0;
+    this.categoryFilter = '';
     this.closeDetails();
     if (tab === 'REVIEW' || tab === 'APPROVED') {
       this.loadProducts();

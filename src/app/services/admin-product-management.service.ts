@@ -43,10 +43,11 @@ export class AdminProductManagementService {
 
   constructor(private http: HttpClient) {}
 
-  getProducts(status?: string, query?: string, page: number = 0, size: number = 10): Observable<any> {
+  getProducts(status?: string, productName?: string, sellerName?: string, page: number = 0, size: number = 10): Observable<any> {
     let params = new HttpParams().set('page', page).set('size', size);
     if (status) params = params.set('status', status);
-    if (query) params = params.set('q', query);
+    if (productName) params = params.set('productName', productName);
+    if (sellerName) params = params.set('sellerName', sellerName);
     return this.http.get<any>(this.apiUrl, { params });
   }
 

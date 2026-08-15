@@ -24,7 +24,7 @@ export class ProductListComponent implements OnInit {
   
   // Filters
   searchTerm = '';
-  statusOptions = ['All', 'Approved', 'Under Review', 'Rejected', 'Draft'];
+  statusOptions = ['All', 'Approved', 'Pending Approval', 'Rejected', 'Draft'];
   selectedStatus = 'All';
   searchSubject = new Subject<string>();
 
@@ -111,18 +111,18 @@ export class ProductListComponent implements OnInit {
   }
 
   getStatus(product: any): string {
-     if (!product.productStatus) return 'Under Review';
-     if (product.productStatus === 'PENDING_APPROVAL') return 'Under Review';
+     if (!product.productStatus) return 'Pending Approval';
+     if (product.productStatus === 'PENDING_APPROVAL') return 'Pending Approval';
      if (product.productStatus === 'APPROVED') return 'Approved';
      if (product.productStatus === 'REJECTED') return 'Rejected';
      if (product.productStatus === 'DRAFT') return 'Draft';
-     return 'Under Review';
+     return 'Pending Approval';
   }
 
   getStatusClass(status: string): string {
     switch(status) {
       case 'Approved': return 'badge-approved';
-      case 'Under Review': return 'badge-review';
+      case 'Pending Approval': return 'badge-review';
       case 'Rejected': return 'badge-rejected';
       case 'Draft': return 'badge-draft';
       default: return 'badge-draft';

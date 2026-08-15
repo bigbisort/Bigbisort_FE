@@ -241,7 +241,7 @@ private loginSeller() {
 }
 
 
-  // REGISTER USER (Buyer or Seller)
+  // REGISTER BUYER (seller registration happens via the onboarding flow, see showRegister())
   register() {
     this.registerErrors = {};
 
@@ -252,11 +252,7 @@ private loginSeller() {
 
     if (Object.keys(this.registerErrors).length) return;
 
-    const request = this.loginType === 'seller'
-      ? this.auth.registerSeller(this.registerData)
-      : this.auth.registerBuyer(this.registerData);
-
-    request.subscribe({
+    this.auth.registerBuyer(this.registerData).subscribe({
       next: () => {
         alert('✅ Registration successful. Please login.');
         this.isRegisterVisible = false;

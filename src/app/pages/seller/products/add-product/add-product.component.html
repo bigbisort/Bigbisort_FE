@@ -104,16 +104,16 @@
           <div class="form-group flex-1">
             <label>Expected Harvest <span class="required">*</span></label>
             <div class="flex-gap">
-              <select [(ngModel)]="harvestYear" class="flex-1" [class.error]="errors.harvestYear">
-                <option value="">Year</option>
+              <select [(ngModel)]="harvestYear" (change)="onHarvestYearChange()" class="flex-1" [class.error]="errors.harvestYear">
+                <option value="" disabled>Year</option>
                 <option *ngFor="let y of years" [value]="y">{{y}}</option>
               </select>
-              <select [(ngModel)]="harvestMonth" class="flex-2" [class.error]="errors.harvestMonth">
-                <option value="">Month</option>
+              <select [(ngModel)]="harvestMonth" (change)="onHarvestMonthChange()" [disabled]="!harvestYear" class="flex-2" [class.error]="errors.harvestMonth">
+                <option value="" disabled>{{harvestYear ? 'Month' : 'Select year first'}}</option>
                 <option *ngFor="let m of months" [value]="m">{{m}}</option>
               </select>
-              <select [(ngModel)]="harvestDay" class="flex-1" [class.error]="errors.harvestDay">
-                <option value="">Day</option>
+              <select [(ngModel)]="harvestDay" [disabled]="!harvestMonth" class="flex-1" [class.error]="errors.harvestDay">
+                <option value="" disabled>{{harvestMonth ? 'Day' : 'Select month first'}}</option>
                 <option *ngFor="let d of days" [value]="d">{{d}}</option>
               </select>
             </div>
