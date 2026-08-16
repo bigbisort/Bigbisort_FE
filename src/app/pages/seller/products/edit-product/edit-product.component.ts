@@ -270,7 +270,7 @@ export class EditProductComponent implements OnInit {
     if (!this.validate()) return;
     this.isSubmitting = true;
 
-    const sellerId = localStorage.getItem('sellerId') || 'temp-seller'; 
+    const sellerId = sessionStorage.getItem('sellerId') || 'temp-seller';
     let hardvestDate = `${this.harvestYear}-${this.getMonthNumber(this.harvestMonth)}-${this.harvestDay}`;
 
     const payload = {

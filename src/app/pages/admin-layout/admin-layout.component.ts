@@ -21,6 +21,7 @@ export class AdminLayoutComponent {
     { label: 'Payments & Finance', icon: 'bi-wallet2', route: '/admin/payments', active: false },
     { label: 'Reports & Analytics', icon: 'bi-bar-chart-line-fill', route: '/admin/reports', active: false },
     { label: 'Support & Tickets', icon: 'bi-headset', route: '/admin/support', active: false },
+    { label: 'Audit Logs', icon: 'bi-shield-lock-fill', route: '/admin/audit-logs', active: false },
     { label: 'System Settings', icon: 'bi-gear-fill', route: '/admin/settings', active: false },
   ];
 
@@ -34,11 +35,11 @@ export class AdminLayoutComponent {
   ) {}
 
   get adminName(): string {
-    return localStorage.getItem('adminName') || 'Admin';
+    return this.auth.getAdminName() || 'Admin';
   }
 
   get adminRole(): string {
-    return localStorage.getItem('role') || 'ADMIN';
+    return this.auth.getRole() || 'ADMIN';
   }
 
   getRoleLabel(): string {

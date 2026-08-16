@@ -5,6 +5,9 @@
   </div>
 
   <div class="tabs">
+    <button class="tab" [class.active]="activeTab === 'ALL'" (click)="setTab('ALL')">
+      All Products
+    </button>
     <button class="tab" [class.active]="activeTab === 'REVIEW'" (click)="setTab('REVIEW')">
       Product Review Queue
     </button>
@@ -19,13 +22,16 @@
     </button>
   </div>
 
-  <!-- Review Queue / Approved Products: same table, different status filter -->
-  <ng-container *ngIf="activeTab === 'REVIEW' || activeTab === 'APPROVED'">
+  <!-- All / Review Queue / Approved Products: same table, different status filter -->
+  <ng-container *ngIf="activeTab === 'ALL' || activeTab === 'REVIEW' || activeTab === 'APPROVED'">
     <div class="main-row">
       <div class="list-col" [class.narrow]="selectedProduct">
         <div class="queue-header-bar">
           <div class="qh-left">
-            <span class="qh-title">{{ activeTab === 'REVIEW' ? 'Product Review Queue' : 'Approved Products' }} ({{ totalProducts }})</span>
+            <span class="qh-title">
+              {{ activeTab === 'ALL' ? 'All Products' : (activeTab === 'REVIEW' ? 'Product Review Queue' : 'Approved Products') }}
+              ({{ totalProducts }})
+            </span>
             <button class="qh-refresh" title="Refresh" (click)="refresh()"><i class="bi bi-arrow-clockwise"></i></button>
           </div>
           <select class="qh-category-select" [(ngModel)]="categoryFilter">
@@ -95,7 +101,7 @@
             No "{{ categoryFilter }}" products on this page. Clear the category filter or check another page to see the rest.
           </ng-container>
           <ng-template #noProductsMsg>
-            {{ activeTab === 'REVIEW' ? 'No products waiting for review.' : 'No approved products yet.' }}
+            {{ activeTab === 'ALL' ? 'No products found.' : (activeTab === 'REVIEW' ? 'No products waiting for review.' : 'No approved products yet.') }}
           </ng-template>
         </div>
 

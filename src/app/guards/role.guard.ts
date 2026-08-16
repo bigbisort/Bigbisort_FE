@@ -12,7 +12,7 @@ export class RoleGuard  {
 
 canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean {
   const expectedRole = route.data['expectedRole'];
-  const storedRole = localStorage.getItem('role');
+  const storedRole = sessionStorage.getItem('role');
 
   console.log('🛡 RoleGuard check');
   console.log('Expected role:', expectedRole);

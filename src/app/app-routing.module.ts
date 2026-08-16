@@ -5,6 +5,8 @@ import { AdminLoginComponent } from './pages/admin-login/admin-login.component';
 import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.component';
 import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard.component';
 import { AdminSellerManagementComponent } from './pages/admin-seller-management/admin-seller-management.component';
+import { AdminBuyerManagementComponent } from './pages/admin-buyer-management/admin-buyer-management.component';
+import { AdminAuditLogComponent } from './pages/admin-audit-log/admin-audit-log.component';
 import { AdminBuyerInteractionsComponent } from './pages/admin-buyer-interactions/admin-buyer-interactions.component';
 import { AdminProductManagementComponent } from './pages/admin-product-management/admin-product-management.component';
 import { MessagesComponent } from './pages/buyer-dashboard/messages/messages.component';
@@ -88,7 +90,9 @@ const routes: Routes = [
       { path: 'dashboard', component: AdminDashboardComponent },
       { path: 'sellers', component: AdminSellerManagementComponent },
       { path: 'products', component: AdminProductManagementComponent },
+      { path: 'buyers', component: AdminBuyerManagementComponent },
       { path: 'interactions', component: AdminBuyerInteractionsComponent },
+      { path: 'audit-logs', component: AdminAuditLogComponent },
     ]
   },
   {

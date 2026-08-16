@@ -1,4 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
+import { Router } from '@angular/router';
 import { AdminSellerListDto, AdminSellerDetailDto, AdminSellerManagementService } from 'src/app/services/admin-seller-management.service';
 
 @Component({
@@ -53,7 +54,10 @@ export class AdminSellerManagementComponent implements OnInit {
   isEditingNotes = false;
   noteValue = '';
 
-  constructor(private sellerService: AdminSellerManagementService) {}
+  constructor(
+    private sellerService: AdminSellerManagementService,
+    private router: Router
+  ) {}
 
   @HostListener('document:click', ['$event'])
   onDocumentClick(event: Event): void {
@@ -214,6 +218,13 @@ export class AdminSellerManagementComponent implements OnInit {
         }
       });
     }
+  }
+
+  viewSellerProducts(seller: AdminSellerListDto, event: Event): void {
+    event.stopPropagation();
+    this.router.navigate(['/admin/products'], {
+      queryParams: { sellerName: seller.businessName || seller.name }
+    });
   }
 
   toggleSelection(id: string) {

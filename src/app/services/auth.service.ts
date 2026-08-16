@@ -103,21 +103,25 @@ export class AuthService {
   }
 
   // ✅ ROLE HANDLING
+  // sessionStorage (not localStorage): auth state must be isolated per browser tab, not
+  // shared across the whole origin — otherwise logging in as a different role in one tab
+  // silently overwrites the token/role every other open tab is using, and the next request
+  // from that other tab gets rejected with 403 by the backend's role check.
   setRole(role: string) {
-    localStorage.setItem('role', role);
+    sessionStorage.setItem('role', role);
   }
 
   getRole(): string | null {
-    return localStorage.getItem('role');
+    return sessionStorage.getItem('role');
   }
 
   // ✅ TOKEN HANDLING
   setToken(token: string) {
-    localStorage.setItem('accessToken', token);
+    sessionStorage.setItem('accessToken', token);
   }
 
   getToken(): string | null {
-    return localStorage.getItem('accessToken');
+    return sessionStorage.getItem('accessToken');
   }
 
   // ✅ USER ID (generic account id, present for buyer/seller/admin alike)
@@ -138,29 +142,37 @@ export class AuthService {
     return sessionStorage.getItem('adminId');
   }
 
+  setAdminName(name: string) {
+    sessionStorage.setItem('adminName', name);
+  }
+
+  getAdminName(): string | null {
+    return sessionStorage.getItem('adminName');
+  }
+
   // ✅ SELLER HELPERS
   setSellerId(sellerId: string) {
-    localStorage.setItem('sellerId', sellerId);
+    sessionStorage.setItem('sellerId', sellerId);
   }
 
   getSellerId(): string | null {
-    return localStorage.getItem('sellerId');
+    return sessionStorage.getItem('sellerId');
   }
 
   setSellerName(name: string) {
-    localStorage.setItem('sellerName', name);
+    sessionStorage.setItem('sellerName', name);
   }
 
   getSellerName(): string | null {
-    return localStorage.getItem('sellerName');
+    return sessionStorage.getItem('sellerName');
   }
 
   setSellerEmail(email: string) {
-    localStorage.setItem('sellerEmail', email);
+    sessionStorage.setItem('sellerEmail', email);
   }
 
   setSellerPhone(phone: string) {
-    localStorage.setItem('sellerPhone', phone);
+    sessionStorage.setItem('sellerPhone', phone);
   }
 
   // ✅ BUYER HELPERS
@@ -198,13 +210,13 @@ export class AuthService {
 
   // LOGOUT
   logout() {
-    localStorage.removeItem('accessToken');
-    localStorage.removeItem('role');
-    localStorage.removeItem('adminName');
-    localStorage.removeItem('sellerId');
-    localStorage.removeItem('sellerName');
-    localStorage.removeItem('sellerEmail');
-    localStorage.removeItem('sellerPhone');
+    sessionStorage.removeItem('accessToken');
+    sessionStorage.removeItem('role');
+    sessionStorage.removeItem('adminName');
+    sessionStorage.removeItem('sellerId');
+    sessionStorage.removeItem('sellerName');
+    sessionStorage.removeItem('sellerEmail');
+    sessionStorage.removeItem('sellerPhone');
     sessionStorage.removeItem('userId');
     sessionStorage.removeItem('adminId');
     sessionStorage.removeItem('buyerId');

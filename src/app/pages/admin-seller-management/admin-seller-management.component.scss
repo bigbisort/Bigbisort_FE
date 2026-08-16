@@ -201,6 +201,15 @@ $cream-bg: #fdfaf3;
   gap: 8px;
   color: $orange;
   font-weight: 500;
+
+  &.clickable {
+    cursor: pointer;
+    transition: color 0.1s;
+    &:hover {
+      color: darken($orange, 10%);
+      text-decoration: underline;
+    }
+  }
 }
 
 .location-info {

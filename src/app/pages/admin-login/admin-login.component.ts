@@ -62,7 +62,7 @@ export class AdminLoginComponent implements OnInit {
     }
 
     if (res.userName) {
-      localStorage.setItem('adminName', res.userName);
+      this.auth.setAdminName(res.userName);
     }
 
     if (res.userId) {

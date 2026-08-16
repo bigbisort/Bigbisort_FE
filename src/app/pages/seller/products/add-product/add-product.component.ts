@@ -309,7 +309,7 @@ export class AddProductComponent implements OnInit {
 
   submit(status: string) {
     this.isSubmitting = true;
-    const sellerId = localStorage.getItem('sellerId') || 'temp-seller'; // fallback if null
+    const sellerId = sessionStorage.getItem('sellerId') || 'temp-seller'; // fallback if null
 
     // Date formatting matching step4 "2026-03-29"
     let hardvestDate = null;

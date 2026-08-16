@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import {
   AdminProductDetailDto,
   AdminProductListDto,
@@ -11,7 +12,7 @@ interface ProductCategoryOption {
   label: string;
 }
 
-type ReviewTab = 'REVIEW' | 'APPROVED' | 'MEDIA' | 'CATEGORIES';
+type ReviewTab = 'ALL' | 'REVIEW' | 'APPROVED' | 'MEDIA' | 'CATEGORIES';
 
 @Component({
   selector: 'app-admin-product-management',
@@ -48,10 +49,18 @@ export class AdminProductManagementComponent implements OnInit {
 
   constructor(
     private productService: AdminProductManagementService,
-    private onboardingService: OnboardingService
+    private onboardingService: OnboardingService,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    // Arriving from another admin screen (e.g. Seller Management's "Products" link) via
+    // ?sellerName= — reuse the existing seller-name search box instead of a separate filter.
+    const sellerName = this.route.snapshot.queryParamMap.get('sellerName');
+    if (sellerName) {
+      this.sellerNameQuery = sellerName;
+      this.activeTab = 'ALL';
+    }
     this.loadProducts();
     this.loadCategories();
   }
@@ -78,7 +87,7 @@ export class AdminProductManagementComponent implements OnInit {
 
   refresh(): void {
     this.loadCategories();
-    if (this.activeTab === 'REVIEW' || this.activeTab === 'APPROVED') {
+    if (this.activeTab === 'ALL' || this.activeTab === 'REVIEW' || this.activeTab === 'APPROVED') {
       this.loadProducts();
     }
   }
@@ -110,7 +119,7 @@ export class AdminProductManagementComponent implements OnInit {
     this.currentPage = 0;
     this.categoryFilter = '';
     this.closeDetails();
-    if (tab === 'REVIEW' || tab === 'APPROVED') {
+    if (tab === 'ALL' || tab === 'REVIEW' || tab === 'APPROVED') {
       this.loadProducts();
     } else if (tab === 'CATEGORIES') {
       this.loadCategories();

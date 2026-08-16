@@ -58,7 +58,7 @@ export class Step4ProductsComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sellerId = localStorage.getItem('sellerId') || '';
+    this.sellerId = sessionStorage.getItem('sellerId') || '';
     
     // Check local storage for persistent form data
     const savedState = localStorage.getItem(`step4_${this.sellerId}`);

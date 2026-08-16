@@ -40,7 +40,7 @@ export class Step3FarmComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sellerId = localStorage.getItem('sellerId') || '';
+    this.sellerId = sessionStorage.getItem('sellerId') || '';
     this.loadCrops();
     this.loadDropdownData();
     

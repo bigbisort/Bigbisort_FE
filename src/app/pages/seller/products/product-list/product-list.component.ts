@@ -43,7 +43,7 @@ export class ProductListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.sellerId = localStorage.getItem('sellerId') || '';
+    this.sellerId = sessionStorage.getItem('sellerId') || '';
     this.loadProducts();
   }
 

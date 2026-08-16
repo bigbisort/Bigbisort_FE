@@ -36,7 +36,7 @@ export class Step2VerificationComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.sellerId = localStorage.getItem('sellerId') || '';
+    this.sellerId = sessionStorage.getItem('sellerId') || '';
   }
 
   onFileSelected(event: Event, docType: string, side?: string) {
