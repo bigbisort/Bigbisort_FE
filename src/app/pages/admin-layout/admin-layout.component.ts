@@ -16,6 +16,7 @@ export class AdminLayoutComponent {
     { label: 'Product Management', icon: 'bi-box-seam-fill', route: '/admin/products', active: false },
     { label: 'Buyer Management', icon: 'bi-people-fill', route: '/admin/buyers', active: false },
     { label: 'Buyer Interactions', icon: 'bi-chat-dots-fill', route: '/admin/interactions', active: false },
+    { label: 'Seller Interactions', icon: 'bi-chat-dots-fill', route: '/admin/seller-interactions', active: false },
     { label: 'Seller-Buyer Mapping', icon: 'bi-diagram-3-fill', route: '/admin/mappings', active: false },
     { label: 'Export & Orders', icon: 'bi-truck', route: '/admin/orders', active: false },
     { label: 'Payments & Finance', icon: 'bi-wallet2', route: '/admin/payments', active: false },

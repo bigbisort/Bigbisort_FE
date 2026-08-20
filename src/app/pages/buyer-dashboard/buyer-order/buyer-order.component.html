@@ -19,6 +19,9 @@
       <div class="toolbar-left">
         <button class="toolbar-btn">All Time <span class="chev">⌄</span></button>
         <button class="toolbar-btn"><span class="ic">▤</span> Filters</button>
+        <button class="toolbar-btn toolbar-refresh" title="Refresh" [disabled]="loading" (click)="refresh()">
+          <i class="bi bi-arrow-clockwise" [class.spinning]="loading"></i>
+        </button>
       </div>
       <div class="toolbar-right" *ngIf="filteredOrders.length > 0">
         Showing {{ rangeStart }}–{{ rangeEnd }} of {{ filteredOrders.length }} orders
@@ -31,9 +34,12 @@
           <tr>
             <th>Order ID</th>
             <th>Product</th>
+            <th>Variety</th>
             <th>Quantity</th>
-            <th>Order Date</th>
+            <th>Quality</th>
+            <th>Expected Delivery</th>
             <th>Status</th>
+            <th>Payment</th>
             <th class="right">Amount</th>
             <th></th>
           </tr>

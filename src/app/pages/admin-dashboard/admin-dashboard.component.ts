@@ -45,6 +45,14 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
     revenue: true
   };
 
+  // Tracks a failed fetch per section so the template can show an honest
+  // "failed to load" state instead of silently displaying stale/fake numbers.
+  loadError = {
+    stats: false,
+    approvals: false,
+    revenue: false
+  };
+
   private refreshInterval: any;
 
   // Stat card configuration
@@ -104,6 +112,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
 
   loadStats(): void {
     this.loading.stats = true;
+    this.loadError.stats = false;
     this.dashboardService.getStats().subscribe({
       next: (data) => {
         this.stats = data;
@@ -112,14 +121,14 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error('Failed to load stats:', err);
         this.loading.stats = false;
-        // Use mock data for demo
-        this.stats = { totalSellers: 1205, totalBuyers: 876, activeProducts: 342, activeExportDeals: 58 };
+        this.loadError.stats = true;
       }
     });
   }
 
   loadPendingApprovals(): void {
     this.loading.approvals = true;
+    this.loadError.approvals = false;
     this.dashboardService.getPendingApprovals().subscribe({
       next: (data) => {
         this.approvals = data;
@@ -128,14 +137,14 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error('Failed to load approvals:', err);
         this.loading.approvals = false;
-        // Use mock data for demo
-        this.approvals = { sellerVerifications: 1, productListings: 14, exportDeals: 5 };
+        this.loadError.approvals = true;
       }
     });
   }
 
   loadRevenueSnapshot(): void {
     this.loading.revenue = true;
+    this.loadError.revenue = false;
     this.dashboardService.getRevenueSnapshot().subscribe({
       next: (data) => {
         this.revenue = data;
@@ -144,13 +153,7 @@ export class AdminDashboardComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error('Failed to load revenue:', err);
         this.loading.revenue = false;
-        // Use mock data for demo (in paise)
-        this.revenue = {
-          todayRevenue: 36000000,
-          monthRevenue: 245000000,
-          pendingPayment: 78000000,
-          ytdRevenue: 12400000000
-        };
+        this.loadError.revenue = true;
       }
     });
   }

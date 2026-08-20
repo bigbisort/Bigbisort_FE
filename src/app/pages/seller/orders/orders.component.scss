@@ -20,14 +20,29 @@
 
 .filter-bar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
+  gap: 12px;
   margin-bottom: 16px;
+  flex-wrap: wrap;
 }
 
 .search-wrap {
   position: relative;
-  width: 350px;
+  flex: 1;
+  min-width: 220px;
+}
+
+.btn-clear {
+  padding: 10px 16px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background: white;
+  color: #616161;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+
+  &:hover { background: #f5f5f5; }
 }
 
 .search-wrap i {
@@ -117,48 +132,23 @@ tr:last-child td {
   display: inline-block;
 }
 
-.badge-pending {
+.badge-processing {
   background-color: #fff8e1;
   color: #e65100;
 }
 
-.badge-approved {
+.badge-transit {
+  background-color: #e3f2fd;
+  color: #0d47a1;
+}
+
+.badge-delivered {
   background-color: #e8f5e9;
   color: #1b5e20;
 }
 
-.badge-rejected {
+.badge-cancelled {
   background-color: #ffebee;
-  color: #b71c1c;
-}
-
-.action-buttons {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-
-.action-buttons button {
-  background: transparent;
-  padding: 4px 12px;
-  border-radius: 4px;
-  font-size: 13px;
-  cursor: pointer;
-  font-weight: 500;
-}
-
-.btn-view {
-  border: 1px solid #e0e0e0;
-  color: #616161;
-}
-
-.btn-approve {
-  border: 1px solid #1b5e20;
-  color: #1b5e20;
-}
-
-.btn-reject {
-  border: 1px solid #b71c1c;
   color: #b71c1c;
 }
 

@@ -61,6 +61,30 @@
   color: var(--muted, #7c8577);
 }
 
+.pay-badge {
+  display: inline-block;
+  padding: 4px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+
+  &.pay-completed {
+    background: #e4f0e3;
+    color: var(--forest, #1e3b23);
+  }
+
+  &.pay-partial {
+    background: #fbf0d9;
+    color: var(--gold-dark, #b98a1e);
+  }
+
+  &.pay-none {
+    background: #fbeae8;
+    color: #c2483c;
+  }
+}
+
 .cell-amount {
   text-align: right;
   font-weight: 700;

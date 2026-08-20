@@ -35,6 +35,7 @@ import { AdminLayoutComponent } from './pages/admin-layout/admin-layout.componen
 import { AdminSellerManagementComponent } from './pages/admin-seller-management/admin-seller-management.component';
 import { AdminBuyerManagementComponent } from './pages/admin-buyer-management/admin-buyer-management.component';
 import { AdminAuditLogComponent } from './pages/admin-audit-log/admin-audit-log.component';
+import { AdminOrderManagementComponent } from './pages/admin-order-management/admin-order-management.component';
 
 // Seller Onboarding Components
 import { OnboardingLayoutComponent } from './pages/seller-onboarding/onboarding-layout/onboarding-layout.component';
@@ -49,6 +50,7 @@ import { OrderRowComponent } from './pages/buyer-dashboard/buyer-order/order-row
 import { OrderDetailsPanelComponent } from './pages/buyer-dashboard/buyer-order/order-details-panel/order-details-panel.component';
 import { MessagesComponent } from './pages/buyer-dashboard/messages/messages.component';
 import { AdminBuyerInteractionsComponent } from './pages/admin-buyer-interactions/admin-buyer-interactions.component';
+import { AdminSellerInteractionsComponent } from './pages/admin-seller-interactions/admin-seller-interactions.component';
 import { AdminProductManagementComponent } from './pages/admin-product-management/admin-product-management.component';
 
 @NgModule({ declarations: [
@@ -60,6 +62,7 @@ import { AdminProductManagementComponent } from './pages/admin-product-managemen
         AdminSellerManagementComponent,
         AdminBuyerManagementComponent,
         AdminAuditLogComponent,
+        AdminOrderManagementComponent,
         SellerDashboardComponent,
         BuyerDashboardComponent,
         HeaderComponent,
@@ -95,6 +98,7 @@ import { AdminProductManagementComponent } from './pages/admin-product-managemen
         OrderDetailsPanelComponent,
         MessagesComponent,
         AdminBuyerInteractionsComponent,
+        AdminSellerInteractionsComponent,
         AdminProductManagementComponent
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,

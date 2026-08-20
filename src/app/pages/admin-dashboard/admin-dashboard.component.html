@@ -8,10 +8,11 @@
       </div>
       <div class="stat-card-content">
         <span class="stat-label">{{ card.label }}</span>
-        <span class="stat-value" *ngIf="!loading.stats">
+        <span class="stat-value" *ngIf="!loading.stats && !loadError.stats">
           {{ formatIndian(getStatValue(card.key)) }}
         </span>
         <span class="stat-value stat-loading" *ngIf="loading.stats">...</span>
+        <span class="stat-value stat-error" *ngIf="!loading.stats && loadError.stats" title="Failed to load from server">—</span>
       </div>
     </div>
   </div>
@@ -25,11 +26,13 @@
         <h2 class="widget-title">Pending Approvals</h2>
       </div>
       <div class="widget-body">
+        <div class="approval-load-error" *ngIf="loadError.approvals">Failed to load pending approvals from server.</div>
+
         <!-- Seller Verifications -->
         <div class="approval-row">
           <div class="approval-info">
             <span class="approval-badge" [ngClass]="{'badge-alert': approvals.sellerVerifications > 0}">
-              {{ approvals.sellerVerifications }}
+              {{ loadError.approvals ? '—' : approvals.sellerVerifications }}
             </span>
             <span class="approval-label">Seller Verifications</span>
           </div>
@@ -40,7 +43,7 @@
         <div class="approval-row">
           <div class="approval-info">
             <span class="approval-badge" [ngClass]="{'badge-warning': approvals.productListings > 0}">
-              {{ approvals.productListings }}
+              {{ loadError.approvals ? '—' : approvals.productListings }}
             </span>
             <span class="approval-label">Product Listings</span>
           </div>
@@ -51,7 +54,7 @@
         <div class="approval-row">
           <div class="approval-info">
             <span class="approval-badge" [ngClass]="{'badge-info': approvals.exportDeals > 0}">
-              {{ approvals.exportDeals }}
+              {{ loadError.approvals ? '—' : approvals.exportDeals }}
             </span>
             <span class="approval-label">Export Deals</span>
           </div>

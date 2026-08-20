@@ -3,12 +3,12 @@ import { Conversation, ConversationMessage, MessagingService } from 'src/app/ser
 import { WebSocketService } from 'src/app/services/websocket.service';
 
 @Component({
-  selector: 'app-admin-buyer-interactions',
-  templateUrl: './admin-buyer-interactions.component.html',
-  styleUrls: ['./admin-buyer-interactions.component.scss'],
+  selector: 'app-admin-seller-interactions',
+  templateUrl: './admin-seller-interactions.component.html',
+  styleUrls: ['./admin-seller-interactions.component.scss'],
   standalone: false,
 })
-export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
+export class AdminSellerInteractionsComponent implements OnInit, OnDestroy {
   conversations: Conversation[] = [];
   selectedConversation: Conversation | null = null;
   messages: ConversationMessage[] = [];
@@ -39,8 +39,8 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
 
   private upsertConversation(updated: Conversation): void {
     // The admin topic broadcasts every conversation update (buyer + seller) — this screen only
-    // cares about buyer conversations, so ignore anything else rather than leaking it into the list.
-    if (updated.participantType !== 'BUYER') return;
+    // cares about seller conversations, so ignore anything else rather than leaking it into the list.
+    if (updated.participantType !== 'SELLER') return;
 
     const index = this.conversations.findIndex((c) => c.id === updated.id);
     const next = [...this.conversations];
@@ -58,7 +58,7 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
 
   loadConversations(): void {
     this.loading = true;
-    this.messagingService.getAdminConversations('BUYER').subscribe({
+    this.messagingService.getAdminConversations('SELLER').subscribe({
       next: (res) => {
         this.conversations = res?._embedded?.conversationResponseBeanList || [];
         this.loading = false;

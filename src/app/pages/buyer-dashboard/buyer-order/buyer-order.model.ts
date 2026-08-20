@@ -7,12 +7,17 @@ export type UiOrderStatus = 'PROCESSING' | 'SHIPPED' | 'DELIVERED' | 'CANCELLED'
 
 export type PaymentStatus = 'PENDING' | 'PARTIALLY_PAID' | 'PAID';
 
+export interface OrderVariety {
+  varietyName?: string;
+}
+
 export interface OrderProduct {
   productId: string;
   productName: string;
   category?: string;
   location?: string;
   country?: string;
+  varietiesList?: OrderVariety[];
 }
 
 export interface BuyerInfo {
@@ -35,6 +40,7 @@ export interface BuyerOrder {
   shippingName?: string;
   estimationDateOfArrival?: string | null;
   orderStatus: BackendOrderStatus;
+  grade?: string | null;
   buyerInfoBean?: BuyerInfo;
   productResponseBeanSet?: OrderProduct[];
 

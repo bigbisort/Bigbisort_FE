@@ -1,14 +1,17 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 import { Conversation, ConversationMessage, MessagingService } from 'src/app/services/messaging.service';
 import { WebSocketService } from 'src/app/services/websocket.service';
 
 @Component({
-  selector: 'app-admin-buyer-interactions',
-  templateUrl: './admin-buyer-interactions.component.html',
-  styleUrls: ['./admin-buyer-interactions.component.scss'],
-  standalone: false,
+  selector: 'app-seller-messages',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './messages.component.html',
+  styleUrls: ['./messages.component.scss']
 })
-export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
+export class SellerMessagesComponent implements OnInit, OnDestroy {
   conversations: Conversation[] = [];
   selectedConversation: Conversation | null = null;
   messages: ConversationMessage[] = [];
@@ -16,7 +19,13 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
   loading = false;
   sending = false;
 
-  private unsubscribeAdminTopic: (() => void) | null = null;
+  creatingNew = false;
+  newMessage = '';
+  startingConversation = false;
+  newConversationError = '';
+
+  private sellerId: string | null = null;
+  private unsubscribeParticipantTopic: (() => void) | null = null;
   private unsubscribeConversationTopic: (() => void) | null = null;
 
   constructor(
@@ -25,23 +34,27 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit(): void {
+    this.sellerId = sessionStorage.getItem('sellerId');
     this.loadConversations();
-    this.unsubscribeAdminTopic = this.webSocketService.subscribe<Conversation>(
-      '/topic/admin/conversations',
+    this.subscribeToParticipantUpdates();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeParticipantTopic?.();
+    this.unsubscribeConversationTopic?.();
+  }
+
+  // Live updates whenever any of this seller's conversations change (new admin reply, read
+  // receipt, etc.) — covers the "another tab/user updated it" case without a manual reload.
+  private subscribeToParticipantUpdates(): void {
+    if (!this.sellerId) return;
+    this.unsubscribeParticipantTopic = this.webSocketService.subscribe<Conversation>(
+      `/topic/participant/SELLER/${this.sellerId}`,
       (updated) => this.upsertConversation(updated)
     );
   }
 
-  ngOnDestroy(): void {
-    this.unsubscribeAdminTopic?.();
-    this.unsubscribeConversationTopic?.();
-  }
-
   private upsertConversation(updated: Conversation): void {
-    // The admin topic broadcasts every conversation update (buyer + seller) — this screen only
-    // cares about buyer conversations, so ignore anything else rather than leaking it into the list.
-    if (updated.participantType !== 'BUYER') return;
-
     const index = this.conversations.findIndex((c) => c.id === updated.id);
     const next = [...this.conversations];
     if (index >= 0) {
@@ -57,8 +70,9 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
   }
 
   loadConversations(): void {
+    if (!this.sellerId) return;
     this.loading = true;
-    this.messagingService.getAdminConversations('BUYER').subscribe({
+    this.messagingService.getConversations('SELLER', this.sellerId).subscribe({
       next: (res) => {
         this.conversations = res?._embedded?.conversationResponseBeanList || [];
         this.loading = false;
@@ -75,6 +89,7 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
   }
 
   openConversation(conversation: Conversation): void {
+    this.creatingNew = false;
     this.selectedConversation = conversation;
     this.messages = [];
 
@@ -88,7 +103,7 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
       next: (messages) => (this.messages = messages),
       error: (err) => console.error('Error fetching messages:', err),
     });
-    this.messagingService.markRead(conversation.id, 'ADMIN').subscribe({
+    this.messagingService.markRead(conversation.id, 'SELLER').subscribe({
       next: () => (conversation.unreadCount = 0),
       error: () => {},
     });
@@ -105,7 +120,7 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
     if (!this.selectedConversation || !this.replyText.trim()) return;
     const text = this.replyText.trim().slice(0, 250);
     this.sending = true;
-    this.messagingService.reply(this.selectedConversation.id, 'ADMIN', text).subscribe({
+    this.messagingService.reply(this.selectedConversation.id, 'SELLER', text).subscribe({
       next: () => {
         this.replyText = '';
         this.sending = false;
@@ -114,6 +129,45 @@ export class AdminBuyerInteractionsComponent implements OnInit, OnDestroy {
       error: (err) => {
         console.error('Error sending reply:', err);
         this.sending = false;
+      },
+    });
+  }
+
+  refresh(): void {
+    this.loadConversations();
+  }
+
+  openNewConversationForm(): void {
+    this.closeConversation();
+    this.newMessage = '';
+    this.newConversationError = '';
+    this.creatingNew = true;
+  }
+
+  cancelNewConversation(): void {
+    this.creatingNew = false;
+  }
+
+  startConversation(): void {
+    if (!this.sellerId || !this.newMessage.trim()) return;
+    this.startingConversation = true;
+    this.newConversationError = '';
+    const messageText = this.newMessage.trim().slice(0, 250);
+    // No subject field in the UI — derive a short one from the message itself so the
+    // conversation still shows something meaningful in the list/admin inbox.
+    const subject = messageText.length > 50 ? messageText.slice(0, 50) + '…' : messageText;
+
+    this.messagingService.startConversation('SELLER', this.sellerId, subject, messageText).subscribe({
+      next: (conversation) => {
+        this.conversations = [conversation, ...this.conversations];
+        this.creatingNew = false;
+        this.startingConversation = false;
+        this.openConversation(conversation);
+      },
+      error: (err) => {
+        console.error('Error starting conversation:', err);
+        this.startingConversation = false;
+        this.newConversationError = 'Failed to send. Please try again.';
       },
     });
   }

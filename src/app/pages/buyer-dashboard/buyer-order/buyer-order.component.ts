@@ -113,4 +113,8 @@ export class BuyerOrderComponent implements OnInit {
   onClosePanel(): void {
     this.selectedOrder = null;
   }
+
+  refresh(): void {
+    this.loadOrders();
+  }
 }

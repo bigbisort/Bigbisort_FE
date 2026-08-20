@@ -45,6 +45,10 @@ export class MessagingService {
     return this.http.post<Conversation>(`${this.baseUrl}/quote-request`, { buyerId, products });
   }
 
+  startConversation(participantType: ParticipantType, participantId: string, subject: string, messageText: string): Observable<Conversation> {
+    return this.http.post<Conversation>(`${this.baseUrl}/start-conversation`, { participantType, participantId, subject, messageText });
+  }
+
   getConversations(participantType: ParticipantType, participantId: string, page = 0, size = 50): Observable<any> {
     const params = new HttpParams()
       .set('participantType', participantType)
@@ -54,8 +58,9 @@ export class MessagingService {
     return this.http.get(`${this.baseUrl}/conversations`, { params });
   }
 
-  getAdminConversations(page = 0, size = 50): Observable<any> {
-    const params = new HttpParams().set('page', page).set('size', size);
+  getAdminConversations(participantType?: ParticipantType, page = 0, size = 50): Observable<any> {
+    let params = new HttpParams().set('page', page).set('size', size);
+    if (participantType) params = params.set('participantType', participantType);
     return this.http.get(`${this.baseUrl}/admin/conversations`, { params });
   }
 

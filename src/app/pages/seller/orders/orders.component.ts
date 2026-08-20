@@ -1,6 +1,27 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { Subject } from 'rxjs';
+import { debounceTime } from 'rxjs/operators';
+import { SellerOrderService } from 'src/app/services/seller-order.service';
+
+interface SellerOrderRow {
+  orderId: string;
+  productName: string;
+  buyerName: string;
+  quantity: string;
+  status: string;
+}
+
+const STATUS_OPTIONS = [
+  { value: '', label: 'All Status' },
+  { value: 'PROCESSING', label: 'Processing' },
+  { value: 'SHIPPED', label: 'Shipped' },
+  { value: 'IN_TRANSIT', label: 'In-Transit' },
+  { value: 'CANCELLED', label: 'Cancelled' },
+  { value: 'RETURNED', label: 'Returned' },
+  { value: 'DELIVERED', label: 'Delivered' }
+];
 
 @Component({
   selector: 'app-orders',
@@ -10,104 +31,99 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./orders.component.scss']
 })
 export class OrdersComponent implements OnInit {
-  // Mock Data mimicking the provided wireframe image
-  orders = [
-    { id: 1, productName: 'Apples', productSubtitle: 'Kashmir Apple', buyerName: 'Priya Exports', quantity: '400 kg', requestDate: '22 June 2026', status: 'Pending' },
-    { id: 2, productName: 'Lettuce', productSubtitle: 'Iceberg Lettuce', buyerName: 'Dell Fresh', quantity: '300 kg', requestDate: '20 June 2026', status: 'Approved' },
-    { id: 3, productName: 'Mangoes', productSubtitle: 'Alphonso', buyerName: 'Farm Select', quantity: '200 kg', requestDate: '18 June 2026', status: 'Rejected' },
-    { id: 4, productName: 'Tomatoes', productSubtitle: 'Cherry', buyerName: 'Agro Mart', quantity: '150 kg', requestDate: '17 June 2026', status: 'Pending' }
-  ];
+  orders: SellerOrderRow[] = [];
+  loading = false;
 
-  filteredOrders: any[] = [];
-  paginatedOrders: any[] = [];
+  sellerId = '';
 
-  searchTerm = '';
-  selectedStatus = 'All Status';
-  statusOptions = ['All Status', 'Pending', 'Approved', 'Rejected'];
+  productNameFilter = '';
+  buyerNameFilter = '';
+  selectedStatus = '';
+  statusOptions = STATUS_OPTIONS;
+  private filterSubject = new Subject<void>();
 
   // Pagination
-  currentPage = 1;
+  currentPage = 0;
   pageSize = 10;
   totalPages = 1;
+  totalElements = 0;
 
-  constructor() {}
+  constructor(private sellerOrderService: SellerOrderService) {
+    this.filterSubject.pipe(debounceTime(350)).subscribe(() => {
+      this.currentPage = 0;
+      this.loadOrders();
+    });
+  }
 
   ngOnInit() {
-    this.applyFilters();
+    this.sellerId = sessionStorage.getItem('sellerId') || '';
+    this.loadOrders();
   }
 
-  applyFilters() {
-    let temp = [...this.orders];
+  loadOrders() {
+    this.loading = true;
+    this.sellerOrderService.getSellerOrders(
+      this.sellerId, this.buyerNameFilter, this.productNameFilter, this.selectedStatus,
+      this.currentPage, this.pageSize
+    ).subscribe({
+      next: (res: any) => {
+        const embedded = res?._embedded?.buyerOrderResponseBeanList || [];
+        this.orders = embedded.map((o: any) => ({
+          orderId: o.orderId,
+          productName: (o.productResponseBeanSet || []).map((p: any) => p.productName).join(', ') || '—',
+          buyerName: o.buyerInfoBean?.name || '—',
+          quantity: o.quantity || '—',
+          status: o.orderStatus
+        }));
+        this.totalElements = res?.page?.totalElements || 0;
+        this.totalPages = res?.page?.totalPages || 1;
+        this.loading = false;
+      },
+      error: (err) => {
+        console.error('Failed to load orders', err);
+        this.orders = [];
+        this.loading = false;
+      }
+    });
+  }
 
-    if (this.searchTerm) {
-      const lowerTerm = this.searchTerm.toLowerCase();
-      temp = temp.filter(o => 
-        o.productName.toLowerCase().includes(lowerTerm) || 
-        o.buyerName.toLowerCase().includes(lowerTerm)
-      );
+  onFilterChange() {
+    this.filterSubject.next();
+  }
+
+  clearFilters() {
+    this.productNameFilter = '';
+    this.buyerNameFilter = '';
+    this.selectedStatus = '';
+    this.onFilterChange();
+  }
+
+  statusLabel(status: string): string {
+    return this.statusOptions.find(s => s.value === status)?.label || status;
+  }
+
+  statusClass(status: string): string {
+    switch (status) {
+      case 'DELIVERED': return 'badge-delivered';
+      case 'CANCELLED':
+      case 'RETURNED': return 'badge-cancelled';
+      case 'SHIPPED':
+      case 'IN_TRANSIT': return 'badge-transit';
+      default: return 'badge-processing';
     }
-
-    if (this.selectedStatus !== 'All Status') {
-      temp = temp.filter(o => o.status === this.selectedStatus);
-    }
-
-    this.filteredOrders = temp;
-    this.totalPages = Math.ceil(this.filteredOrders.length / this.pageSize) || 1;
-    
-    if (this.currentPage > this.totalPages) {
-      this.currentPage = 1;
-    }
-
-    this.updatePagination();
-  }
-
-  updatePagination() {
-    const startIndex = (this.currentPage - 1) * this.pageSize;
-    this.paginatedOrders = this.filteredOrders.slice(startIndex, startIndex + this.pageSize);
-  }
-
-  onSearch() {
-    this.applyFilters();
-  }
-
-  onStatusChange() {
-    this.applyFilters();
-  }
-
-  approve(order: any) {
-    order.status = 'Approved';
-    this.applyFilters();
-  }
-
-  reject(order: any) {
-    order.status = 'Rejected';
-    this.applyFilters();
-  }
-
-  view(order: any) {
-    console.log('Viewing order:', order);
   }
 
   prevPage() {
-    if (this.currentPage > 1) {
+    if (this.currentPage > 0) {
       this.currentPage--;
-      this.updatePagination();
+      this.loadOrders();
     }
   }
 
   nextPage() {
-    if (this.currentPage < this.totalPages) {
+    if (this.currentPage < this.totalPages - 1) {
       this.currentPage++;
-      this.updatePagination();
+      this.loadOrders();
     }
-  }
-
-  goToPage(page: number) {
-    this.currentPage = page;
-    this.updatePagination();
-  }
-
-  getPageNumbers(): number[] {
-    return Array.from({ length: this.totalPages }, (_, i) => i + 1);
   }
 }

@@ -7,7 +7,9 @@ import { AdminDashboardComponent } from './pages/admin-dashboard/admin-dashboard
 import { AdminSellerManagementComponent } from './pages/admin-seller-management/admin-seller-management.component';
 import { AdminBuyerManagementComponent } from './pages/admin-buyer-management/admin-buyer-management.component';
 import { AdminAuditLogComponent } from './pages/admin-audit-log/admin-audit-log.component';
+import { AdminOrderManagementComponent } from './pages/admin-order-management/admin-order-management.component';
 import { AdminBuyerInteractionsComponent } from './pages/admin-buyer-interactions/admin-buyer-interactions.component';
+import { AdminSellerInteractionsComponent } from './pages/admin-seller-interactions/admin-seller-interactions.component';
 import { AdminProductManagementComponent } from './pages/admin-product-management/admin-product-management.component';
 import { MessagesComponent } from './pages/buyer-dashboard/messages/messages.component';
 import { BuyerDashboardComponent } from './pages/buyer-dashboard/buyer-dashboard.component';
@@ -92,6 +94,8 @@ const routes: Routes = [
       { path: 'products', component: AdminProductManagementComponent },
       { path: 'buyers', component: AdminBuyerManagementComponent },
       { path: 'interactions', component: AdminBuyerInteractionsComponent },
+      { path: 'seller-interactions', component: AdminSellerInteractionsComponent },
+      { path: 'orders', component: AdminOrderManagementComponent },
       { path: 'audit-logs', component: AdminAuditLogComponent },
     ]
   },
@@ -122,6 +126,10 @@ const routes: Routes = [
       {
         path: 'payments',
         loadComponent: () => import('./pages/seller/payments/payments.component').then(m => m.PaymentsComponent)
+      },
+      {
+        path: 'messages',
+        loadComponent: () => import('./pages/seller/messages/messages.component').then(m => m.SellerMessagesComponent)
       }
     ]
   },

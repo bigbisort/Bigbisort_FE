@@ -146,6 +146,16 @@ $red-light: #e74c3c;
   animation: pulse 1.5s ease-in-out infinite;
 }
 
+.stat-error {
+  opacity: 0.5;
+}
+
+.approval-load-error {
+  font-size: 13px;
+  color: #b02a2a;
+  padding: 8px 0;
+}
+
 @keyframes pulse {
   0%, 100% { opacity: 0.4; }
   50% { opacity: 0.8; }
