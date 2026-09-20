@@ -4,7 +4,11 @@
     <div class="logo-icon">🌿</div>
     <span class="logo-text">Bigbisort</span>
   </div>
-  <div class="login-link">Already a Seller? <a routerLink="/login">Login</a></div>
+  <!-- Step 1: not yet an account. Steps 2-4: already signed in, so leaving means the dashboard. -->
+  <div class="login-link" *ngIf="currentStep === 1">Already a Seller? <a routerLink="/login">Login</a></div>
+  <div class="login-link" *ngIf="currentStep > 1">
+    <a href="javascript:void(0)" (click)="exitToDashboard()">Finish later → Go to Dashboard</a>
+  </div>
 </div>
 
 <!-- Progress Stepper -->

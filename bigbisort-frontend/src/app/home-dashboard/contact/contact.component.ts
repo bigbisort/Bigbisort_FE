@@ -30,44 +30,21 @@ export class ContactComponent {
 
 
 contactChannels: ContactChannel[] = [
-
     {
-      // 🎯 CHANGE THE ICON STRING HERE 
-      //icon: 'assets/images/ContactUs/plant.png',
-      icon: 'yard',
+      icon: 'inventory_2',
       title: 'Buyer Enquiry',
-      description: 'Get quotations, check availability, logistics details.',
+      description: 'Get quotations, check availability, and logistics details.',
       buttonText: 'Send Enquiry',
       buttonClass: 'buyer',
       route: '/contact/buyer'
     },
     {
-     
-      //icon: 'assets/images/ContactUs/plant.png',
-       icon: 'globe',
+      icon: 'public',
       title: 'Farmer Support',
       description: 'Get listed, update your product data, or ask for help.',
       buttonText: 'Contact Team',
-      buttonClass: 'farmer', // Renamed for better class-to-card mapping
-      route: '/contact/farmer' 
-    },
- 
-    {
-      // icon: 'assets/images/ContactUs/plant.png',
-       icon: 'handshake',
-      title: 'Partnerships',
-      description: 'Join hands to scale India\'s export network.',
-      buttonText: 'Partner with Us',
-      buttonClass: 'partner', // Renamed for better class-to-card mapping
-      route: '/contact/partner' 
-    },
-    {
-      icon: 'robot',
-      title: 'Tech / AI Support',
-      description: 'Facing issues with DeepSeek chat or login?',
-      buttonText: 'Chat with Support',
-      buttonClass: 'tech', // Renamed for better class-to-card mapping
-      route: '/support/chat' 
+      buttonClass: 'farmer',
+      route: '/contact/farmer'
     }
   ];
   constructor() { }
@@ -92,25 +69,10 @@ contactChannels: ContactChannel[] = [
 
 
 
-  aiFeatures: string[] = [
-  "24×7 Instant Assistance",
-  "Product Suggestions for Buyers",
-  "Export Regulation Guidance",
-  "Farmer Listing Support"
-];
-
-// Add these properties to your existing component's class (e.g., ProductsComponent or a new component).
-loggedInBuyerFeatures: string[] = [
-  "Secure",
-  "Instant",
-  "Personalized"
-];
-
-// If you want to list the tags with their own text (for flexibility)
-loggedInBuyerTags: { text: string, color: string }[] = [
-  { text: "SECURE", color: "yellow" },
-  { text: "INSTANT", color: "yellow" },
-  { text: "PERSONALIZED", color: "yellow" }
+loggedInBuyerTags: { text: string }[] = [
+  { text: "SECURE" },
+  { text: "INSTANT" },
+  { text: "PERSONALIZED" }
 ];
 
 
