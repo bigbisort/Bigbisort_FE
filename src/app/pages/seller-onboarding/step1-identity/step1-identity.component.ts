@@ -92,23 +92,25 @@ export class Step1IdentityComponent implements OnInit {
     this.onboardingService.getStates().subscribe(data => this.states = data);
   }
 
-  onStateChange(event?: any) {
+  onStateChange(event?: any, preselectDistrict?: string) {
     if (event) {
       // Extract the state NAME (not code) from the dropdown event
       this.state = typeof event === 'object' ? event.name : event;
     }
     if (this.state) {
-      const oldDistrict = this.district;
-      this.district = ''; // CRITICAL: Reset district on state change
-      
+      // Keep a district only if the caller asked for one or one was already chosen
+      // (returning seller / pincode autofill); otherwise reset it on state change.
+      const wantedDistrict = preselectDistrict || this.district;
+      this.district = '';
+
       // Find the state code for the district API lookup
       const stateCode = this.getStateCode();
       if (stateCode) {
         this.onboardingService.getDistricts(stateCode).subscribe(data => {
           this.districts = data;
-          // Restore district if it was just loaded from API during init
-          if (oldDistrict && this.districts.includes(oldDistrict)) {
-            this.district = oldDistrict;
+          // Only select the district once the list is here, so the dropdown can display it
+          if (wantedDistrict && this.districts.includes(wantedDistrict)) {
+            this.district = wantedDistrict;
           }
         });
       }
@@ -141,19 +143,15 @@ export class Step1IdentityComponent implements OnInit {
     if (this.pincode && this.pincode.length === 6) {
       this.onboardingService.getPincodeInfo(this.pincode).subscribe({
         next: (data) => {
-          if (data.stateId || data.state) {
-            this.state = data.stateId || data.state; // Ref API supports stateId or state abbreviation
-            this.onStateChange();
-            
-            // Wait for districts to load, then select district
-            if (data.district) {
-              setTimeout(() => {
-                this.district = data.district;
-                this.pincodeAutofillSuccess = true;
-              }, 300);
-            } else {
-              this.pincodeAutofillSuccess = true;
-            }
+          // The state dropdown is bound by NAME (valueKey="name"), so use data.state;
+          // fall back to resolving the name from data.stateCode if the name is missing.
+          const stateName = data.state
+            || (this.states.find((s: any) => s.code === data.stateCode)?.name ?? '');
+          if (stateName) {
+            this.state = stateName;
+            // District is applied once the district list for this state has loaded
+            this.onStateChange(undefined, data.district || undefined);
+            this.pincodeAutofillSuccess = true;
           } else {
             this.pincodeAutofillError = true;
           }
@@ -320,9 +318,16 @@ export class Step1IdentityComponent implements OnInit {
 
     this.authService.registerSeller(signupData).subscribe({
       next: (res: any) => {
-        // Store seller data
+        // Store seller data + the token sign-up issued. Steps 2-4 call the protected
+        // /api/onboarding/** endpoints, so without this every upload is a 403.
         if (res.sellerId) {
           this.authService.setSellerId(res.sellerId);
+        }
+        if (res.userId) {
+          this.authService.setUserId(res.userId);
+        }
+        if (res.accessToken) {
+          this.authService.setToken(res.accessToken);
         }
         this.authService.setSellerName(this.fullName.trim());
         this.authService.setSellerEmail(this.email);

@@ -111,9 +111,16 @@ export class RegisterComponent implements OnInit {
 
     this.authService.registerSeller(request).subscribe({
       next: (res: any) => {
-        // Store seller data for pre-population in onboarding
+        // Store seller data for pre-population in onboarding, plus the token
+        // sign-up issued so the protected onboarding endpoints are reachable.
         if (res.sellerId) {
           this.authService.setSellerId(res.sellerId);
+        }
+        if (res.userId) {
+          this.authService.setUserId(res.userId);
+        }
+        if (res.accessToken) {
+          this.authService.setToken(res.accessToken);
         }
         this.authService.setSellerName(this.fullName.trim());
         this.authService.setSellerEmail(this.email);

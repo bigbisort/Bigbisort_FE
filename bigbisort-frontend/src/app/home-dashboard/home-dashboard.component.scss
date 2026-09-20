@@ -16,15 +16,15 @@
 }
 
 /* Logo styling */
+.logo {
+  display: flex;
+  align-items: center;
+  padding: 8px 14px;
+}
+
 .logo img {
   height: 60px; /* adjust size */
   width: 130px;
-  cursor: pointer;
-  transition: transform 0.3s ease-in-out;
-}
-
-.logo img:hover {
-  transform: scale(1.1);
 }
 
 /* Navigation links */
