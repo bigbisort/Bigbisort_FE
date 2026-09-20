@@ -1,5 +1,7 @@
 
 
+<app-enquiry-dialog *ngIf="enquiryOpen" [topic]="selectedTopic" (closed)="enquiryOpen = false"></app-enquiry-dialog>
+
 <section class="hero-section">
   <div class="hero-content">
     <div class="hero-text-content">
@@ -10,13 +12,13 @@
       </p>
 
       <div class="hero-buttons">
-        <button class="hero-btn message-btn" (click)="selectChannel('General Enquiry')">
+        <button class="hero-btn message-btn" (click)="openEnquiry('General Enquiry')">
           <i class="fas fa-comment-dots"></i> Send us a Message
         </button>
         <button class="hero-btn ai-chat-btn" disabled title="Coming soon">
           <i class="fas fa-robot"></i> Talk to Bigbisort AI
         </button>
-        <button class="hero-btn enquiry-btn" (click)="selectChannel('Buyer Enquiry')">
+        <button class="hero-btn enquiry-btn" (click)="openEnquiry('Buyer Enquiry')">
           <i class="fas fa-envelope"></i> Send Enquiry
         </button>
       </div>
@@ -30,198 +32,76 @@
 
 
 
-<section class="contact-channels-section">
+<section class="contact-section">
+  <div class="contact-wrapper">
 
-  <div class="header-content">
-    <h1 class="main-title">Choose the Right Channel to Reach Us</h1>
-    <p class="subtitle">We've made it easy for every kind of visitor.</p>
-
-  </div>
-
-
-<div class="channels-container">
-  <div
-    class="channel-card"
-    *ngFor="let channel of contactChannels"
-    [ngClass]="channel.buttonClass"
-  >
-
-    <div class="icon-area">
-
-      <img
-        *ngIf="channel.icon.includes('/')"
-        [src]="channel.icon"
-        [alt]="channel.title + ' Icon'"
-
-        style="height: 50px; width: 50px;"
-      />
-
-   <i class="material-symbols-outlined">{{ channel.icon }}</i>
-
-    </div>
-
-    <h2 class="card-title">{{ channel.title }}</h2>
-
-    <p class="card-description">{{ channel.description }}</p>
-
-<button
-  (click)="selectChannel(channel.title)"
-  [ngClass]="['btn-channel', channel.buttonClass + '-btn']"
-  type="button"
->
-  {{ channel.buttonText }}
-</button>
-
-
-
-  </div>
-</div>
-</section>
-
-
-<!-- Working contact form. Every CTA on this page (WhatsApp, hero buttons,
-     channel cards, footer phone) routes here until a live chat/WhatsApp
-     number is wired in — one real way to reach the team beats four fake ones. -->
-<section class="contact-form-section" id="contact-form">
-  <div class="form-wrapper">
-    <h2 class="main-title">Send Us a Message</h2>
-    <p class="subtitle">Pick what this is about, and we'll route it to the right desk.</p>
-
-    <form (ngSubmit)="onSubmit()" #contactForm="ngForm">
-      <div>
-        <label for="topic">This enquiry is about</label>
-        <select id="topic" name="topic" [(ngModel)]="contactData.topic">
-          <option>General Enquiry</option>
-          <option>Buyer Enquiry</option>
-          <option>Farmer Support</option>
-          <option>Partnerships</option>
-          <option>Tech / AI Support</option>
-        </select>
-      </div>
-
-      <div>
-        <label for="name">Your Name</label>
-        <input id="name" name="name" type="text" [(ngModel)]="contactData.name" required placeholder="e.g. Priya Raman" />
-      </div>
-
-      <div>
-        <label for="email">Email Address</label>
-        <input id="email" name="email" type="email" [(ngModel)]="contactData.email" required placeholder="you@company.com" />
-      </div>
-
-      <div>
-        <label for="message">Message</label>
-        <textarea id="message" name="message" [(ngModel)]="contactData.message" required placeholder="Tell us what you need — product, quantity, destination, or how we can help."></textarea>
-      </div>
-
-      <button type="submit" class="submit-btn" [disabled]="contactForm.invalid">Send Message</button>
-    </form>
-  </div>
-</section>
-
-
-<section class="ai-cta-section">
-  <div class="ai-cta-content">
-
-    <div class="ai-header">
-      <div class="logo-text">
-        <i class="ai-icon">🤖</i>
-        <h2>Meet Bigbisort AI — Powered by DeepSeek</h2>
-        <span class="preview-badge">Preview</span>
-      </div>
-      <p class="ai-tagline">
-        Ask about pricing, logistics, order tracking, or farmer registration –
-        AI will respond instantly. This is a preview of what's coming; it isn't live yet.
+    <div class="contact-header">
+      <h2 class="main-title">Reach the Right Team, Instantly</h2>
+      <p class="subtitle">
+        Whether you're sourcing produce or already trading with us, we've made it easy to connect with the right people.
       </p>
     </div>
 
-    <div class="ai-main-body">
+    <div class="contact-columns">
 
-      <div class="chat-interface">
-        <div class="chat-header">
-          <i class="material-symbols-outlined back-arrow">arrow_back_ios</i>
-          <span class="chat-title">Bigbisort AI</span>
-          <i class="material-symbols-outlined menu">more_vert</i>
-        </div>
-        <div class="chat-messages">
-          <div class="message-bubble bot">Hello! How can I assist you today?</div>
-          <div class="message-bubble user">I need export regulations for spices.</div>
-          <div class="message-bubble bot">As per india trade rules, spices must be accompanied by a phytosanitary certificate,...</div>
-        </div>
-        <div class="chat-input">
-          <input type="text" placeholder="Coming soon..." disabled />
-          <i class="material-symbols-outlined mic">mic</i>
-        </div>
-      </div>
+      <div class="channels-column">
+        <h3 class="column-title">Choose Your Channel</h3>
 
-      <div class="ai-features-list">
-        <ul>
-          <li *ngFor="let feature of aiFeatures">
-            <i class="material-symbols-outlined check-icon">check</i>
-            {{ feature }}
-          </li>
-        </ul>
-
-        <button class="cta-button" (click)="selectChannel('Tech / AI Support')">Notify Me When It's Live</button>
-      </div>
-    </div>
-  </div>
-</section>
-
-
-
-<section class="logged-in-buyers-section">
-  <div class="buyers-content-wrapper">
-
-    <div class="buyers-header">
-
-      <h1 class="main-title">Logged-In Buyers — Chat Directly with Our Team <span class="preview-badge">Preview</span></h1>
-      <p class="description">
-        Once you sign in, send your requirements instantly to our admin team.
-        Messages are routed to the Bigbisort export desk automatically — so
-        nothing gets missed. Example conversation shown below.
-      </p>
-    </div>
-
-    <div class="buyers-main-area">
-
-      <div class="mock-chat-window">
-        <div class="chat-header">
-          <span class="chat-title">Chat</span>
-          <i class="material-symbols-outlined close-icon">close</i>
-        </div>
-        <div class="chat-messages">
-          <div class="message-bubble user">
-            Hi, I need 5 tons of fresh apples.
-            <span class="message-sender">Buyer</span>
-          </div>
-          <div class="message-bubble admin">
-            Hello! We can provide that.
-            When do you need it?
-            <span class="message-sender">Admin</span>
-          </div>
-        </div>
-        <div class="chat-input-area">
-          <input type="text" placeholder="Sign in to chat..." disabled />
-          <i class="material-symbols-outlined send-icon">send</i>
-        </div>
-      </div>
-
-      <div class="buyers-features-right">
-        <div class="feature-tags">
-          <span
-            *ngFor="let tag of loggedInBuyerTags"
-            class="feature-tag"
-            [ngClass]="tag.color"
+        <div class="channel-cards">
+          <article
+            class="channel-card"
+            *ngFor="let channel of contactChannels"
+            [ngClass]="channel.buttonClass"
           >
-            {{ tag.text }}
-          </span>
+            <i class="material-symbols-outlined card-icon" aria-hidden="true">{{ channel.icon }}</i>
+            <h4 class="card-title">{{ channel.title }}</h4>
+            <p class="card-description">{{ channel.description }}</p>
+            <button type="button" class="card-btn" (click)="openEnquiry(channel.title)">
+              {{ channel.buttonText }}
+            </button>
+          </article>
+        </div>
+      </div>
+
+      <div class="chat-column">
+        <div class="chat-column-header">
+          <h3 class="column-title">Already a Buyer? Chat Live</h3>
+          <div class="feature-tags">
+            <span class="feature-tag" *ngFor="let tag of loggedInBuyerTags">{{ tag.text }}</span>
+          </div>
         </div>
 
-        <ul class="features-list">
-          <li *ngFor="let feature of loggedInBuyerFeatures">{{ feature }}</li>
-        </ul>
+        <div class="chat-widget">
+          <div class="chat-header">
+            <span class="chat-title">Chat with Bigbisort</span>
+            <button type="button" class="chat-close" aria-label="Close chat">
+              <i class="material-symbols-outlined" aria-hidden="true">close</i>
+            </button>
+          </div>
+          <div class="chat-messages">
+            <div class="message-bubble buyer">
+              Hi, I need 5 tons of fresh apples.
+              <span class="message-sender">Buyer</span>
+            </div>
+            <div class="message-bubble admin">
+              Hello! We can provide that. When do you need it?
+              <span class="message-sender">Admin</span>
+            </div>
+          </div>
+          <div class="chat-input-area">
+            <label for="contact-chat-input" class="visually-hidden">Type a message</label>
+            <input id="contact-chat-input" type="text" placeholder="Type a message…" disabled />
+            <button type="button" class="chat-send" aria-label="Send message" disabled>
+              <i class="material-symbols-outlined" aria-hidden="true">send</i>
+            </button>
+          </div>
         </div>
+
+        <p class="chat-note">
+          Send your requirements instantly — messages are routed straight to the Bigbisort export desk via email, so nothing gets missed.
+        </p>
+      </div>
+
     </div>
   </div>
 </section>

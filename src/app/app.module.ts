@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi } from '@angular/common/http';
 import { AuthInterceptor } from './services/auth.interceptor';
 
@@ -44,6 +44,7 @@ import { Step2VerificationComponent } from './pages/seller-onboarding/step2-veri
 import { Step3FarmComponent } from './pages/seller-onboarding/step3-farm/step3-farm.component';
 import { Step4ProductsComponent } from './pages/seller-onboarding/step4-products/step4-products.component';
 import { SearchableDropdownComponent } from './shared/components/searchable-dropdown/searchable-dropdown.component';
+import { EnquiryDialogComponent } from './shared/components/enquiry-dialog/enquiry-dialog.component';
 import { StatusBadgeComponent } from './shared/components/status-badge/status-badge.component';
 import { PaginationComponent } from './shared/components/pagination/pagination.component';
 import { OrderRowComponent } from './pages/buyer-dashboard/buyer-order/order-row/order-row.component';
@@ -92,6 +93,7 @@ import { AdminProductManagementComponent } from './pages/admin-product-managemen
         Step3FarmComponent,
         Step4ProductsComponent,
         SearchableDropdownComponent,
+        EnquiryDialogComponent,
         StatusBadgeComponent,
         PaginationComponent,
         OrderRowComponent,
@@ -103,7 +105,8 @@ import { AdminProductManagementComponent } from './pages/admin-product-managemen
     ],
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
-        FormsModule], providers: [{ provide: HTTP_INTERCEPTORS,
+        FormsModule,
+        ReactiveFormsModule], providers: [{ provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
             multi: true
         }, provideHttpClient(withInterceptorsFromDi())] })

@@ -31,96 +31,46 @@ export class ContactComponent implements OnInit {
 
 
 contactChannels: ContactChannel[] = [
-
     {
-      icon: 'yard',
+      icon: 'inventory_2',
       title: 'Buyer Enquiry',
-      description: 'Get quotations, check availability, logistics details.',
+      description: 'Get quotations, check availability, and logistics details.',
       buttonText: 'Send Enquiry',
       buttonClass: 'buyer'
     },
     {
-      icon: 'globe',
+      icon: 'public',
       title: 'Farmer Support',
       description: 'Get listed, update your product data, or ask for help.',
       buttonText: 'Contact Team',
       buttonClass: 'farmer'
-    },
-    {
-      icon: 'handshake',
-      title: 'Partnerships',
-      description: 'Join hands to scale India\'s export network.',
-      buttonText: 'Partner with Us',
-      buttonClass: 'partner'
-    },
-    {
-      icon: 'robot',
-      title: 'Tech / AI Support',
-      description: 'Facing issues with DeepSeek chat or login?',
-      buttonText: 'Chat with Support',
-      buttonClass: 'tech'
     }
   ];
   constructor(private route: ActivatedRoute, private auth: AuthService) { }
 
-  // All four channel cards, the hero buttons, and the footer phone slot
-  // route here — there is one real, working way to reach the team today,
-  // and every CTA on the page points at it instead of a dead link.
-  contactData = {
-    topic: 'General Enquiry',
-    name: '',
-    email: '',
-    message: ''
-  };
+  // Every CTA on this page (hero buttons, channel cards, "Notify Me") opens the Send Enquiry
+  // modal. The topic isn't shown in the modal, but is sent with the enquiry so the team
+  // email says what the visitor clicked ("Regarding: Farmer Support").
+  enquiryOpen = false;
+  selectedTopic = 'General Enquiry';
+
+  openEnquiry(topic: string = 'General Enquiry') {
+    this.selectedTopic = topic;
+    this.enquiryOpen = true;
+  }
 
   ngOnInit(): void {
-    // Arriving from a product's "Enquire" button (?topic=...&product=...) —
-    // pre-fill the form instead of making the buyer retype what they clicked.
-    const params = this.route.snapshot.queryParamMap;
-    const topic = params.get('topic');
-    const product = params.get('product');
+    // Arriving from a product's "Enquire" button (?topic=...) — open the modal straight away.
+    const topic = this.route.snapshot.queryParamMap.get('topic');
     if (topic) {
-      this.contactData.topic = topic;
-    }
-    if (product) {
-      this.contactData.message = `Regarding: ${product}\n\n`;
-    }
-    const buyerName = this.auth.getBuyerName();
-    if (buyerName) {
-      this.contactData.name = buyerName;
+      this.openEnquiry(topic);
     }
   }
 
-  selectChannel(topic: string) {
-    this.contactData.topic = topic;
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  onSubmit() {
-    console.log('Contact Form Submitted:', this.contactData);
-
-    // ✅ Later, you can send this to your backend:
-    // this.http.post('http://localhost:8081/bigbisort-imp-exp/contact', this.contactData).subscribe(...);
-
-    alert('Thank you for contacting us, ' + this.contactData.name + '! We\'ll get back to you shortly.');
-    this.contactData = { topic: 'General Enquiry', name: '', email: '', message: '' };
-  }
 
 
 
 
-  aiFeatures: string[] = [
-  "24×7 Instant Assistance",
-  "Product Suggestions for Buyers",
-  "Export Regulation Guidance",
-  "Farmer Listing Support"
-];
-
-loggedInBuyerFeatures: string[] = [
-  "Secure",
-  "Instant",
-  "Personalized"
-];
 
 loggedInBuyerTags: { text: string, color: string }[] = [
   { text: "SECURE", color: "yellow" },
