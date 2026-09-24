@@ -45,6 +45,7 @@ export class Step1IdentityComponent implements OnInit {
   otpCode = '';
   otpTimer = 0;
   otpInterval: any;
+  sendingOtp = false;
   otpAttempts = 0;
 
   // Validation errors
@@ -177,12 +178,24 @@ export class Step1IdentityComponent implements OnInit {
       this.errors.mobile = 'Please enter a valid 10-digit mobile number.';
       return;
     }
-    this.otpSent = true;
-    this.otpTimer = 270;
-    this.startTimer();
+    // Only show the OTP box once the backend confirms the send - flipping otpSent before the
+    // call left the user waiting on a code that was never sent when delivery failed.
+    this.errors.mobile = '';
+    this.sendingOtp = true;
     this.authService.sendOtp({ mobile: this.mobile }).subscribe({
-      next: () => {},
-      error: () => { this.errors.mobile = 'Failed to send OTP. Please try again.'; }
+      next: () => {
+        this.sendingOtp = false;
+        this.otpSent = true;
+        this.otpTimer = 270;
+        this.startTimer();
+      },
+      error: (err: any) => {
+        this.sendingOtp = false;
+        this.otpSent = false;
+        clearInterval(this.otpInterval);
+        this.otpTimer = 0;
+        this.errors.mobile = err?.error?.message || 'Failed to send OTP. Please try again.';
+      }
     });
   }
 
