@@ -56,6 +56,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     this.returnUrl = this.route.snapshot.queryParamMap.get('returnUrl');
+    // ?type=buyer|seller preselects the tab, so links like the contact-page channel cards
+    // land the visitor on the right form instead of the default buyer one.
+    const type = this.route.snapshot.queryParamMap.get('type');
+    if (type === 'buyer' || type === 'seller') {
+      this.loginType = type;
+    }
     this.renderGoogleButton();
   }
 

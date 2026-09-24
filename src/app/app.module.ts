@@ -45,6 +45,7 @@ import { Step3FarmComponent } from './pages/seller-onboarding/step3-farm/step3-f
 import { Step4ProductsComponent } from './pages/seller-onboarding/step4-products/step4-products.component';
 import { SearchableDropdownComponent } from './shared/components/searchable-dropdown/searchable-dropdown.component';
 import { EnquiryDialogComponent } from './shared/components/enquiry-dialog/enquiry-dialog.component';
+import { ContactHeroComponent } from './home-dashboard/contact/contact-hero/contact-hero.component';
 import { StatusBadgeComponent } from './shared/components/status-badge/status-badge.component';
 import { PaginationComponent } from './shared/components/pagination/pagination.component';
 import { OrderRowComponent } from './pages/buyer-dashboard/buyer-order/order-row/order-row.component';
@@ -106,7 +107,8 @@ import { AdminProductManagementComponent } from './pages/admin-product-managemen
     bootstrap: [AppComponent], imports: [BrowserModule,
         AppRoutingModule,
         FormsModule,
-        ReactiveFormsModule], providers: [{ provide: HTTP_INTERCEPTORS,
+        ReactiveFormsModule,
+        ContactHeroComponent], providers: [{ provide: HTTP_INTERCEPTORS,
             useClass: AuthInterceptor,
             multi: true
         }, provideHttpClient(withInterceptorsFromDi())] })

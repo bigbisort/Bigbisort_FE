@@ -2,33 +2,10 @@
 
 <app-enquiry-dialog *ngIf="enquiryOpen" [topic]="selectedTopic" (closed)="enquiryOpen = false"></app-enquiry-dialog>
 
-<section class="hero-section">
-  <div class="hero-content">
-    <div class="hero-text-content">
-      <h1>Let's Grow <br> Together <span class="leaf-icon">🌱</span></h1>
-      <p class="tagline">Connect with Bigbisort – Your gateway to global agri-trade</p>
-      <p class="description">
-        Whether you're a farmer, buyer, or partner, <br />our team is here to help.
-      </p>
-
-      <div class="hero-buttons">
-        <button class="hero-btn message-btn" (click)="openEnquiry('General Enquiry')">
-          <i class="fas fa-comment-dots"></i> Send us a Message
-        </button>
-        <button class="hero-btn ai-chat-btn" disabled title="Coming soon">
-          <i class="fas fa-robot"></i> Talk to Bigbisort AI
-        </button>
-        <button class="hero-btn enquiry-btn" (click)="openEnquiry('Buyer Enquiry')">
-          <i class="fas fa-envelope"></i> Send Enquiry
-        </button>
-      </div>
-    </div>
-
-    <div class="hero-image-content">
-      <img src="assets/images/ContactUs/Glob3.png" alt="Globe showing India with chat bubbles" />
-    </div>
-  </div>
-</section>
+<app-contact-hero
+  (sendEnquiry)="openEnquiry('Buyer Enquiry')"
+  (sendMessage)="openEnquiry('General Enquiry')">
+</app-contact-hero>
 
 
 
@@ -56,7 +33,7 @@
             <i class="material-symbols-outlined card-icon" aria-hidden="true">{{ channel.icon }}</i>
             <h4 class="card-title">{{ channel.title }}</h4>
             <p class="card-description">{{ channel.description }}</p>
-            <button type="button" class="card-btn" (click)="openEnquiry(channel.title)">
+            <button type="button" class="card-btn" (click)="goToChannel(channel)">
               {{ channel.buttonText }}
             </button>
           </article>

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 
@@ -11,6 +11,10 @@ interface ContactChannel {
   description: string;
   buttonText: string;
   buttonClass: string;
+  /** Which login form this card sends the visitor to. */
+  loginType: 'buyer' | 'seller';
+  /** Where they land once signed in — the dashboard page that chats with the admin team. */
+  messagesRoute: string;
 }
 
 interface RegionalContact {
@@ -34,23 +38,43 @@ contactChannels: ContactChannel[] = [
     {
       icon: 'inventory_2',
       title: 'Buyer Enquiry',
-      description: 'Get quotations, check availability, and logistics details.',
+      description: 'Log in to your buyer account to message our team directly. Share your requirements, ask about pricing and availability, and keep every enquiry in one conversation you can come back to anytime.',
       buttonText: 'Send Enquiry',
-      buttonClass: 'buyer'
+      buttonClass: 'buyer',
+      loginType: 'buyer',
+      messagesRoute: '/buyer/messages'
     },
     {
       icon: 'public',
       title: 'Farmer Support',
-      description: 'Get listed, update your product data, or ask for help.',
+      description: 'Log in to your seller account to message our team directly. Get help with your listings, discuss buyer enquiries, and keep every conversation with our team in one place you can come back to anytime.',
       buttonText: 'Contact Team',
-      buttonClass: 'farmer'
+      buttonClass: 'farmer',
+      loginType: 'seller',
+      messagesRoute: '/seller/messages'
     }
   ];
-  constructor(private route: ActivatedRoute, private auth: AuthService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private auth: AuthService) { }
 
-  // Every CTA on this page (hero buttons, channel cards, "Notify Me") opens the Send Enquiry
-  // modal. The topic isn't shown in the modal, but is sent with the enquiry so the team
-  // email says what the visitor clicked ("Regarding: Farmer Support").
+  /**
+   * Channel cards don't open the enquiry modal — they take the visitor to the login for their
+   * role and, once signed in, straight to the dashboard page where they message the admin team.
+   * Already signed in as that role? Skip the login step.
+   */
+  goToChannel(channel: ContactChannel) {
+    const expectedRole = channel.loginType === 'seller' ? 'SELLER' : 'BUYER';
+    if (this.auth.getRole() === expectedRole) {
+      this.router.navigateByUrl(channel.messagesRoute);
+      return;
+    }
+    this.router.navigate(['/login'], {
+      queryParams: { type: channel.loginType, returnUrl: channel.messagesRoute }
+    });
+  }
+
+  // The hero buttons open the Send Enquiry modal (the channel cards go to login instead, see
+  // goToChannel). The topic isn't shown in the modal, but is sent with the enquiry so the team
+  // email says what the visitor clicked ("Regarding: Buyer Enquiry").
   enquiryOpen = false;
   selectedTopic = 'General Enquiry';
 
