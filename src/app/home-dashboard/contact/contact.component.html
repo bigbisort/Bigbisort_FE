@@ -2,10 +2,7 @@
 
 <app-enquiry-dialog *ngIf="enquiryOpen" [topic]="selectedTopic" (closed)="enquiryOpen = false"></app-enquiry-dialog>
 
-<app-contact-hero
-  (sendEnquiry)="openEnquiry('Buyer Enquiry')"
-  (sendMessage)="openEnquiry('General Enquiry')">
-</app-contact-hero>
+<app-contact-hero (sendEnquiry)="openEnquiry('Buyer Enquiry')"></app-contact-hero>
 
 
 

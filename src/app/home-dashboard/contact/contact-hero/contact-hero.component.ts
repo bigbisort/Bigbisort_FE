@@ -23,8 +23,6 @@ interface AudienceItem {
 export class ContactHeroComponent {
   /** Primary CTA — the Contact page opens the enquiry modal with the "Buyer Enquiry" topic. */
   @Output() sendEnquiry = new EventEmitter<void>();
-  /** Secondary CTA — same modal, "General Enquiry" topic. */
-  @Output() sendMessage = new EventEmitter<void>();
 
   audience: AudienceItem[] = [
     { title: 'Farmers', description: 'Sell produce to verified buyers' },

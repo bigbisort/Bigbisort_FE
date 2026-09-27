@@ -4,7 +4,6 @@
   --accent: #f4d35e;
   --accent-ink: #1e3b1c;
   --secondary: #8fd98a;
-  --secondary-ink: #16361a;
   --text: #ffffff;
   --text-body: #d4e4ce;
   --text-muted: #c6d9bf;
@@ -158,13 +157,6 @@
   color: var(--accent-ink);
 
   &:not(:disabled):hover { background: #f7dd7f; }
-}
-
-.btn--secondary {
-  background: var(--secondary);
-  color: var(--secondary-ink);
-
-  &:not(:disabled):hover { background: #a5e3a0; }
 }
 
 .btn--tertiary {
