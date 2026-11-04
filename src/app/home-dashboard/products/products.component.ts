@@ -35,8 +35,8 @@ interface CategoryTile {
 
 @Component({
     selector: 'app-Products',
-    templateUrl: './Products.component.html',
-     styleUrls: ['./Products.component.scss']
+    templateUrl: './products.component.html',
+     styleUrls: ['./products.component.scss']
 ,
     standalone: false
 })

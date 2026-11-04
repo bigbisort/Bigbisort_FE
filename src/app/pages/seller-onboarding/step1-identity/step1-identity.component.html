@@ -57,9 +57,9 @@
                    maxlength="10" (ngModelChange)="onMobileChange()" 
                    [readonly]="otpSent" [class.error]="errors.mobile" 
                    style="flex: 1;" />
-            <button *ngIf="!mobileVerified && !otpSent" class="btn-verify" (click)="sendOtp()" 
-                    [disabled]="!mobile || mobile.length !== 10">
-              Verify via OTP
+            <button *ngIf="!mobileVerified && !otpSent" class="btn-verify" (click)="sendOtp()"
+                    [disabled]="!mobile || mobile.length !== 10 || sendingOtp">
+              {{ sendingOtp ? 'Sending…' : 'Verify via OTP' }}
             </button>
             <span *ngIf="mobileVerified" class="verified-badge">
               ✅ Verified ✓

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 
@@ -11,6 +11,10 @@ interface ContactChannel {
   description: string;
   buttonText: string;
   buttonClass: string;
+  /** Which login form this card sends the visitor to. */
+  loginType: 'buyer' | 'seller';
+  /** Where they land once signed in — the dashboard page that chats with the admin team. */
+  messagesRoute: string;
 }
 
 interface RegionalContact {
@@ -31,96 +35,66 @@ export class ContactComponent implements OnInit {
 
 
 contactChannels: ContactChannel[] = [
-
     {
-      icon: 'yard',
+      icon: 'inventory_2',
       title: 'Buyer Enquiry',
-      description: 'Get quotations, check availability, logistics details.',
+      description: 'Log in to your buyer account to message our team directly. Share your requirements, ask about pricing and availability, and keep every enquiry in one conversation you can come back to anytime.',
       buttonText: 'Send Enquiry',
-      buttonClass: 'buyer'
+      buttonClass: 'buyer',
+      loginType: 'buyer',
+      messagesRoute: '/buyer/messages'
     },
     {
-      icon: 'globe',
+      icon: 'public',
       title: 'Farmer Support',
-      description: 'Get listed, update your product data, or ask for help.',
+      description: 'Log in to your seller account to message our team directly. Get help with your listings, discuss buyer enquiries, and keep every conversation with our team in one place you can come back to anytime.',
       buttonText: 'Contact Team',
-      buttonClass: 'farmer'
-    },
-    {
-      icon: 'handshake',
-      title: 'Partnerships',
-      description: 'Join hands to scale India\'s export network.',
-      buttonText: 'Partner with Us',
-      buttonClass: 'partner'
-    },
-    {
-      icon: 'robot',
-      title: 'Tech / AI Support',
-      description: 'Facing issues with DeepSeek chat or login?',
-      buttonText: 'Chat with Support',
-      buttonClass: 'tech'
+      buttonClass: 'farmer',
+      loginType: 'seller',
+      messagesRoute: '/seller/messages'
     }
   ];
-  constructor(private route: ActivatedRoute, private auth: AuthService) { }
+  constructor(private route: ActivatedRoute, private router: Router, private auth: AuthService) { }
 
-  // All four channel cards, the hero buttons, and the footer phone slot
-  // route here — there is one real, working way to reach the team today,
-  // and every CTA on the page points at it instead of a dead link.
-  contactData = {
-    topic: 'General Enquiry',
-    name: '',
-    email: '',
-    message: ''
-  };
+  /**
+   * Channel cards don't open the enquiry modal — they take the visitor to the login for their
+   * role and, once signed in, straight to the dashboard page where they message the admin team.
+   * Already signed in as that role? Skip the login step.
+   */
+  goToChannel(channel: ContactChannel) {
+    const expectedRole = channel.loginType === 'seller' ? 'SELLER' : 'BUYER';
+    if (this.auth.getRole() === expectedRole) {
+      this.router.navigateByUrl(channel.messagesRoute);
+      return;
+    }
+    this.router.navigate(['/login'], {
+      queryParams: { type: channel.loginType, returnUrl: channel.messagesRoute }
+    });
+  }
+
+  // The hero buttons open the Send Enquiry modal (the channel cards go to login instead, see
+  // goToChannel). The topic isn't shown in the modal, but is sent with the enquiry so the team
+  // email says what the visitor clicked ("Regarding: Buyer Enquiry").
+  enquiryOpen = false;
+  selectedTopic = 'General Enquiry';
+
+  openEnquiry(topic: string = 'General Enquiry') {
+    this.selectedTopic = topic;
+    this.enquiryOpen = true;
+  }
 
   ngOnInit(): void {
-    // Arriving from a product's "Enquire" button (?topic=...&product=...) —
-    // pre-fill the form instead of making the buyer retype what they clicked.
-    const params = this.route.snapshot.queryParamMap;
-    const topic = params.get('topic');
-    const product = params.get('product');
+    // Arriving from a product's "Enquire" button (?topic=...) — open the modal straight away.
+    const topic = this.route.snapshot.queryParamMap.get('topic');
     if (topic) {
-      this.contactData.topic = topic;
-    }
-    if (product) {
-      this.contactData.message = `Regarding: ${product}\n\n`;
-    }
-    const buyerName = this.auth.getBuyerName();
-    if (buyerName) {
-      this.contactData.name = buyerName;
+      this.openEnquiry(topic);
     }
   }
 
-  selectChannel(topic: string) {
-    this.contactData.topic = topic;
-    document.getElementById('contact-form')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }
-
-  onSubmit() {
-    console.log('Contact Form Submitted:', this.contactData);
-
-    // ✅ Later, you can send this to your backend:
-    // this.http.post('http://localhost:8081/bigbisort-imp-exp/contact', this.contactData).subscribe(...);
-
-    alert('Thank you for contacting us, ' + this.contactData.name + '! We\'ll get back to you shortly.');
-    this.contactData = { topic: 'General Enquiry', name: '', email: '', message: '' };
-  }
 
 
 
 
-  aiFeatures: string[] = [
-  "24×7 Instant Assistance",
-  "Product Suggestions for Buyers",
-  "Export Regulation Guidance",
-  "Farmer Listing Support"
-];
-
-loggedInBuyerFeatures: string[] = [
-  "Secure",
-  "Instant",
-  "Personalized"
-];
 
 loggedInBuyerTags: { text: string, color: string }[] = [
   { text: "SECURE", color: "yellow" },
