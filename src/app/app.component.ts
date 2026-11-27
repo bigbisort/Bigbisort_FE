@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, HostListener, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 import { Subscription } from 'rxjs';
@@ -41,6 +41,23 @@ export class AppComponent implements OnInit, OnDestroy {
   logout() {
     this.auth.logout();
     this.router.navigate(['/home']);
+  }
+
+  menuOpen = false;
+  scrolled = false;
+
+  @HostListener('window:scroll')
+  onScroll() {
+    this.scrolled = window.scrollY > 40;
+  }
+
+  closeMenu() {
+    this.menuOpen = false;
+  }
+
+  isHomeRoute(): boolean {
+    const path = this.router.url.split(/[?#]/)[0];
+    return path === '/' || path === '/home';
   }
 
   isDashboardRoute(): boolean {

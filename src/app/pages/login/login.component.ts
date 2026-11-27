@@ -24,6 +24,9 @@ export class LoginComponent implements OnInit {
 
   loginErrors: any = {};
 
+  // eye button on the password field
+  showPassword = false;
+
   // Register
   isRegisterVisible = false;
 

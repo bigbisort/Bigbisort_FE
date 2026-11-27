@@ -13,7 +13,7 @@
 
     <!-- Right Side: Image -->
     <div class="section-image">
-      <img src="assets/images/Prdpage/Prdsec1.png" alt="Farmer with vegetables" />
+      <img src="assets/images/Prdpage/Prdsec1.jpg" alt="Farmer with vegetables" />
     </div>
   </div>
 </section>
@@ -23,14 +23,36 @@
 
 <div class="state-banner" *ngIf="loading">Loading products…</div>
 
-<div class="state-banner error" *ngIf="!loading && loadError">
-  Couldn't reach the product catalog right now. Please refresh, or check back shortly.
-</div>
+<section class="catalog-fallback" *ngIf="showCatalogFallback">
+  <p class="catalog-note">
+    <i class="bi bi-info-circle"></i>
+    <span>{{ loadError ? 'Live prices and availability are not loading right now.' : 'No live listings yet.' }}
+    Here is our product catalogue &ndash; <a routerLink="/contact">contact us</a> for current prices.</span>
+  </p>
 
-<div class="state-banner empty" *ngIf="!loading && !loadError && products.length === 0">
-  No products are listed yet — check back soon, or
-  <a routerLink="/login">become a seller</a> to be the first.
-</div>
+  <h2 class="catalog-title">Browse by category</h2>
+  <div class="catalog-cats">
+    <a class="catalog-cat" *ngFor="let c of catalogCategories" routerLink="/prdland" [queryParams]="{ category: c.slug }">
+      <span class="catalog-cat-photo">
+        <img *ngIf="c.image" [src]="c.image" [alt]="c.name" loading="lazy">
+        <span class="catalog-cat-icon"><i class="fas {{ c.icon }}" aria-hidden="true"></i></span>
+      </span>
+      <span class="catalog-cat-name">{{ c.name }}</span>
+      <span class="catalog-cat-count">{{ catalogCount(c.slug) }} products</span>
+    </a>
+  </div>
+
+  <h2 class="catalog-title">Popular products</h2>
+  <div class="catalog-grid">
+    <a class="catalog-card" *ngFor="let p of catalogProducts" [routerLink]="p.link">
+      <img [src]="p.image" [alt]="p.name" loading="lazy">
+      <span class="catalog-card-name">{{ p.name }}</span>
+      <span class="catalog-card-action">View details <i class="bi bi-arrow-right"></i></span>
+    </a>
+  </div>
+
+  <p class="catalog-all"><a routerLink="/prdland" class="catalog-all-link">See the full catalogue <i class="bi bi-arrow-right"></i></a></p>
+</section>
 
 <ng-container *ngIf="!loading && !loadError && products.length > 0">
 
@@ -169,12 +191,13 @@
 <section class="why-choose-section">
   <div class="section-wrapper">
     <h2>Why Choose Bigbisort?</h2>
+    <p class="section-sub">Everything you need to trade farm produce with confidence.</p>
 
     <div class="features-container">
 
       <div class="feature-box">
         <div class="icon">
-          <img style="width: 250px; height: 170px;" src="assets/images/Prdimg/wtcbbshield.png" alt="Trust Icon" />
+          <img src="assets/images/Prdimg/wtcbbshield.webp" alt="Trust Icon" />
         </div>
         <h3>Trust & Transparency</h3>
         <p>Building trust and fostering transparent trade.</p>
@@ -182,7 +205,7 @@
 
       <div class="feature-box">
         <div class="icon">
-          <img style="width: 250px; height: 170px;" src="assets/images/Prdimg/glob.png" alt="Traceability Icon" />
+          <img src="assets/images/Prdimg/glob.webp" alt="Traceability Icon" />
         </div>
         <h3>Traceability</h3>
         <p>Tracking every product from farm to market.</p>
@@ -190,7 +213,7 @@
 
       <div class="feature-box">
         <div class="icon">
-          <img style="width: 250px; height: 170px;" src="assets/images/Prdimg/ship.png" alt="Global Trade Icon" />
+          <img src="assets/images/Prdimg/ship.webp" alt="Global Trade Icon" />
         </div>
         <h3>Global Trade</h3>
         <p>Connecting farmers and buyers worldwide.</p>
@@ -200,7 +223,7 @@
 </section>
 
 <section class="dynamic-insights-section">
-  <img src="assets/images/Prdimg/ingsight.png"
+  <img src="assets/images/Prdimg/ingsight.jpg"
        alt="Dynamic Insights: Pricing Trends, Traceability, Logistics Integration"
        class="insights-image">
 </section>

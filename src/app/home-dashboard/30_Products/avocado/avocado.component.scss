@@ -1,3 +1,18 @@
+:host {
+  display: block;
+  /* One tint drives the page colours, like the shared product pages (see product-palette.ts). */
+  --fp-bg: #c9e2a0;
+  --fp-card: hsl(83 53% 89%);
+  --fp-ink: hsl(83 53% 15%);
+  --fp-ink-soft: hsl(83 53% 26%);
+  --fp-accent: hsl(83 53% 33%);
+  --fp-accent-2: hsl(83 53% 44%);
+  --fp-pale: hsl(83 53% 96%);
+  --fp-pale-2: hsl(83 53% 91%);
+  --fp-hero-text: hsl(83 53% 88%);
+  --fp-map: hsl(83 53% 50%);
+}
+
 .apple-page {
   position: relative;
   height: 100vh;
@@ -37,7 +52,7 @@
     z-index: 2;
     max-width: 800px;
     margin-right: 43rem;
-    color: #d4ffa1;
+    color: var(--fp-hero-text);
  
 
     h1 {
@@ -121,11 +136,11 @@
 // Section 2
 
 .cultivation-section {
-  background-color: #ffe241;
+  background-color: var(--fp-bg);
   padding: 60px 40px;
   text-align: left;
   font-family: 'Poppins', sans-serif;
-  color: #004d00;
+  color: var(--fp-ink);
 
   h2 {
     text-align: center;
@@ -183,13 +198,13 @@
   border-radius: 12px;
   padding: 25px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-  color: #1b5e20;
+  color: var(--fp-ink-soft);
 
   h3 {
     font-size: 1.4rem;
     font-weight: 700;
     margin-bottom: 15px;
-    color: #2e7d32;
+    color: var(--fp-accent);
   }
 
   ol {
@@ -203,14 +218,14 @@
     }
 
     b {
-      color: #1b5e20;
+      color: var(--fp-ink-soft);
     }
   }
 
   .smaller {
     font-size: 0.9rem;
     margin-top: 15px;
-    color: #33691e;
+    color: var(--fp-ink-soft);
   }
 }
 
@@ -233,11 +248,11 @@
 
 // section 3 apple veraity
 .varieties-section {
-  background-color: #fbdc59;
+  background-color: var(--fp-bg);
   padding: 60px 40px;
   font-family: 'Poppins', sans-serif;
   text-align: center;
-  color: #004d00;
+  color: var(--fp-ink);
   overflow: hidden;
 
   h2 {
@@ -268,7 +283,7 @@
 }
 
   .apple-card {
-    background-color: #fff4c5;
+    background-color: var(--fp-card);
     border-radius: 16px;
     min-width: 220px;
     max-width: 220px;
@@ -300,7 +315,7 @@
         font-size: 1rem;
         font-weight: 700;
         margin-bottom: 6px;
-        color: #004d00;
+        color: var(--fp-ink);
       }
 
       p {
@@ -331,7 +346,7 @@
 
 
 .benefits-section {
-  background-color: #fbdc59;
+  background-color: var(--fp-bg);
   font-family: 'Poppins', sans-serif;
   padding: 60px 40px;
 
@@ -356,7 +371,7 @@
 
   // RIGHT SIDE TEXT
   .benefits-text {
-    color: #004d00;
+    color: var(--fp-ink);
     padding: 20px 30px;
 
     h2 {
@@ -364,7 +379,7 @@
       font-weight: 700;
       margin-bottom: 30px;
       text-align: left;
-      color: #004d00;
+      color: var(--fp-ink);
     }
 
     .benefits-grid {
@@ -374,7 +389,7 @@
     }
 
     .benefit-item {
-      color: #004d00;  
+      color: var(--fp-ink);  
       border-radius: 12px;
       padding: 12px 16px;
       display: flex;
@@ -388,7 +403,7 @@
       }
 
       .icon {
-        background-color: #8bc34a;
+        background-color: var(--fp-accent-2);
         color: white;
         border-radius: 50%;
         width: 36px;
@@ -431,7 +446,7 @@
 
 
 .processing-section {
-  background-color: #fbdc59;
+  background-color: var(--fp-bg);
   font-family: 'Poppins', sans-serif;
   padding: 60px 40px;
 
@@ -443,7 +458,7 @@
   }
 
   .process-card {
-    background-color: #fff8c4;
+    background-color: var(--fp-card);
     border-radius: 14px;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -457,13 +472,13 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      background-color: #2e7d32;
+      background-color: var(--fp-accent);
       color: #fff;
       padding: 10px 16px;
 
       i {
         font-size: 1.4rem;
-        color: #fbdc59;
+        color: var(--fp-bg);
       }
 
       h3 {
@@ -523,8 +538,8 @@
   position: relative;
   overflow: hidden;
   font-family: 'Poppins', sans-serif;
-  color: #004d00;
-  background-color: #fbdc59;
+  color: var(--fp-ink);
+  background-color: var(--fp-bg);
 
   // diagonal split background
   &::after {
@@ -534,7 +549,7 @@
     right: 0;
     width: 55%;
     height: 100%;
-    background: url('/assets/images/Prdpage/apple/apbk.png') center/cover no-repeat;
+    background: url('/assets/images/Prdpage/Avo/ybb.jpg') center/cover no-repeat;
 
     clip-path: polygon(15% 0, 100% 0, 100% 100%, 0% 100%);
     z-index: 1;
@@ -559,7 +574,7 @@
 
   .features-grid {
     .feature-card {
-      background: #fffbea;
+      background: var(--fp-pale);
       border-radius: 12px;
       padding: 18px 15px;
       box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
@@ -570,8 +585,8 @@
       }
 
       .icon {
-        background: #2e7d32;
-        color: #fbdc59;
+        background: var(--fp-accent);
+        color: var(--fp-bg);
         border-radius: 50%;
         width: 40px;
         height: 40px;
@@ -585,7 +600,7 @@
       h3 {
         font-size: 1.1rem;
         font-weight: 600;
-        color: #004d00;
+        color: var(--fp-ink);
         margin-bottom: 5px;
       }
 
@@ -598,7 +613,7 @@
   }
 
   .enquire-btn {
-    background-color: #004d00;
+    background-color: var(--fp-ink);
     color: #fff;
     font-weight: 600;
     border: none;
@@ -608,7 +623,7 @@
     transition: background-color 0.3s;
 
     &:hover {
-      background-color: #2e7d32;
+      background-color: var(--fp-accent);
     }
   }
 
@@ -640,15 +655,15 @@
 
 
 .seller-section {
-  background-color: #fffbea;
+  background-color: var(--fp-pale);
   font-family: 'Poppins', sans-serif;
   padding: 60px 40px;
-  color: #004d00;
+  color: var(--fp-ink);
 
   .header {
     h2 {
       font-weight: 700;
-      color: #004d00;
+      color: var(--fp-ink);
       margin-bottom: 5px;
     }
 
@@ -659,7 +674,7 @@
     }
 
     .see-all {
-      color: #004d00;
+      color: var(--fp-ink);
       font-weight: 600;
       text-decoration: none;
 
@@ -692,7 +707,7 @@
       h3 {
         font-size: 1.1rem;
         font-weight: 700;
-        color: #004d00;
+        color: var(--fp-ink);
         margin-bottom: 4px;
       }
 
@@ -715,7 +730,7 @@
         .rating-value {
           font-weight: 600;
           margin-left: 5px;
-          color: #004d00;
+          color: var(--fp-ink);
         }
       }
 
@@ -735,27 +750,27 @@
           font-weight: 600;
           border-radius: 8px;
           padding: 5px 10px;
-          color: #004d00;
+          color: var(--fp-ink);
         }
 
         .verified {
-          background-color: #dcedc8;
-          border: 1px solid #8bc34a;
+          background-color: var(--fp-pale-2);
+          border: 1px solid var(--fp-accent-2);
         }
 
         .graded {
-          background-color: #fff9c4;
-          border: 1px solid #fbc02d;
+          background-color: var(--fp-card);
+          border: 1px solid var(--fp-accent-2);
         }
 
         .traceable {
-          background-color: #fff176;
-          border: 1px solid #fdd835;
+          background-color: var(--fp-card);
+          border: 1px solid var(--fp-accent-2);
         }
 
         .export {
-          background-color: #c5e1a5;
-          border: 1px solid #8bc34a;
+          background-color: var(--fp-card);
+          border: 1px solid var(--fp-accent-2);
         }
       }
     }
@@ -772,30 +787,30 @@
 // secton 8 for bulk orders
 
 .enquiry-section {
-  background-color: #f1f8e9; /* soft avocado green */
+  background-color: var(--fp-pale); /* soft avocado green */
   font-family: 'Poppins', sans-serif;
   padding: 60px 20px;
   text-align: center;
 
   .enquiry-box {
-    background-color: #e8f5e9;
+    background-color: var(--fp-pale-2);
     border-radius: 16px;
     padding: 40px 30px;
     box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
     max-width: 1000px;
     margin: 0 auto;
-    border: 2px solid #a5d6a7;
+    border: 2px solid var(--fp-accent-2);
   }
 
   h2 {
     font-weight: 700;
-    color: #1b5e20;
+    color: var(--fp-ink-soft);
     font-size: 1.8rem;
     margin-bottom: 10px;
   }
 
   .subtitle {
-    color: #2e7d32;
+    color: var(--fp-accent);
     font-size: 1rem;
     margin-bottom: 25px;
   }
@@ -805,7 +820,7 @@
 
     .form-control {
       border-radius: 8px;
-      border: 1px solid #a5d6a7;
+      border: 1px solid var(--fp-accent-2);
       padding: 10px;
       font-size: 0.95rem;
       width: 100%;
@@ -813,13 +828,13 @@
       transition: 0.2s;
 
       &:focus {
-        border-color: #66bb6a;
+        border-color: var(--fp-accent-2);
         box-shadow: 0 0 4px rgba(102, 187, 106, 0.5);
       }
     }
 
     .btn-submit {
-      background-color: #2e7d32;
+      background-color: var(--fp-accent);
       color: white;
       font-weight: 600;
       border: none;
@@ -829,7 +844,7 @@
       transition: 0.3s;
 
       &:hover {
-        background-color: #1b5e20;
+        background-color: var(--fp-ink-soft);
         transform: translateY(-2px);
       }
     }
@@ -837,7 +852,7 @@
 
   .contact-info {
     margin-top: 25px;
-    color: #1b5e20;
+    color: var(--fp-ink-soft);
     font-size: 0.95rem;
 
     p {
@@ -850,7 +865,7 @@
     }
 
     i {
-      color: #1b5e20;
+      color: var(--fp-ink-soft);
       font-size: 1rem;
     }
 

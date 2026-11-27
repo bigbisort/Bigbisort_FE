@@ -19,10 +19,10 @@ export class CategoryComponent implements OnInit {
     { name: 'Onion', image: 'assets/images/Prdimg/on1.jpg' },
   ],
   fruits: [
-    { name: 'Apple', image: 'assets/images/Prdpage/Apple/apbasket.png' },
+    { name: 'Apple', image: 'assets/images/Prdpage/Apple/apbasket.jpg' },
     { name: 'Avocado', image: 'assets/images/Prdpage/Avo/avo.jpg' },
     { name: 'Banana', image: 'assets/images/Prdpage/Banana/ba.jpg' },
-    { name: 'Pineapple', image: 'assets/images/Prdpage/Pineapple/ip.png' }
+    { name: 'Pineapple', image: 'assets/images/Prdpage/Pineapple/ip.jpg' }
   ],
   spices: [
     { name: 'Black Pepper', image: 'assets/images/Prdpage/Pepper/bp.jpg' },
@@ -31,7 +31,7 @@ export class CategoryComponent implements OnInit {
   coconut: [
     { name: 'Coconut', image: 'assets/images/Prdpage/Coconut/co2.jpg' },
     { name: 'Tender Coconut', image: 'assets/images/Prdpage/Coconut/c.jpg' },
-    { name: 'Dry Coconut (Copra)', image: 'assets/images/Prdpage/Coconut/cor.png' }
+    { name: 'Dry Coconut (Copra)', image: 'assets/images/Prdpage/Coconut/cor.jpg' }
   ]
 };
 

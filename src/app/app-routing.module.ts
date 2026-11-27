@@ -31,6 +31,7 @@ import { AppleComponent } from './home-dashboard/30_Products/apple/apple.compone
 import { AvocadoComponent } from './home-dashboard/30_Products/avocado/avocado.component';
 import { CarrotComponent } from './home-dashboard/30_Products/carrot/carrot.component';
 import { BananaComponent } from './home-dashboard/30_Products/banana/banana.component';
+import { ProductPageComponent } from './home-dashboard/30_Products/product-page/product-page.component';
 import { PineappleComponent } from './home-dashboard/30_Products/pineapple/pineapple.component';
 import { CoconutComponent } from './home-dashboard/30_Products/coconut/coconut.component';
 import { PepperComponent } from './home-dashboard/30_Products/pepper/pepper.component';
@@ -60,6 +61,8 @@ const routes: Routes = [
       { path: 'avocado', component: AvocadoComponent },
       { path: 'carrot', component: CarrotComponent },
       { path: 'banana', component: BananaComponent },
+      { path: 'product/:slug', component: ProductPageComponent },
+      { path: 'fruit/:slug', component: ProductPageComponent }, // older links
       { path: 'pineapple', component: PineappleComponent },
       { path: 'coconut', component: CoconutComponent },
       { path: 'pepper', component: PepperComponent },

@@ -4,6 +4,7 @@ import { ProductService } from '../../pages/buyer-dashboard/service/product.serv
 import { Product } from '../../pages/buyer-dashboard/buyersproducts/product.model';
 import { getProductDisplay, getTagLabel, getTagColor, titleCase } from '../../pages/buyer-dashboard/shared/product-display.util';
 import { AuthService } from '../../services/auth.service';
+import { CATALOG_CATEGORIES, CATALOG_PRODUCTS, productsIn } from '../catalog.data';
 
 interface DisplayProduct {
   id: string;
@@ -66,6 +67,19 @@ export class ProductsComponent implements OnInit {
   featuredProduct: DisplayProduct | null = null;
 
   filteredProducts: DisplayProduct[] = [];
+
+  // Shown instead of an error when the live catalogue is unreachable or empty (for example the API
+  // is not running locally). Same data as the products landing page (/prdland).
+  catalogCategories = CATALOG_CATEGORIES;
+  catalogProducts = CATALOG_PRODUCTS.filter(p => p.link).slice(0, 12);
+
+  catalogCount(slug: string): number {
+    return productsIn(slug).length;
+  }
+
+  get showCatalogFallback(): boolean {
+    return !this.loading && (this.loadError || this.products.length === 0);
+  }
 
   filterButtons = [
     { label: 'All', value: 'ALL' },

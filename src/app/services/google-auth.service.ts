@@ -68,7 +68,8 @@ export class GoogleAuthService {
       type: 'standard',
       theme: 'outline',
       size: 'large',
-      width: 320,
+      // fit the container (narrow phone cards), within the 200-400px range Google allows
+      width: Math.min(320, Math.max(200, Math.floor(el.clientWidth) || 320)),
       text: 'signin_with'
     });
   }

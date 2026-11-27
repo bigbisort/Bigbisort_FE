@@ -500,119 +500,244 @@
 }
 
 .why-choose-section {
-  background-color: #fdf8e3; /* Outer section background */
-  padding: 60px 20px;
+  background-color: #fdf8e3;
+  padding: clamp(40px, 6vw, 72px) clamp(16px, 4vw, 32px) clamp(24px, 4vw, 40px);
   text-align: center;
+  font-family: 'Poppins', sans-serif;
 
   .section-wrapper {
-    /* 🟢 NEW: The Green Box Container */
-    max-width: 1200px; 
-    margin: 0 auto; /* Center the box */
-    padding: 40px;
-    background-color: #267b3f; /* Green Background */
-    border-radius: 15px;
-    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2); /* Optional shadow for depth */
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: clamp(28px, 4vw, 52px) clamp(18px, 3vw, 44px);
+    background: linear-gradient(145deg, #1f6b36 0%, #267b3f 55%, #2f8d4b 100%);
+    border-radius: 24px;
+    box-shadow: 0 14px 34px rgba(26, 60, 42, 0.22);
   }
-
-  
 
   h2 {
-    /* Title is now inside the green box, so change color to white/yellow for contrast */
-    color: #fdf8e3; 
-    font-size: 4rem;
-    margin-bottom: 40px;
+    margin: 0 0 8px;
+    color: #fdf8e3;
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
     font-weight: 700;
+    line-height: 1.15;
   }
 
+  .section-sub {
+    max-width: 52ch;
+    margin: 0 auto clamp(24px, 4vw, 40px);
+    color: rgba(253, 248, 227, 0.85);
+    font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+  }
+
+  /* Cards share the row; a lone last card stays centred instead of hugging the left. */
   .features-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    gap: 30px;
+    gap: clamp(14px, 2vw, 24px);
   }
 
   .feature-box {
-    /* Keep the feature box background consistent (or change if desired) */
-    background-color: #fdf8e3; /* Darker green for card background */
-    border-radius: 12px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-    padding: 30px;
-    width: 300px;
-    font-size: 3rem;
+    flex: 1 1 230px;
+    max-width: 340px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 26px 20px 28px;
+    background-color: #fffaf0;
+    border-radius: 18px;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 
     &:hover {
-      transform: translateY(-8px);
-      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+      transform: translateY(-6px);
+      box-shadow: 0 14px 28px rgba(0, 0, 0, 0.2);
     }
 
     .icon {
-      font-size: 40px;
-      color: #fddb3a; /* Changed icon color to bright yellow for contrast on dark green */
-      margin-bottom: 15px;
-      
-      img {
-      // Set fixed, smaller dimensions
-      width: 250px; 
-      height: 170px; 
-      
-      // Ensures the image scales down nicely without stretching
-      object-fit: contain; 
-      
-      // Centers the image if the parent div is larger
-      margin: 0 auto;
-      display: block; 
-    }
-    
-    }
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      height: 120px;
+      margin-bottom: 14px;
 
-   
+      img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        max-height: 100%;
+        object-fit: contain;
+      }
+    }
 
     h3 {
-      color: #2c7c44; /* Changed title to white for contrast */
-      font-weight: 800;
-      margin-bottom: 10px;
-      font-size: 3rem;
+      margin: 0 0 8px;
+      color: #1a3c2a;
+      font-size: 1.35rem;
+      font-weight: 700;
+      line-height: 1.25;
     }
 
     p {
-    color: #2c7c44;
-
-    line-height: 1.4;
-    font-size: 19px;
-    font-weight: 500;
-
+      margin: 0;
+      color: #3d6b4f;
+      font-size: 0.98rem;
+      font-weight: 500;
+      line-height: 1.5;
     }
-
-  
-    
   }
 }
 
-
 /* --- Dynamic Insights Section --- */
 .dynamic-insights-section {
-  background-color: #fdf8e3; /* Matching your existing page background for context */
-  padding: 60px 20px; /* Some padding around the section */
-  text-align: center; /* Center the image within the section */
+  background-color: #fdf8e3;
+  padding: clamp(16px, 3vw, 28px) clamp(16px, 4vw, 32px) clamp(40px, 6vw, 72px);
+  text-align: center;
 }
 
 .insights-image {
-  max-width: 100%; /* Ensure the image doesn't overflow its container */
-  height: auto; /* Maintain aspect ratio */
-  display: block; /* Removes extra space below the image if it's inline */
-  margin: 0 auto; /* Center the image if its max-width is less than 100% */
-  border-radius: 10px; /* Optional: adds a slight border-radius to match card styles */
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); /* Optional: adds a subtle shadow */
+  display: block;
+  width: 100%;
+  max-width: 1100px;
+  height: auto;
+  margin: 0 auto;
+  border-radius: 24px;
+  box-shadow: 0 14px 34px rgba(26, 60, 42, 0.18);
 }
 
 /* Optional: Media queries for responsiveness if needed.
   For example, to adjust padding or max-width on smaller screens.
 */
-@media (max-width: 768px) {
-  .dynamic-insights-section {
-    padding: 30px 15px;
+
+
+
+
+/* --- Catalogue fallback (live listings unavailable) --- */
+.catalog-fallback {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+  font-family: 'Poppins', sans-serif;
+  text-align: center;
+}
+
+.catalog-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 720px;
+  margin: 0 auto 36px;
+  padding: 12px 20px;
+  border-radius: 12px;
+  background: #fff4e0;
+  border: 1px solid #f1d9a8;
+  color: #6b4a00;
+  font-size: 0.92rem;
+  text-align: left;
+
+  a { color: #6b4a00; font-weight: 600; }
+}
+
+.catalog-title {
+  margin: 0 0 20px;
+  font-size: clamp(1.4rem, 3vw, 1.9rem);
+  font-weight: 700;
+  color: #1a3c2a;
+}
+
+.catalog-cats {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  margin-bottom: 44px;
+}
+
+.catalog-cat {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 10px 16px;
+  text-decoration: none;
+  border: 1px solid #e8e0d4;
+  border-radius: 20px;
+  background: #f9eedd;
+  box-shadow: 0 2px 8px rgba(26, 60, 42, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-5px);
+    box-shadow: 0 14px 30px rgba(26, 60, 42, 0.18);
+    .catalog-cat-photo img { transform: scale(1.06); }
   }
 }
 
+.catalog-cat-photo {
+  position: relative;
+  display: block;
+  aspect-ratio: 16 / 10;
+  margin-bottom: 8px;
+  overflow: hidden;
+  border-radius: 14px;
+  background: #e3efe7;
 
+  img { display: block; width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+}
+
+.catalog-cat-icon {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: #fff;
+  color: #1a3c2a;
+  font-size: 0.9rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.18);
+}
+
+.catalog-cat-name { font-size: 1.1rem; font-weight: 700; color: #1a3c2a; }
+.catalog-cat-count { font-size: 0.74rem; letter-spacing: 0.1em; text-transform: uppercase; color: #9c7716; }
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(190px, 1fr));
+  gap: 18px;
+  text-align: center;
+}
+
+.catalog-card {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  text-decoration: none;
+  border: 1px solid #e8e0d4;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 2px 8px rgba(26, 60, 42, 0.07);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(26, 60, 42, 0.16); }
+
+  img { display: block; width: 100%; aspect-ratio: 4 / 3; object-fit: cover; background: #f7f0e3; }
+}
+
+.catalog-card-name { padding: 12px 12px 2px; font-weight: 700; color: #1a3c2a; }
+.catalog-card-action { padding: 0 12px 14px; font-size: 0.82rem; font-weight: 600; color: #2d5a3f; }
+
+.catalog-all { margin: 30px 0 0; }
+.catalog-all-link { font-weight: 600; color: #2d5a3f; text-decoration: none; &:hover { color: #1a3c2a; } }
+
+@media (max-width: 800px) {
+  .catalog-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+
+@media (max-width: 480px) {
+  .catalog-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .catalog-cats { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+}

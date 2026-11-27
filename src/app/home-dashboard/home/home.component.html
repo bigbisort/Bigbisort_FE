@@ -1,20 +1,116 @@
+<section class="hero-section" aria-labelledby="hero-title">
+  <div class="hero-content">
+    <p class="hero-eyebrow">From India&rsquo;s Farms</p>
+    <h1 id="hero-title">
+      India&rsquo;s Agricultural Excellence.
+      <span class="accent">Connected to the World.</span>
+    </h1>
+    <p class="hero-lead">
+      Sourcing premium agricultural produce from Indian farms and delivering it
+      to global markets with trust, quality and managed export solutions.
+    </p>
+    <div class="hero-actions">
+      <a routerLink="/products" class="btn-hero-primary">Explore Our Products <i class="bi bi-arrow-right"></i></a>
+      <a routerLink="/register" class="btn-hero-outline">Partner With Us</a>
+    </div>
+  </div>
+</section>
 
+<section class="highlights-section" aria-labelledby="highlights-title">
+  <p class="highlights-eyebrow">At a glance</p>
+  <h2 id="highlights-title">Bigbisort in Numbers</h2>
+  <p class="highlights-sub">A trusted agricultural export partner, connecting Indian farmers with global markets through a managed, quality-driven B2B platform.</p>
+  <div class="highlights-grid">
+    <article class="highlight-card">
+      <span class="highlight-icon" aria-hidden="true"><i class="fas fa-wheat-awn"></i></span>
+      <h3>Indian<br>Farmers Network</h3>
+      <p>Sourcing from trusted growers across India</p>
+      <img src="assets/images/Home/highlights/farmers.jpg" alt="Green farmland in India" loading="lazy">
+    </article>
+    <article class="highlight-card">
+      <span class="highlight-icon" aria-hidden="true"><i class="fas fa-boxes-stacked"></i></span>
+      <h3>Diverse<br>Product Range</h3>
+      <p>Fruits, Vegetables, Spices, Coffee, Jaggery &amp; more</p>
+      <img src="assets/images/Home/highlights/products.jpg" alt="Bowls of Indian spices" loading="lazy">
+    </article>
+    <article class="highlight-card">
+      <span class="highlight-icon" aria-hidden="true"><i class="fas fa-shield-halved"></i></span>
+      <h3>Quality<br>Assured</h3>
+      <p>Careful selection, grading and packaging</p>
+      <img src="assets/images/Home/highlights/quality.jpg" alt="Basket of mangoes and pomegranates" loading="lazy">
+    </article>
+    <article class="highlight-card">
+      <span class="highlight-icon" aria-hidden="true"><i class="fas fa-ship"></i></span>
+      <h3>Export<br>Management</h3>
+      <p>End-to-end support from sourcing to global delivery</p>
+      <img src="assets/images/Home/highlights/export.jpg" alt="Container ship at port" loading="lazy">
+    </article>
+    <article class="highlight-card">
+      <span class="highlight-icon" aria-hidden="true"><i class="fas fa-earth-asia"></i></span>
+      <h3>Global<br>Buyers</h3>
+      <p>Serving importers, distributors and businesses worldwide</p>
+      <img src="assets/images/Home/highlights/global.jpg" alt="Globe centred on India" loading="lazy">
+    </article>
+  </div>
+</section>
 
-
-
-<section class="hero-section" >
-  <div class="hero-carousel">
-    <div class="carousel-container" [style.transform]="'translateX(-' + currentSlide * 100 + '%)'">
-      <div style="max-width: 100%;" class="carousel-slide" *ngFor="let image of images">
-        <img [src]="image" alt="Hero Image" />
+<section class="categories-home" aria-labelledby="categories-title">
+  <p class="section-eyebrow">Browse by category</p>
+  <h2 id="categories-title">Explore Our Categories</h2>
+  <div class="categories-home-grid">
+    <a class="cat-card" *ngFor="let c of categories" routerLink="/prdland" [queryParams]="{ category: c.slug }">
+      <div class="cat-photo" [class.cat-photo--empty]="!c.image">
+        <img *ngIf="c.image" [src]="c.image" [alt]="c.name" loading="lazy">
+        <i *ngIf="!c.image" class="fas {{ c.icon }} cat-placeholder" aria-hidden="true"></i>
+        <span class="cat-badge" aria-hidden="true"><i class="fas {{ c.icon }}"></i></span>
       </div>
+      <span class="cat-count">{{ count(c.slug) ? count(c.slug) + ' Products' : 'Coming soon' }}</span>
+      <span class="cat-name">{{ c.name }}</span>
+    </a>
+  </div>
+</section>
+
+<section class="mainstream-section" aria-labelledby="mainstream-title">
+  <div class="mainstream-head">
+    <div>
+      <p class="section-eyebrow">Our main stream products</p>
+      <h2 id="mainstream-title">Straight From India&rsquo;s Farms</h2>
+    </div>
+    <div class="mainstream-controls">
+      <button type="button" (click)="scrollMainstream(-1)" aria-label="Scroll products left"><i class="bi bi-arrow-left"></i></button>
+      <button type="button" (click)="scrollMainstream(1)" aria-label="Scroll products right"><i class="bi bi-arrow-right"></i></button>
     </div>
   </div>
 
-  <div class="hero-content">
-    <h1>Welcome to Bigbisort</h1>
-    <p>Your trusted marketplace for seafood & farm produce</p>
-    <a routerLink="/products" class="btn-primary">Shop Now</a>
+  <div class="mainstream-track" #mainstreamTrack tabindex="0" aria-label="Main stream products, scroll sideways">
+    <article class="product-tile" *ngFor="let p of mainstream">
+      <a class="product-photo" [routerLink]="p.link">
+        <img [src]="p.image" [alt]="p.name" loading="lazy">
+        <span class="product-chip">{{ p.category }}</span>
+      </a>
+      <div class="product-body">
+        <h3>{{ p.name }}</h3>
+        <dl>
+          <div><dt>Origin</dt><dd>{{ p.origin }}</dd></div>
+          <div><dt>Top varieties</dt><dd>{{ p.varieties }}</dd></div>
+          <div><dt>Shelf life</dt><dd>{{ p.shelfLife }}</dd></div>
+        </dl>
+        <a class="product-link" [routerLink]="p.link">View details <i class="bi bi-arrow-right"></i></a>
+      </div>
+    </article>
+  </div>
+</section>
+
+<section class="story-parallax" aria-labelledby="story-title">
+  <div class="story-content">
+    <p class="story-eyebrow">Rooted in India</p>
+    <h2 id="story-title">From the Hands of Our Farmers to Tables Around the World</h2>
+    <p class="story-text">
+      Every harvest begins on a small Indian farm. We stay close to the growers, check every lot
+      for quality, and manage grading, packing and shipping, so what leaves the field arrives fresh,
+      on time and ready for your market.
+    </p>
+    <a routerLink="/about" class="story-link">Our Story <i class="bi bi-arrow-right"></i></a>
   </div>
 </section>
 
@@ -46,28 +142,6 @@
   <h2>About Us</h2>
   <p>Bigbisort connects buyers and sellers across India to ensure transparent, efficient, and fast trade of seafood and agricultural products. Join us and grow together!</p>
   <a routerLink="/about" class="btn-secondary">Learn More</a>
-</section>
-
-<section class="categories-section">
-  <h2>Explore Categories</h2>
-  <div class="categories-grid">
-    <div class="category-card" routerLink="/category/fruits" role="link" tabindex="0">
-      <img src="assets/images/Prdimg/app1.jpg" alt="Fruits">
-      <h3>Fruits</h3>
-    </div>
-    <div class="category-card" routerLink="/category/vegetables" role="link" tabindex="0">
-      <img src="assets/images/Prdimg/veg.jpg" alt="Vegetables">
-      <h3>Vegetables</h3>
-    </div>
-    <div class="category-card" routerLink="/category/spices" role="link" tabindex="0">
-      <img src="assets/images/Prdimg/pep1.jpg" alt="Spices">
-      <h3>Spices</h3>
-    </div>
-    <div class="category-card" routerLink="/category/coconut" role="link" tabindex="0">
-      <img src="assets/images/Prdimg/co1.jpg" alt="Coconut & Tropical">
-      <h3>Coconut & Tropical</h3>
-    </div>
-  </div>
 </section>
 
 

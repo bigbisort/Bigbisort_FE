@@ -79,7 +79,7 @@ BananaVarieties = [
   bananaBenefitsLeft = [
   { icon: 'fa-solid fa-seedling', text: 'Rich in essential vitamins like B6 and C' },
   { icon: 'fa-solid fa-bolt', text: 'Instant natural energy booster' },
-  { icon: 'fa-solid fa-gut', text: 'Supports digestive health with high fiber' },
+  { icon: 'fa-solid fa-bowl-food', text: 'Supports digestive health with high fiber' },
   { icon: 'fa-solid fa-heart-pulse', text: 'Promotes heart health with potassium' },
   { icon: 'fa-solid fa-face-smile-beam', text: 'Improves mood naturally with tryptophan' },
 ];
@@ -122,7 +122,7 @@ bananaBenefitsRight = [
 
 features = [
   {
-    icon: 'fa-solid fa-hand-holding-seedling',
+    icon: 'fa-solid fa-tractor',
     title: 'Sourced from Trusted Banana Farmers',
     description: 'Directly procured from growers in Tamil Nadu, Maharashtra, Gujarat, Andhra Pradesh & Karnataka — ensuring traceability and consistent quality.'
   },
@@ -197,8 +197,8 @@ sellers = [
 
  onSubmit() {
     if (this.formData.name && this.formData.email && this.formData.quantity) {
-      console.log('Avocado Enquiry:', this.formData);
-      alert('Your enquiry for bulk avocados has been sent successfully!');
+      console.log('Banana Enquiry:', this.formData);
+      alert('Your enquiry for bulk banana has been sent successfully!');
       this.formData = { name: '', email: '', quantity: '' };
     } else {
       alert('Please fill out all fields before submitting.');

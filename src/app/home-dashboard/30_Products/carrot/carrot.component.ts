@@ -126,7 +126,7 @@ sellers = [
     location: 'Coorg, Karnataka',
     description: 'Leading producer of Hass & Fuerte avocados — naturally ripened, cold-chain ready for export.',
     rating: 4.7,
-    image: 'assets/images/Prdpage/Avo/selavo.png',
+    image: 'assets/images/Prdpage/Avo/selavo.jpg',
     tags: [
       { label: 'Verified', class: 'verified' },
       { label: 'Export Ready', class: 'export' }
@@ -137,7 +137,7 @@ sellers = [
     location: 'Nilgiris, Tamil Nadu',
     description: 'Premium Indian Green Avocados — sustainably grown, sorted, and packed for retail & B2B supply.',
     rating: 4.5,
-    image: 'assets/images/Prdpage/Avo/nilavo.png',
+    image: 'assets/images/Prdpage/Avo/nilavo.jpg',
     tags: [
       { label: 'Traceable', class: 'traceable' },
       { label: 'Certified', class: 'graded' }
@@ -148,7 +148,7 @@ sellers = [
     location: 'Wayanad, Kerala',
     description: 'Organic avocado grower – specializing in tropical hybrids; APEDA registered exporter.',
     rating: 4.6,
-    image: 'assets/images/Prdpage/Avo/wdavo.png',
+    image: 'assets/images/Prdpage/Avo/wdavo.jpg',
     tags: [
       { label: 'Organic', class: 'organic' },
       { label: 'Verified', class: 'verified' }

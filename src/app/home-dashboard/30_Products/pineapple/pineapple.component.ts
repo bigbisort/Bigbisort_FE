@@ -63,7 +63,7 @@ BananaVarieties = [
 
 pineappleBenefitsLeft = [
   { icon: 'fa-solid fa-seedling', text: 'Rich in vitamin C and antioxidants' },
-  { icon: 'fa-solid fa-gut', text: 'Supports digestion with natural bromelain enzyme' },
+  { icon: 'fa-solid fa-bowl-food', text: 'Supports digestion with natural bromelain enzyme' },
   { icon: 'fa-solid fa-bolt', text: 'Provides instant natural energy' },
   { icon: 'fa-solid fa-heart-pulse', text: 'Promotes heart health and better blood circulation' },
   { icon: 'fa-solid fa-face-smile-beam', text: 'Boosts immunity and improves overall wellbeing' },
@@ -109,7 +109,7 @@ processingSteps = [
 
 features = [
   {
-    icon: 'fa-solid fa-hand-holding-seedling',
+    icon: 'fa-solid fa-tractor',
     title: 'Sourced from Premium Pineapple Farms',
     description:
       'Directly procured from certified growers in Tamil Nadu, Kerala, Andhra Pradesh & West Bengal — ensuring traceable and high-quality produce.'
@@ -228,8 +228,8 @@ sellers = [
 
  onSubmit() {
     if (this.formData.name && this.formData.email && this.formData.quantity) {
-      console.log('Avocado Enquiry:', this.formData);
-      alert('Your enquiry for bulk avocados has been sent successfully!');
+      console.log('Pineapple Enquiry:', this.formData);
+      alert('Your enquiry for bulk pineapple has been sent successfully!');
       this.formData = { name: '', email: '', quantity: '' };
     } else {
       alert('Please fill out all fields before submitting.');

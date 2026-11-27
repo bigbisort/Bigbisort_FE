@@ -25,6 +25,7 @@ import { BuyersproductsComponent } from './pages/buyer-dashboard/buyersproducts/
 import { FooterComponent } from './home-dashboard/footer/footer.component';
 import { AppleComponent } from './home-dashboard/30_Products/apple/apple.component';
 import { BananaComponent } from './home-dashboard/30_Products/banana/banana.component';
+import { ProductPageComponent } from './home-dashboard/30_Products/product-page/product-page.component';
 import { PrdlandpgComponent } from './home-dashboard/prdlandpg/prdlandpg.component';
 import { AvocadoComponent } from './home-dashboard/30_Products/avocado/avocado.component';
 import { CarrotComponent } from './home-dashboard/30_Products/carrot/carrot.component';
@@ -81,6 +82,7 @@ import { AdminProductManagementComponent } from './pages/admin-product-managemen
         FooterComponent,
         AppleComponent,
         BananaComponent,
+        ProductPageComponent,
         PrdlandpgComponent,
         AvocadoComponent,
         CarrotComponent,

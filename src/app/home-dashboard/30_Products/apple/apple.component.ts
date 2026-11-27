@@ -57,7 +57,7 @@ appleVarieties = [
     {
       name: 'Granny Smith',
       description: 'Classic tart, juicy apple; used in cakes, jams, candies; medicinal benefits.',
-      image: 'assets/images/Prdpage/Apple/grany.png'
+      image: 'assets/images/Prdpage/Apple/grany.jpg'
     },
     {
       name: 'Honeycrisp',
@@ -142,7 +142,7 @@ appleVarieties = [
       location: 'President, Apple Grower Association of India (HP)',
       description: 'Leading HP – Golden Delicious,McIntosh;cold-chain ready',
       rating: 4.6,
-      image: 'assets/images/Prdpage/Apple/hpm.png',
+      image: 'assets/images/Prdpage/Apple/hpm.jpg',
       tags: [
         { label: 'Verified', class: 'verified' },
         { label: 'Graded', class: 'graded' }
@@ -153,7 +153,7 @@ appleVarieties = [
       location: 'Kashmir Valley',
       description: 'Ambri & Sunehari – 120 MT/month',
       rating: 4.4,
-      image: 'assets/images/Prdpage/Apple/ambor.png',
+      image: 'assets/images/Prdpage/Apple/ambor.jpg',
       tags: [
         { label: 'Traceable', class: 'traceable' },
         { label: 'Export Ready', class: 'export' }
@@ -164,7 +164,7 @@ appleVarieties = [
       location: 'Dehradun, Uttarakhand',
       description: 'McIntosh & Chaubattia Anupam – Quality checked & graded.',
       rating: 4.5,
-      image: 'assets/images/Prdpage/Apple/utor.png',
+      image: 'assets/images/Prdpage/Apple/utor.jpg',
       tags: [
         { label: 'Verified', class: 'verified' },
         { label: 'Certified', class: 'graded' }

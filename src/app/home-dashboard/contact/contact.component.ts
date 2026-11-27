@@ -22,6 +22,8 @@ interface RegionalContact {
   location: string; // Used for map pointers (e.g., coordinates or unique ID)
   focus: string;
   email: string;
+  /** Which side of its map pin the label sits on, so neighbouring labels never overlap. */
+  side: 'left' | 'right';
 }
 
 @Component({
@@ -83,6 +85,18 @@ contactChannels: ContactChannel[] = [
     this.enquiryOpen = true;
   }
 
+  // Head-office details, same as the footer.
+  hqEmail = 'contact@bigbisort.com';
+  hqAddress = '# 269 Anbalagan nagar Kambar Street, Minjur, Chennai-601203';
+
+  // Regional desk hovered/focused in the list or on the map - highlights both.
+  activeRegion: string | null = null;
+
+  scrollTo(id: string) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById(id)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  }
+
   ngOnInit(): void {
     // Arriving from a product's "Enquire" button (?topic=...) — open the modal straight away.
     const topic = this.route.snapshot.queryParamMap.get('topic');
@@ -109,25 +123,29 @@ regionalTeams: RegionalContact[] = [
     region: 'Shimla, HP',
     location: 'shimla', // Used for map pin placement
     focus: 'Apple Exports',
-    email: 'hp@bigbisort.com'
+    email: 'hp@bigbisort.com',
+    side: 'right'
   },
   {
     region: 'Srinagar, J&K',
     location: 'srinagar',
     focus: 'Premium Fruits',
-    email: 'jk@bigbisort.com'
+    email: 'jk@bigbisort.com',
+    side: 'left'
   },
   {
     region: 'Coimbatore, TN',
     location: 'coimbatore',
     focus: 'Logistics & South Ops',
-    email: 'south@bigbisort.com'
+    email: 'south@bigbisort.com',
+    side: 'left'
   },
   {
     region: 'Chennai (HQ)',
     location: 'chennai',
     focus: 'Corporate & Investor Desk',
-    email: 'contact@bigbisort.com'
+    email: 'contact@bigbisort.com',
+    side: 'right'
   }
 ];
 

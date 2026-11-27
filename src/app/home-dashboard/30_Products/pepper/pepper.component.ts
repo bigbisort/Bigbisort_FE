@@ -108,7 +108,7 @@ processingSteps = [
 
 features = [
   {
-    icon: 'fa-solid fa-hand-holding-seedling',
+    icon: 'fa-solid fa-tractor',
     title: 'Sourced from Premium Pepper-Growing Regions',
     description:
       'Handpicked from trusted farms across Kerala, Karnataka, Tamil Nadu & Sri Lanka — ensuring authentic, high-quality black & white pepper.'
@@ -193,8 +193,8 @@ sellers = [
 
  onSubmit() {
     if (this.formData.name && this.formData.email && this.formData.quantity) {
-      console.log('Avocado Enquiry:', this.formData);
-      alert('Your enquiry for bulk avocados has been sent successfully!');
+      console.log('Black Pepper Enquiry:', this.formData);
+      alert('Your enquiry for bulk black pepper has been sent successfully!');
       this.formData = { name: '', email: '', quantity: '' };
     } else {
       alert('Please fill out all fields before submitting.');

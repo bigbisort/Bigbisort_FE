@@ -1,16 +1,47 @@
-<nav class="navbar" *ngIf="!isDashboardRoute()">
-  <div class="nav-left">
-     <a routerLink="/home" class="logo">
-      <img src="assets/images/logo/logo.png" alt="Bigbisort Logo" />
+<!-- On /home the header floats transparently over the hero photo and turns
+     solid once the page scrolls; everywhere else it is the solid sticky bar. -->
+<nav class="navbar" *ngIf="!isDashboardRoute()"
+     [class.navbar--overlay]="isHomeRoute()"
+     [class.navbar--scrolled]="isHomeRoute() && scrolled"
+     [class.menu-open]="menuOpen">
+  <a routerLink="/home" class="brand" (click)="closeMenu()">
+    <img src="assets/images/logo/logo.png" alt="" class="brand-mark" />
+    <span class="brand-text">
+      <span class="brand-name">Bigbisort<sup>®</sup></span>
+      <span class="brand-tag">Import &amp; Export Pvt. Ltd.</span>
+    </span>
+  </a>
+
+  <button type="button" class="menu-toggle" (click)="menuOpen = !menuOpen"
+          [attr.aria-expanded]="menuOpen" aria-controls="primary-nav" aria-label="Menu">
+    <i class="bi" [class.bi-list]="!menuOpen" [class.bi-x-lg]="menuOpen"></i>
+  </button>
+
+  <div class="nav-links" id="primary-nav">
+    <a routerLink="/home" routerLinkActive="active-link" (click)="closeMenu()">Home</a>
+    <a routerLink="/about" routerLinkActive="active-link" (click)="closeMenu()">About Us</a>
+
+    <div class="nav-dropdown">
+      <a routerLink="/products" routerLinkActive="active-link" (click)="closeMenu()">
+        Products <i class="bi bi-chevron-down"></i>
+      </a>
+      <div class="dropdown-panel">
+        <a routerLink="/prdland" (click)="closeMenu()">All Products</a>
+        <a routerLink="/prdland" [queryParams]="{ category: 'fruits' }" (click)="closeMenu()">Fruits</a>
+        <a routerLink="/prdland" [queryParams]="{ category: 'vegetables' }" (click)="closeMenu()">Vegetables</a>
+        <a routerLink="/prdland" [queryParams]="{ category: 'spices' }" (click)="closeMenu()">Spices</a>
+        <a routerLink="/prdland" [queryParams]="{ category: 'coconut' }" (click)="closeMenu()">Coconut</a>
+        <a routerLink="/prdland" [queryParams]="{ category: 'pulses' }" (click)="closeMenu()">Pulses &amp; Grains</a>
+        <a routerLink="/prdland" [queryParams]="{ category: 'millets' }" (click)="closeMenu()">Premium Millets</a>
+      </div>
+    </div>
+
+    <a *ngIf="!isLoggedIn()" routerLink="/login" routerLinkActive="active-link" (click)="closeMenu()">Login</a>
+    <a *ngIf="isLoggedIn()" (click)="logout(); closeMenu()" role="button" tabindex="0" style="cursor: pointer;">Logout</a>
+
+    <a routerLink="/contact" class="contact-pill" (click)="closeMenu()">
+      Contact Us <i class="bi bi-arrow-up-right"></i>
     </a>
-    <a routerLink="/home" routerLinkActive="active-link">Home</a>
-    <a routerLink="/about" routerLinkActive="active-link">About</a>
-    <a routerLink="/products" routerLinkActive="active-link">Products</a>
-    <a routerLink="/contact" routerLinkActive="active-link">Contact</a>
-  </div>
-  <div class="nav-right">
-    <a *ngIf="!isLoggedIn()" routerLink="/login" routerLinkActive="active-link" class="login-link">Login</a>
-    <a *ngIf="isLoggedIn()" (click)="logout()" class="login-link" style="cursor: pointer;">Logout</a>
   </div>
 </nav>
 

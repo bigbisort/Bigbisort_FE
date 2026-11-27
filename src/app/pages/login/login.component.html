@@ -1,128 +1,139 @@
 <div class="login-wrapper">
-  <div class="login-box">
-    <h2 *ngIf="!isRegisterVisible">Login to Bigbisort</h2>
+  <!-- soft floating shapes behind the card -->
+  <span class="bg-blob b1" aria-hidden="true"></span>
+  <span class="bg-blob b2" aria-hidden="true"></span>
+  <span class="bg-blob b3" aria-hidden="true"></span>
 
-    <!-- Form inputs -->
+  <div class="login-box" [class.login-box--wide]="isRegisterVisible">
+
+    <!-- Login -->
     <div class="login-form" *ngIf="!isRegisterVisible">
-      <!-- Radio buttons -->
-      <div class="login-type">
-        <label>
+      <div class="login-logo"><img src="assets/images/logo/logo.png" alt="Bigbisort" /></div>
+      <h2>Welcome back</h2>
+      <p class="login-sub">Sign in to your Bigbisort account</p>
+
+      <!-- Buyer / Seller switch -->
+      <div class="login-type" role="radiogroup" aria-label="Sign in as">
+        <span class="login-type-thumb" [class.right]="loginType === 'seller'" aria-hidden="true"></span>
+        <label [class.active]="loginType === 'buyer'">
           <input type="radio" name="loginType" value="buyer" [(ngModel)]="loginType" />
-          Buyer
+          <i class="bi bi-bag-heart"></i> Buyer
         </label>
-        <label>
+        <label [class.active]="loginType === 'seller'">
           <input type="radio" name="loginType" value="seller" [(ngModel)]="loginType" />
-          Seller
+          <i class="bi bi-shop"></i> Seller
         </label>
       </div>
 
-      <!-- Buyer -->
-      <div *ngIf="loginType === 'buyer'">
-        <input [(ngModel)]="username" placeholder="Username" />
-        <input [(ngModel)]="password" type="password" placeholder="Password" />
+      <div class="field" [class.has-error]="loginErrors.username">
+        <input id="login-username" [(ngModel)]="username" placeholder=" " autocomplete="username"
+               (input)="loginErrors.username = ''" (keyup.enter)="login()" />
+        <label for="login-username">{{ loginType === 'seller' ? 'Seller username' : 'Username' }}</label>
+        <i class="bi bi-person field-icon" aria-hidden="true"></i>
+        <span class="field-error" *ngIf="loginErrors.username">{{ loginErrors.username }}</span>
       </div>
 
-      <!-- Seller -->
-      <!-- <div *ngIf="loginType === 'seller'">
-        <input [(ngModel)]="phone" placeholder="Phone Number" />z
-        <input [(ngModel)]="otp" placeholder="6-digit OTP" maxlength="6" />
-      </div> -->
-
-
-         <div *ngIf="loginType === 'seller'">
-        <input [(ngModel)]="username" placeholder="seller Uname" />
-        <input [(ngModel)]="password" type="password" placeholder="Password" />
+      <div class="field" [class.has-error]="loginErrors.password">
+        <input id="login-password" [(ngModel)]="password" [type]="showPassword ? 'text' : 'password'" placeholder=" "
+               autocomplete="current-password" (input)="loginErrors.password = ''" (keyup.enter)="login()" />
+        <label for="login-password">Password</label>
+        <i class="bi bi-lock field-icon" aria-hidden="true"></i>
+        <button type="button" class="field-toggle" (click)="showPassword = !showPassword"
+                [attr.aria-label]="showPassword ? 'Hide password' : 'Show password'">
+          <i class="bi" [ngClass]="showPassword ? 'bi-eye-slash' : 'bi-eye'"></i>
+        </button>
+        <span class="field-error" *ngIf="loginErrors.password">{{ loginErrors.password }}</span>
       </div>
 
-      <button (click)="login()">Login</button>
+      <button type="button" class="btn-primary" (click)="login()">
+        <span>Login</span> <i class="bi bi-arrow-right"></i>
+      </button>
 
       <div class="divider"><span>or</span></div>
 
       <!-- Google Identity Services renders its own button here -->
       <div id="google-signin-btn" class="google-signin-btn"></div>
 
-      <!-- Links -->
       <div class="login-links">
-        <a href="#" (click)="showRegister($event)">
-          {{ loginType === 'seller' ? 'Register' : 'Register' }}
-        </a>
-        <!-- <a href="#" (click)="forgotPassword()">Forgot Password?</a> -->
+        <p class="register-prompt">New to Bigbisort?</p>
+        <button type="button" class="btn-outline" (click)="showRegister($event)">
+          <i class="bi bi-person-plus"></i> Register as {{ loginType === 'seller' ? 'a Seller' : 'a Buyer' }}
+        </button>
       </div>
     </div>
 
-   <!-- Register form -->
-<div *ngIf="isRegisterVisible" class="register-box">
-  <h2>Register</h2>
-      <div class="register-form">
-  <!-- Row 1: Name + Username -->
-  <div class="form-row">
-    <div class="form-group">
-      <input [(ngModel)]="registerData.name" placeholder="Full Name" />
-      <div *ngIf="registerErrors.name" class="error-msg">{{registerErrors.name}}</div>
+    <!-- Register form -->
+    <div *ngIf="isRegisterVisible" class="register-box">
+      <h2>Register</h2>
+          <div class="register-form">
+      <!-- Row 1: Name + Username -->
+      <div class="form-row">
+        <div class="form-group">
+          <input [(ngModel)]="registerData.name" placeholder="Full Name" />
+          <div *ngIf="registerErrors.name" class="error-msg">{{registerErrors.name}}</div>
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="registerData.userName" placeholder="Username" />
+          <div *ngIf="registerErrors.userName" class="error-msg">{{registerErrors.userName}}</div>
+        </div>
+      </div>
+    
+      <!-- Row 2: Email + Phone -->
+      <div class="form-row">
+        <div class="form-group">
+          <input [(ngModel)]="registerData.email" placeholder="Email" />
+          <div *ngIf="registerErrors.email" class="error-msg">{{registerErrors.email}}</div>
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="registerData.phone" placeholder="Phone" />
+          <div *ngIf="registerErrors.phone" class="error-msg">{{registerErrors.phone}}</div>
+        </div>
+      </div>
+    
+      <!-- Row 3: Address + Zip -->
+      <div class="form-row">
+        <div class="form-group">
+          <input [(ngModel)]="registerData.address" placeholder="Address" />
+          <div *ngIf="registerErrors.address" class="error-msg">{{registerErrors.address}}</div>
+        </div>
+        <div class="form-group">
+          <input [(ngModel)]="registerData.zip" placeholder="Zip" />
+          <div *ngIf="registerErrors.zip" class="error-msg">{{registerErrors.zip}}</div>
+        </div>
+      </div>
+    
+      <!-- Row 4: City + State + Country (3 in one line) -->
+      <div class="form-row">
+        <div class="form-group small">
+          <input [(ngModel)]="registerData.city" placeholder="City" />
+          <div *ngIf="registerErrors.city" class="error-msg">{{registerErrors.city}}</div>
+        </div>
+        <div class="form-group small">
+          <input [(ngModel)]="registerData.state" placeholder="State" />
+          <div *ngIf="registerErrors.state" class="error-msg">{{registerErrors.state}}</div>
+        </div>
+        <div class="form-group small">
+          <input [(ngModel)]="registerData.country" placeholder="Country" />
+          <div *ngIf="registerErrors.country" class="error-msg">{{registerErrors.country}}</div>
+        </div>
+      </div>
+    
+      <!-- Row 5: Password -->
+      <div class="form-row">
+        <div class="form-group full-width">
+          <input [(ngModel)]="registerData.password" type="password" placeholder="Password" />
+          <div *ngIf="registerErrors.password" class="error-msg">{{registerErrors.password}}</div>
+        </div>
+      </div>
+    
+      <!-- Buttons -->
+      <div class="register-buttons">
+        <button (click)="register()">Register</button>
+        <button (click)="cancelRegister()" class="cancel-btn">Cancel</button>
+      </div>
     </div>
-    <div class="form-group">
-      <input [(ngModel)]="registerData.userName" placeholder="Username" />
-      <div *ngIf="registerErrors.userName" class="error-msg">{{registerErrors.userName}}</div>
+    
     </div>
-  </div>
-
-  <!-- Row 2: Email + Phone -->
-  <div class="form-row">
-    <div class="form-group">
-      <input [(ngModel)]="registerData.email" placeholder="Email" />
-      <div *ngIf="registerErrors.email" class="error-msg">{{registerErrors.email}}</div>
-    </div>
-    <div class="form-group">
-      <input [(ngModel)]="registerData.phone" placeholder="Phone" />
-      <div *ngIf="registerErrors.phone" class="error-msg">{{registerErrors.phone}}</div>
-    </div>
-  </div>
-
-  <!-- Row 3: Address + Zip -->
-  <div class="form-row">
-    <div class="form-group">
-      <input [(ngModel)]="registerData.address" placeholder="Address" />
-      <div *ngIf="registerErrors.address" class="error-msg">{{registerErrors.address}}</div>
-    </div>
-    <div class="form-group">
-      <input [(ngModel)]="registerData.zip" placeholder="Zip" />
-      <div *ngIf="registerErrors.zip" class="error-msg">{{registerErrors.zip}}</div>
-    </div>
-  </div>
-
-  <!-- Row 4: City + State + Country (3 in one line) -->
-  <div class="form-row">
-    <div class="form-group small">
-      <input [(ngModel)]="registerData.city" placeholder="City" />
-      <div *ngIf="registerErrors.city" class="error-msg">{{registerErrors.city}}</div>
-    </div>
-    <div class="form-group small">
-      <input [(ngModel)]="registerData.state" placeholder="State" />
-      <div *ngIf="registerErrors.state" class="error-msg">{{registerErrors.state}}</div>
-    </div>
-    <div class="form-group small">
-      <input [(ngModel)]="registerData.country" placeholder="Country" />
-      <div *ngIf="registerErrors.country" class="error-msg">{{registerErrors.country}}</div>
-    </div>
-  </div>
-
-  <!-- Row 5: Password -->
-  <div class="form-row">
-    <div class="form-group full-width">
-      <input [(ngModel)]="registerData.password" type="password" placeholder="Password" />
-      <div *ngIf="registerErrors.password" class="error-msg">{{registerErrors.password}}</div>
-    </div>
-  </div>
-
-  <!-- Buttons -->
-  <div class="register-buttons">
-    <button (click)="register()">Register</button>
-    <button (click)="cancelRegister()" class="cancel-btn">Cancel</button>
-  </div>
-</div>
-
-</div>
-
 
   </div>
 </div>

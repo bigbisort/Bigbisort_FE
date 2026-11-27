@@ -1,6 +1,7 @@
 /* ============================================================================
-   Public site navbar + session modal
-   Markup unchanged — same classes, same structure.
+   Public site header
+   Solid sticky bar on inner pages; on /home (.navbar--overlay) it floats
+   transparently over the hero and turns solid once the page scrolls.
    ========================================================================= */
 
 .navbar {
@@ -8,175 +9,283 @@
   top: 0;
   z-index: 1030;
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  gap: var(--bb-space-4);
+  justify-content: space-between;
+  gap: var(--bb-space-5);
   min-height: var(--bb-navbar-h);
-  padding: var(--bb-space-3) clamp(1rem, 4vw, 3rem);
+  padding: var(--bb-space-4) clamp(1rem, 7vw, 8.5rem);
   font-family: var(--bb-font-body);
-
-  /* Deep green with a subtle vertical lift, plus a gold hairline at the base
-     to tie the header to the accent colour used on CTAs. */
   background: linear-gradient(180deg, var(--bb-green-800) 0%, var(--bb-green-900) 100%);
   border-bottom: 1px solid rgba(212, 168, 67, 0.28);
   box-shadow: var(--bb-shadow-md);
+  transition: background-color 300ms var(--bb-ease), box-shadow 300ms var(--bb-ease),
+              padding 300ms var(--bb-ease);
 }
 
-/* ---- Left: logo + primary nav ------------------------------------------ */
-.nav-left {
-  display: flex;
-  align-items: center;
-  gap: var(--bb-space-1);
-  min-width: 0;
+.navbar--overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  padding-top: var(--bb-space-5);
+  padding-bottom: var(--bb-space-5);
+  background: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;
 }
 
-.logo {
+.navbar--overlay.navbar--scrolled,
+.navbar--overlay.menu-open {
+  padding-top: var(--bb-space-3);
+  padding-bottom: var(--bb-space-3);
+  background: rgba(18, 41, 29, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom-color: rgba(212, 168, 67, 0.22);
+  box-shadow: var(--bb-shadow-md);
+}
+
+/* ---- Brand: mark + wordmark ------------------------------------------- */
+.brand {
   display: inline-flex;
   align-items: center;
-  margin-right: var(--bb-space-5);
-  padding: 0;
+  gap: var(--bb-space-3);
   flex: 0 0 auto;
+  color: #fff;
+  text-decoration: none;
 
-  img {
-    height: 46px;
+  .brand-mark {
+    height: 52px;
     width: auto;
-    max-width: 150px;
+    max-width: 64px;
     object-fit: contain;
-    cursor: pointer;
-    transition: transform var(--bb-transition), filter var(--bb-transition);
   }
 
-  &:hover img {
-    transform: translateY(-1px) scale(1.03);
-    filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.35));
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .brand-name {
+    font-family: var(--bb-font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff;
+
+    sup {
+      font-family: var(--bb-font-body);
+      font-size: 0.4em;
+      top: -1.3em;
+      margin-left: 1px;
+    }
+  }
+
+  .brand-tag {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
   }
 }
 
-/* ---- Nav links --------------------------------------------------------- */
-.navbar a {
-  position: relative;
-  color: rgba(255, 255, 255, 0.82);
-  text-decoration: none;
-  font-family: var(--bb-font-body);
-  font-weight: 500;
-  font-size: var(--bb-text-sm);
-  letter-spacing: 0.01em;
-  padding: var(--bb-space-2) var(--bb-space-4);
-  border-radius: var(--bb-radius-pill);
-  white-space: nowrap;
-  transition: color var(--bb-transition), background-color var(--bb-transition);
+/* ---- Links ------------------------------------------------------------- */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-space-2);
+}
 
-  /* Gold underline grows from the centre — replaces the old scale(1.2) jump,
-     which shifted every sibling link on hover. */
+.nav-links > a,
+.nav-dropdown > a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--bb-space-2) var(--bb-space-4);
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color var(--bb-transition);
+
+  i { font-size: 0.75em; }
+
+  /* Gold underline, as under "Home" in the design. */
   &::after {
     content: '';
     position: absolute;
-    left: 50%;
-    bottom: 2px;
-    width: 0;
+    left: var(--bb-space-4);
+    right: var(--bb-space-4);
+    bottom: -4px;
     height: 2px;
     border-radius: 2px;
     background: var(--bb-gold-400);
-    transform: translateX(-50%);
-    transition: width var(--bb-transition);
+    transform: scaleX(0);
+    transition: transform var(--bb-transition);
   }
 
   &:hover,
-  &:focus-visible {
-    color: #fff;
-    background-color: rgba(255, 255, 255, 0.07);
-
-    &::after { width: calc(100% - 2 * var(--bb-space-4)); }
-  }
+  &:focus-visible { color: #fff; }
+  &:hover::after { transform: scaleX(1); }
 
   &:focus-visible {
     outline: 2px solid var(--bb-gold-300);
     outline-offset: 2px;
+    border-radius: var(--bb-radius-sm);
   }
-}
-
-/* Logo is an <a> too — opt it out of the link treatment. */
-.navbar a.logo {
-  background: none;
-  border-radius: 0;
-
-  &::after { content: none; }
-  &:hover { background: none; }
 }
 
 .active-link {
   color: #fff !important;
-  font-weight: 600;
-  border-bottom: none;
+  &::after { transform: scaleX(1) !important; }
+}
 
-  &::after {
-    width: calc(100% - 2 * var(--bb-space-4)) !important;
-    background: var(--bb-gold-400);
+/* ---- Products dropdown -------------------------------------------------- */
+.nav-dropdown {
+  position: relative;
+
+  .dropdown-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    min-width: 220px;
+    padding: var(--bb-space-2);
+    display: flex;
+    flex-direction: column;
+    background: rgba(18, 41, 29, 0.97);
+    border: 1px solid rgba(212, 168, 67, 0.25);
+    border-radius: var(--bb-radius-md);
+    box-shadow: var(--bb-shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 6px);
+    transition: opacity var(--bb-transition), transform var(--bb-transition),
+                visibility var(--bb-transition);
+
+    /* Bridge the gap so the panel doesn't close on the way down. */
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -12px;
+      height: 12px;
+    }
+
+    a {
+      padding: var(--bb-space-2) var(--bb-space-4);
+      border-radius: var(--bb-radius-sm);
+      color: rgba(255, 255, 255, 0.88);
+      text-decoration: none;
+      font-size: var(--bb-text-sm);
+      white-space: nowrap;
+
+      &:hover,
+      &:focus-visible {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--bb-gold-300);
+      }
+    }
+  }
+
+  &:hover .dropdown-panel,
+  &:focus-within .dropdown-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
   }
 }
 
-/* ---- Right: auth action ------------------------------------------------ */
-.nav-right {
-  display: flex;
-  align-items: center;
-  flex: 0 0 auto;
-}
-
-.login-link {
-  background: linear-gradient(135deg, var(--bb-gold-400) 0%, var(--bb-gold-500) 100%);
-  color: var(--bb-green-900) !important;
-  padding: var(--bb-space-3) var(--bb-space-6) !important;
+/* ---- Contact pill: gold outline ----------------------------------------- */
+.nav-links > a.contact-pill {
+  margin-left: var(--bb-space-4);
+  padding: var(--bb-space-3) var(--bb-space-6);
+  border: 1.5px solid var(--bb-gold-300);
   border-radius: var(--bb-radius-pill);
-  font-weight: 700;
-  font-size: var(--bb-text-sm);
-  letter-spacing: 0.01em;
-  box-shadow: 0 4px 14px rgba(197, 146, 46, 0.32);
-  transition: transform var(--bb-transition), box-shadow var(--bb-transition),
-              filter var(--bb-transition);
+  color: #fff;
+  font-weight: 600;
+  transition: background-color var(--bb-transition), color var(--bb-transition);
 
   &::after { content: none; }
 
   &:hover,
   &:focus-visible {
-    background: linear-gradient(135deg, var(--bb-gold-300) 0%, var(--bb-gold-400) 100%);
-    color: var(--bb-green-900) !important;
-    transform: translateY(-2px);
-    box-shadow: var(--bb-shadow-gold);
+    background: var(--bb-gold-300);
+    color: var(--bb-green-900);
   }
+}
 
-  &:active { transform: translateY(0); }
+/* ---- Mobile menu toggle ------------------------------------------------- */
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--bb-radius-md);
+  background: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
 }
 
 /* ---- Responsive -------------------------------------------------------- */
-@media (max-width: 900px) {
-  .navbar { padding: var(--bb-space-3) var(--bb-space-4); }
-  .logo {
-    margin-right: var(--bb-space-3);
-    img { height: 38px; max-width: 118px; }
-  }
-  .navbar a { padding: var(--bb-space-2) var(--bb-space-3); font-size: var(--bb-text-xs); }
-  .login-link { padding: var(--bb-space-2) var(--bb-space-4) !important; }
+@media (max-width: 1280px) {
+  .navbar { padding-left: clamp(1rem, 4vw, 3rem); padding-right: clamp(1rem, 4vw, 3rem); }
+  .nav-links > a,
+  .nav-dropdown > a { padding: var(--bb-space-2) var(--bb-space-3); font-size: var(--bb-text-sm); }
+  .nav-links > a.contact-pill { margin-left: var(--bb-space-2); padding: var(--bb-space-2) var(--bb-space-5); }
 }
 
-@media (max-width: 640px) {
-  .navbar {
-    flex-wrap: wrap;
-    row-gap: var(--bb-space-2);
-  }
-  .nav-left {
+@media (max-width: 1024px) {
+  .navbar { flex-wrap: wrap; }
+  .menu-toggle { display: inline-flex; }
+
+  .brand .brand-mark { height: 42px; }
+  .brand .brand-name { font-size: 1.6rem; }
+  .brand .brand-tag { font-size: 0.62rem; }
+
+  .nav-links {
+    display: none;
     flex: 1 1 100%;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--bb-space-3) 0 var(--bb-space-2);
+  }
+
+  .menu-open .nav-links { display: flex; }
+
+  .nav-links > a,
+  .nav-dropdown > a {
+    padding: var(--bb-space-3) var(--bb-space-2);
+    font-size: var(--bb-text-base);
+    &::after { content: none; }
+  }
+
+  .nav-dropdown .dropdown-panel {
+    position: static;
+    min-width: 0;
+    padding: 0 0 var(--bb-space-2) var(--bb-space-4);
+    background: none;
+    border: none;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .nav-links > a.contact-pill {
+    margin: var(--bb-space-3) 0 0;
     justify-content: center;
   }
-  .logo {
-    flex: 1 1 100%;
-    justify-content: center;
-    margin-right: 0;
-  }
-  .nav-right {
-    flex: 1 1 100%;
-    justify-content: center;
-  }
+
+  .active-link { color: var(--bb-gold-300) !important; }
 }
 
 /* ============================================================================
