@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ProductService {
-  private apiUrl = 'http://localhost:8081/bigbisort-imp-exp/product';
+  private apiUrl = `${environment.apiBaseUrl}/product`;
 
   constructor(private http: HttpClient) {}
 
