@@ -1,985 +1,772 @@
-@use "sass:color";
+/* ============================================================================
+   Contact
+   Palette, type and spacing come from the shared --bb-* tokens (styles.scss), so
+   the page matches the navbar, home and about pages: deep green, harvest gold, cream.
+   ========================================================================= */
 
-/* --- Hero Section Styling --- */
-.hero-section {
-  background-color: #08732d; /* Dark green background */
-  padding: 20px; /* Overall padding */
-  color: #fff; /* White text color for contrast */
-  font-family: 'Segoe UI', sans-serif; /* Consistent font */
-  position: relative; /* For the top-bar-placeholder positioning */
-  overflow: hidden; /* Ensures globe image doesn't cause scroll issues */
+:host {
+  display: block;
+  font-family: var(--bb-font-body);
+  color: var(--bb-ink);
+  background: var(--bb-cream);
+  overflow-x: clip;
 }
 
-.top-bar-placeholder {
-  display: flex;
-  justify-content: space-between;
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.eyebrow {
+  display: inline-flex;
   align-items: center;
-  max-width: 1200px;
-  margin: 0 auto 30px auto; /* Center with bottom margin */
-  background-color: #fddb3a; /* Yellow background for the bar */
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional shadow */
-  color: #044d00; /* Dark green text for contrast on yellow */
-}
+  gap: 0.75rem;
+  margin: 0 0 var(--bb-space-3);
+  font-size: var(--bb-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--bb-gold-700);
 
-.top-bar-placeholder .logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.top-bar-placeholder .search-box {
-  display: flex;
-  align-items: center;
-}
-
-.top-bar-placeholder .search-box input {
-  border: 1px solid #ccc;
-  padding: 8px 12px;
-  border-radius: 5px;
-  margin-right: 5px;
-  font-size: 16px;
-  width: 60rem; /* Adjust as needed */
-}
-
-.top-bar-placeholder .search-box button {
-  background-color: #044d00; /* Dark green button */
-  color: white;
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-
-.hero-content {
-  display: flex;
-  flex-wrap: wrap; /* Allows wrapping on smaller screens */
-  justify-content: center;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto; /* Center the content */
-  gap: 40px; /* Space between text and image */
-  padding: 40px 0; /* Vertical padding within the content area */
-}
-
-.hero-text-content {
-  flex: 1 1 500px; /* Allows it to grow/shrink, with a base width */
-  text-align: left;
-  padding: 0 20px; /* Padding for text */
-}
-
-.hero-text-content h1 {
-  font-size: 64px;
-  font-weight: bold;
-  margin-bottom: 20px;
-  line-height: 1.1; /* Tighter line height for large text */
-}
-
-.hero-text-content .leaf-icon {
-  font-size: 0.8em; /* Adjust size relative to parent h1 */
-  display: inline-block; /* Keeps it on the same line */
-}
-
-.hero-text-content .tagline {
-  font-size: 28px;
-  font-weight: 500;
-  margin-bottom: 15px;
-  color: #fddb3a; /* Yellow for tagline */
-}
-
-.hero-text-content .description {
-  font-size: 18px;
-  line-height: 1.5;
-  margin-bottom: 40px; /* Space before buttons */
-}
-
-.hero-buttons {
-  display: flex;
-  flex-wrap: wrap; /* Allow buttons to wrap */
-  gap: 15px; /* Space between buttons */
-  justify-content: flex-start; /* Align buttons to the left */
-}
-
-.hero-btn {
-  display: flex;
-  align-items: center;
-  padding: 15px 25px;
-  border-radius: 8px;
-  font-size: 18px;
-  font-weight: bold;
-  cursor: pointer;
-  transition: background-color 0.3s ease, transform 0.2s ease;
-  text-decoration: none; /* For <a> tags */
-  border: none; /* Remove default button border */
-}
-
-.hero-btn i {
-  margin-right: 10px;
-  font-size: 20px;
-}
-
-.whatsapp-btn {
-  background-color: #25d366; /* WhatsApp green */
-  color: white;
-}
-
-.whatsapp-btn:hover {
-  background-color: #128c7e;
-  transform: translateY(-2px);
-}
-
-.ai-chat-btn {
-  background-color: #044d00; /* Dark green */
-  color: white;
-}
-
-.ai-chat-btn:hover {
-  background-color: #002200;
-  transform: translateY(-2px);
-}
-
-.enquiry-btn {
-  background-color: #fddb3a; /* Yellow */
-  color: #044d00; /* Dark green text */
-}
-
-.enquiry-btn:hover {
-  background-color: #ffee58;
-  transform: translateY(-2px);
-}
-
-.hero-image-content {
-  flex: 1 1 450px; /* Allows it to grow/shrink, with a base width */
-  text-align: center; /* Center the image */
-}
-
-.hero-image-content img {
-  max-width: 100%;
-  height: auto;
-  display: block; /* Remove extra space below image */
-  margin: 0 auto; /* Center the image */
-}
-
-/* --- Responsive Adjustments --- */
-@media (max-width: 992px) {
-  .hero-text-content h1 {
-    font-size: 54px;
-  }
-  .hero-text-content .tagline {
-    font-size: 24px;
-  }
-  .hero-buttons {
-    justify-content: center; /* Center buttons on smaller screens */
+  &::before {
+    content: '';
+    width: 28px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
   }
 }
 
-@media (max-width: 768px) {
-  .hero-section {
-    padding: 15px;
-  }
-  .top-bar-placeholder {
-    flex-direction: column;
-    margin-bottom: 20px;
-    gap: 10px;
-  }
-  .top-bar-placeholder .search-box input {
-    width: 100%; /* Full width on small screens */
-  }
-  .hero-content {
-    flex-direction: column; /* Stack text and image vertically */
-    text-align: center;
-    padding: 20px 0;
-  }
-  .hero-text-content {
-    order: 2; /* Put text below image on small screens if desired */
-    text-align: center;
-    padding: 0 10px;
-  }
-  .hero-image-content {
-    order: 1; /* Put image above text on small screens */
-    margin-bottom: 30px;
-  }
-  .hero-text-content h1 {
-    font-size: 48px;
-  }
-  .hero-text-content .tagline {
-    font-size: 20px;
-  }
-  .hero-text-content .description {
-    font-size: 16px;
-  }
-  .hero-buttons {
-    flex-direction: column; /* Stack buttons vertically */
-    align-items: center; /* Center stacked buttons */
-  }
-  .hero-btn {
-    width: 90%; /* Make buttons wider */
-    justify-content: center; /* Center text/icon in wider buttons */
-  }
-}
-
-@media (max-width: 480px) {
-  .hero-text-content h1 {
-    font-size: 38px;
-  }
-  .hero-text-content .tagline {
-    font-size: 18px;
-  }
-}
-
-
-
-/* --- Variables for Colors (Good Practice) --- */
-$bg-primary: #f8fff0; // Very light greenish-yellow background
-$color-primary-dark: #A2653E;
-$color-green-light: #3ed83e75; // Light background for Farmer card
-$color-yellow-light: #fdf5d6; // Light background for Buyer card
-$color-teal-light: #c0f4f4; // Light background for Partnership card
-$color-orange-light: #fdeccc; // Light background for Tech Support card
-$color-earthsoil-brownn: #CBBD93; // Light background for Tech Support card
-
-
-$color-partner-icon-custom: #8dddc5; // 🎯 NEW: Your specific handshake icon color
-$btn-partner: #caf3c6; // Your existing button/border color
-$bg-partner: #cbf4c8;
-
-
-.contact-channels-section {
-  background-color: $bg-primary;
-  padding: 60px 20px;
-  font-family: Arial, sans-serif;
+/* Section headings shared by the two main sections */
+.contact-header,
+.teams-header {
+  max-width: 860px;
+  margin: 0 auto clamp(2rem, 4vw, 3.25rem);
   text-align: center;
-}
-.channel-card.partner {
-    background-color: $bg-partner;
-    border-top: 5px solid $btn-partner; 
-    
-    // 🎯 APPLY THE CUSTOM COLOR HERE
-    .icon-area i { 
-        color: $color-partner-icon-custom; 
-    }
-}
-/* --- Header Styling --- */
-.header-content {
-  max-width: 800px;
-  margin: 0 auto 50px auto;
 
   .main-title {
-    font-size: 2.2rem;
+    margin: 0;
+    font-family: var(--bb-font-display);
+    font-size: clamp(1.9rem, 4vw, 2.9rem);
     font-weight: 700;
-    color: #333;
-    margin-bottom: 8px;
+    line-height: var(--bb-leading-tight);
+    letter-spacing: var(--bb-tracking-tight);
+    color: var(--bb-green-900);
   }
 
   .subtitle {
-    font-size: 1rem;
-    color: #666;
+    margin: var(--bb-space-3) 0 0;
+    font-size: var(--bb-text-lg);
+    line-height: var(--bb-leading-snug);
+    color: var(--bb-ink-soft);
   }
 }
 
-/* --- Cards Layout --- */
-.channels-container {
+.material-symbols-outlined { font-size: 1.4rem; line-height: 1; }
+
+/* ---- quick contact strip ------------------------------------------------------ */
+
+.quick {
+  position: relative;
+  z-index: 2;
+  margin-top: calc(-1 * clamp(2.6rem, 5vw, 3.6rem));
+  padding: 0 clamp(1rem, 5vw, 2rem);
+}
+
+.quick-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: var(--bb-space-4);
+  max-width: var(--bb-container);
+  margin: 0 auto;
+  padding: 0;
+  list-style: none;
+}
+
+.quick-card {
   display: flex;
-  justify-content: center;
-  flex-wrap: wrap; // Allows stacking on small screens
-  gap: 20px;
-  max-width: 1250px;
+  align-items: center;
+  gap: var(--bb-space-3);
+  width: 100%;
+  height: 100%;
+  padding: 1.15rem 1.35rem;
+  border: 1px solid var(--bb-border-soft);
+  border-radius: var(--bb-radius-lg);
+  background: var(--bb-surface);
+  box-shadow: var(--bb-shadow-lg);
+  color: var(--bb-ink);
+  font: inherit;
+  text-align: left;
+  text-decoration: none;
+  transition: transform var(--bb-transition), box-shadow var(--bb-transition), border-color var(--bb-transition);
+
+  &:is(a, button) { cursor: pointer; }
+  &:is(a, button):hover { transform: translateY(-3px); border-color: var(--bb-gold-400); }
+  &:focus-visible { outline: 2px solid var(--bb-gold-500); outline-offset: 3px; }
+}
+
+.quick-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--bb-green-800);
+  color: var(--bb-gold-300);
+}
+
+.quick-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  min-width: 0;
+}
+
+.quick-label {
+  font-size: var(--bb-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--bb-gold-700);
+}
+
+.quick-value {
+  font-size: var(--bb-text-sm);
+  font-weight: 600;
+  line-height: 1.4;
+  color: var(--bb-green-900);
+  overflow-wrap: anywhere;
+}
+
+.quick-arrow {
+  margin-left: auto;
+  color: var(--bb-gold-700);
+  animation: nudge 1.8s ease-in-out infinite;
+}
+
+/* ---- channels + chat ------------------------------------------------------------ */
+
+.contact-section {
+  padding: clamp(3.5rem, 7vw, 5.5rem) clamp(1rem, 5vw, 2rem);
+}
+
+.contact-wrapper {
+  max-width: var(--bb-container);
   margin: 0 auto;
 }
 
-/* --- Individual Card Styling --- */
+.contact-columns {
+  display: grid;
+  grid-template-columns: 1.15fr 1fr;
+  gap: clamp(1.75rem, 4vw, 3rem);
+  align-items: start;
+}
+
+.column-title {
+  margin: 0 0 var(--bb-space-4);
+  font-family: var(--bb-font-display);
+  font-size: var(--bb-text-xl);
+  font-weight: 700;
+  color: var(--bb-green-900);
+}
+
+.channel-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--bb-space-4);
+}
+
 .channel-card {
-  width: 190px;
-  height: 258px;
-  padding: 30px 20px;
-  border-radius: 12px;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+  position: relative;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  text-align: center;
-  transition: transform 0.2s;
-
-  &:hover {
-    transform: translateY(-5px);
-  }
-
-  // 1. Farmer Support (Green)
-  &:nth-child(1) {
-    background-color: $color-earthsoil-brownn; 
-    border-top: 5px solid $color-primary-dark; 
-  }
-  // 2. Buyer Enquiry (Yellow)
-  &:nth-child(2) {
-    background-color: $color-green-light;
-    border-top: 5px solid #008b00; 
-  }
-  // 3. Partnerships (Teal/Blue-Green)
-  &:nth-child(3) {
-    background-color: $color-teal-light;
-    border-top: 5px solid #6ad4d4; 
-    
-  }
-  // 4. Tech / AI Support (Orange-Yellow)
-  &:nth-child(4) {
-    background-color: $color-orange-light;
-    border-top: 5px solid #E69D00; 
-  }
-
-  .icon-area {
-    font-size: 3rem; 
-    margin-bottom: 20px;
-    padding: 10px;
-    
-    // Icon colors based on card image
-    &:nth-child(1) i { color: #28201e }
-    &:nth-child(2) i { color: #CCAA00; }
-    &:nth-child(3) i { color: #00A388; }
-    &:nth-child(4) i { color: #E69D00; }
-  }
-
-  .card-title {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: $color-primary-dark; 
-    margin-bottom: 10px;
-  }
-
-  .card-description {
-    font-size: 0.9rem;
-    color: #555;
-    margin-bottom: 30px;
-    flex-grow: 1; // Pushes button to the bottom
-    line-height: 1.4;
-  }
-}
-
-
-.buyer-btn {
-  background-color: #A2653E; /* Example: A strong blue */
-}
-.buyer-btn:hover {
-  background-color: #CBBD93;
-}
-
-
-.partner-btn {
-  background-color: #6ad4d4;  /* Example: A vibrant yellow/amber */
-  color: #343a40; /* Set text color for contrast against light background */
-}
-.partner-btn:hover {
-  background-color: #c0f4f4;
-}
-
-.tech-btn {
-  background-color: #E69D00; /* Example: A deep purple/indigo */
-}
-.tech-btn:hover {
-  background-color: #fdeccc; 
-}
-
-.farmer-btn {
-  background-color: #008b00;
-;
-; /* A distinct green for farmer support */
-}
-
-/* (Optional) Add a hover effect for better UX */
-.farmer-btn:hover {
-  background-color: #3ed83e75;
-}
-
-/* --- Button Styling (Used for all buttons) --- */
-.btn-channel {
-  display: inline-block;
-  padding: 10px 20px;
-  border-radius: 6px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.95rem;
-  transition: background-color 0.2s;
-  color: rgb(0, 0, 0);
-
-
-  // Green Button (Farmer)
-  &.green {
-    background-color: $color-primary-dark;
-    color: white;
-
- &:hover {
-  background-color: color.adjust($color-primary-dark, $lightness: 10%);
-}
-
-
-  }
-
-  // Dark Yellow Button (Buyer)
-  &.dark-green {
-    background-color: #CCAA00;
-    color: white;
-
-    &:hover {
-  background-color: color.adjust(#CCAA00, $lightness: 10%);
-}
-
-  }
-
-  // Teal Button (Partnerships)
-  &.light-green {
-    background-color: #caf3c6;
-    color: white;
-
-    &:hover {
-  background-color: color.adjust(#caf3c6, $lightness: 10%);
-}
-
-  }
-
-  // Black/Dark Button (Tech Support)
-  &.yellow {
-    background-color: #333;
-    color: white;
-
-   &:hover {
-  background-color: color.adjust(#333, $lightness: 15%);
-}
-
-  }
-}
-
-
-/* --- Variables --- */
-$color-primary-green: #1e5a0e;
-$color-bg-light: #fffcf0; // Cream/light yellow for card background
-$color-check-green: #2ecc71;
-$color-text-dark: #333;
-$color-text-light: #666;
-
-.ai-cta-section {
-  background-color: $color-primary-green;
-  padding: 60px 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.ai-cta-content {
-  background-color: $color-bg-light;
-  border-radius: 18px;
-  max-width: 1000px;
-  width: 100%;
-  padding: 30px;
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
-  font-family: Arial, sans-serif;
-}
-
-.ai-header {
-  text-align: center;
-  margin-bottom: 25px;
-
-  .logo-text {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 5px;
-  }
-  
-  .ai-icon {
-    font-size: 2rem;
-    line-height: 1;
-  }
-
-  h2 {
-    font-size: 1.8rem;
-    color: $color-text-dark;
-    font-weight: 700;
-  }
-
-  .ai-tagline {
-    font-size: 1rem;
-    color: $color-text-light;
-    max-width: 80%;
-    margin: 0 auto;
-    line-height: 1.4;
-  }
-}
-
-.ai-main-body {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  gap: 30px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-/* --- Left Side: Mock Chat Interface --- */
-.chat-interface {
-  flex: 1 1 50%;
-  border: 1px solid #ddd;
-  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.05);
-  min-width: 300px;
+  padding: 1.6rem 1.5rem 1.5rem;
+  border: 1px solid var(--bb-border-soft);
+  border-radius: var(--bb-radius-lg);
+  background: var(--bb-surface);
+  box-shadow: var(--bb-shadow-sm);
+  transition: transform var(--bb-transition), box-shadow var(--bb-transition);
+
+  /* coloured bar along the top */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 4px;
+    background: var(--card-accent);
+  }
+
+  &:hover { transform: translateY(-5px); box-shadow: var(--bb-shadow-lg); }
+
+  &.buyer {
+    --card-accent: linear-gradient(90deg, var(--bb-gold-500), var(--bb-gold-300));
+    --card-soft: var(--bb-gold-100);
+    --card-ink: var(--bb-gold-700);
+  }
+
+  &.farmer {
+    --card-accent: linear-gradient(90deg, var(--bb-green-600), var(--bb-green-400));
+    --card-soft: var(--bb-green-100);
+    --card-ink: var(--bb-green-600);
+  }
 }
 
-.chat-header {
-  background-color: $color-primary-green;
-  color: white;
-  padding: 10px 15px;
+.card-top {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-weight: bold;
-
-  .chat-title {
-    font-size: 1.1rem;
-  }
-  .back-arrow, .menu {
-    font-size: 1.2rem;
-  }
 }
 
-.chat-messages {
-  padding: 15px;
-  background-color: #f7f7f7;
-  min-height: 250px;
+.card-icon-wrap {
+  display: grid;
+  place-items: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: var(--card-soft);
+  color: var(--card-ink);
+  transition: transform var(--bb-transition);
+
+  .card-icon { font-size: 1.7rem; }
 }
 
-.message-bubble {
-  max-width: 80%;
-  padding: 8px 12px;
-  border-radius: 18px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
+.channel-card:hover .card-icon-wrap { transform: rotate(-8deg) scale(1.08); }
 
-  &.bot {
-    background-color: $color-primary-green;
-    color: white;
-    border-top-left-radius: 2px;
-  }
-
-  &.user {
-    background-color: #ffeeb3; /* Light yellow background */
-    color: $color-text-dark;
-    margin-left: auto;
-    border-top-right-radius: 2px;
-    text-align: right;
-  }
+.card-tag {
+  padding: 0.25rem 0.7rem;
+  border-radius: var(--bb-radius-pill);
+  background: var(--card-soft);
+  color: var(--card-ink);
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 
-.chat-input {
-  display: flex;
-  padding: 10px 15px;
-  border-top: 1px solid #eee;
-  background-color: white;
-
-  input {
-    flex-grow: 1;
-    border: none;
-    outline: none;
-    font-size: 1rem;
-    padding-right: 10px;
-  }
-  .mic {
-    color: $color-primary-green;
-    font-size: 1.3rem;
-  }
+.card-title {
+  margin: 1.15rem 0 0.5rem;
+  font-family: var(--bb-font-display);
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--bb-green-900);
 }
 
-/* --- Right Side: Features and CTA --- */
-.ai-features-list {
-  flex: 1 1 40%;
-  padding: 20px 0;
-
-  ul {
-    list-style: none;
-    padding: 0;
-    margin: 0 0 30px 0;
-  }
-
-  li {
-    display: flex;
-    align-items: center;
-    font-size: 1.1rem;
-    margin-bottom: 15px;
-    font-weight: 500;
-  }
-  
-  .check-icon {
-    font-size: 1.5rem;
-    color: $color-primary-green;
-    margin-right: 10px;
-    font-weight: bold;
-  }
+.card-description {
+  flex: 1;
+  margin: 0;
+  font-size: var(--bb-text-sm);
+  line-height: 1.65;
+  color: var(--bb-ink-soft);
 }
 
-.cta-button {
-  background-color: $color-primary-green;
-  color: $color-bg-light;
-  border: none;
-  padding: 12px 30px;
-  border-radius: 8px;
-  font-size: 1.2rem;
-  font-weight: 600;
+.card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 48px;
+  margin-top: 1.3rem;
+  padding: 0 1.4rem;
+  border: 0;
+  border-radius: var(--bb-radius-pill);
+  font: inherit;
+  font-size: var(--bb-text-sm);
+  font-weight: 700;
   cursor: pointer;
-  transition: background-color 0.2s;
-  
-  &:hover {
-    background-color: color.adjust($color-primary-green, $lightness: 5%);
+  transition: transform var(--bb-transition), background-color var(--bb-transition), box-shadow var(--bb-transition);
 
-  }
+  .material-symbols-outlined { font-size: 1.2rem; transition: transform var(--bb-transition); }
+  &:hover .material-symbols-outlined { transform: translateX(4px); }
+  &:active { transform: scale(0.98); }
+  &:focus-visible { outline: 2px solid var(--bb-gold-500); outline-offset: 3px; }
 }
 
+.channel-card.buyer .card-btn {
+  background: var(--bb-gold-400);
+  color: var(--bb-green-900);
 
-/* --- Variables --- */
-$bg-cream-yellow: #fdf8e3; 
-$color-green-dark: #1e5a0e;
-$color-text-dark: #333;
-$color-tag-yellow: #fddb3a; 
-$chat-bg-light: #f7f7f7;
+  &:hover { background: var(--bb-gold-300); box-shadow: var(--bb-shadow-gold); }
+}
 
-.logged-in-buyers-section {
-  background-color: $bg-cream-yellow;
-  padding: 60px 20px;
+.channel-card.farmer .card-btn {
+  background: var(--bb-green-800);
+  color: #fff;
+
+  &:hover { background: var(--bb-green-600); box-shadow: var(--bb-shadow-md); }
+}
+
+/* ---- chat preview ------------------------------------------------------------------ */
+
+.chat-column-header {
   display: flex;
-  justify-content: center;
-  font-family: Arial, sans-serif;
-}
-
-.buyers-content-wrapper {
-  max-width: 1000px;
-  width: 100%;
-}
-
-.buyers-header {
-  text-align: center;
-  margin-bottom: 50px;
-  display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: center;
+  gap: var(--bb-space-2) var(--bb-space-3);
+  margin-bottom: var(--bb-space-4);
 
-  .header-icon {
-    font-size: 2.5rem;
-    color: $color-green-dark;
-    margin-bottom: 10px;
-  }
-
-  .main-title {
-    font-size: 2.2rem;
-    font-weight: 700;
-    color: $color-text-dark;
-    margin-bottom: 15px;
-  }
-
-  .description {
-    font-size: 1rem;
-    color: $color-text-dark;
-    max-width: 700px;
-    line-height: 1.5;
-  }
-}
-
-.buyers-main-area {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-  gap: 40px;
-
-  @media (max-width: 768px) {
-    flex-direction: column;
-    align-items: center;
-  }
-}
-
-/* --- Left Side: Mock Chat Window --- */
-.mock-chat-window {
-  flex: 0 0 350px; /* Fixed width for chat window */
-  border: 1px solid #ddd;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-  background-color: white;
-}
-
-.chat-header {
-  background-color: $color-green-dark;
-  color: white;
-  padding: 10px 15px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  font-weight: bold;
-
-  .chat-title {
-    font-size: 1.1rem;
-  }
-  .close-icon {
-    font-size: 1.2rem;
-    cursor: pointer;
-  }
-}
-
-.chat-messages {
-  padding: 15px;
-  background-color: $chat-bg-light;
-  min-height: 180px;
-  display: flex;
-  flex-direction: column;
-}
-
-.message-bubble {
-  max-width: 80%;
-  padding: 8px 12px;
-  border-radius: 15px;
-  margin-bottom: 10px;
-  font-size: 0.9rem;
-  line-height: 1.3;
-  
-  .message-sender {
-    display: block;
-    font-size: 0.75rem;
-    opacity: 0.8;
-    margin-top: 3px;
-  }
-
-  &.user {
-    background-color: $color-green-dark;
-    color: white;
-    border-top-left-radius: 2px;
-    margin-right: 88px;
-  }
-
-  &.admin {
-    background-color: #f0f0f0; 
-    color: $color-text-dark;
-    margin-left: auto;
-    border-top-right-radius: 2px;
-    text-align: right;
-  }
-}
-
-.chat-input-area {
-  display: flex;
-  padding: 10px 15px;
-  border-top: 1px solid #eee;
-  background-color: white;
-
-  input {
-    flex-grow: 1;
-    border: none;
-    outline: none;
-    font-size: 1rem;
-    padding-right: 10px;
-  }
-  .send-icon {
-    color: $color-green-dark;
-    font-size: 1.3rem;
-    cursor: pointer;
-  }
-}
-
-/* --- Right Side: Features and Tags --- */
-.buyers-features-right {
-  flex: 1 1 auto; /* Allows it to take remaining space */
-  padding-top: 20px;
+  .column-title { margin: 0; }
 }
 
 .feature-tags {
   display: flex;
-  gap: 15px;
-  margin-bottom: 30px;
-  flex-wrap: wrap; /* Allow wrapping on smaller screens */
-  justify-content: center; /* Center tags on small screens */
-
-  @media (max-width: 768px) {
-    justify-content: flex-start;
-  }
+  flex-wrap: wrap;
+  gap: 0.4rem;
 }
 
 .feature-tag {
-  background-color: $color-tag-yellow;
-  padding: 8px 15px;
-  border-radius: 5px;
-  font-weight: 600;
-  font-size: 0.85rem;
-  color: $color-text-dark;
-  text-transform: uppercase;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-}
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--bb-radius-pill);
+  background: var(--bb-green-100);
+  color: var(--bb-green-800);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
 
-.features-list {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-
-  li {
-    font-size: 1.2rem;
-    color: $color-green-dark;
-    font-weight: 600;
-    margin-bottom: 15px;
-    padding-left: 20px; /* Indent slightly for visual alignment */
-    position: relative;
-
-    &::before {
-      content: "•"; /* Custom bullet point, or you could use a checkmark icon */
-      color: $color-green-dark; 
-      font-size: 1.5rem;
-      position: absolute;
-      left: 0;
-      top: -3px;
-      line-height: 1;
-    }
+  &::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--bb-gold-500);
   }
 }
 
+.chat-widget {
+  overflow: hidden;
+  border: 1px solid var(--bb-border-soft);
+  border-radius: var(--bb-radius-lg);
+  background: var(--bb-surface);
+  box-shadow: var(--bb-shadow-lg);
+}
 
-/* --- Variables --- */
-$color-bg-dark: #1e5a0e;       // Dark Green Background
-$color-text-light: #ffffff;    // White text
-$color-accent-yellow: #fddb3a; // Accent Yellow for labels/table hover
-$color-map-land: #7cb342;      // The lighter green of the map landmass
+.chat-header {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-space-3);
+  padding: 0.85rem 1.1rem;
+  background: linear-gradient(135deg, var(--bb-green-700), var(--bb-green-900));
+  color: #fff;
+}
+
+.chat-avatar {
+  position: relative;
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.14);
+  color: var(--bb-gold-300);
+
+  /* "online" dot */
+  &::after {
+    content: '';
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--bb-green-800);
+    border-radius: 50%;
+    background: #6fe08d;
+  }
+}
+
+.chat-title {
+  flex: 1;
+  font-weight: 600;
+}
+
+.chat-close {
+  display: grid;
+  place-items: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.8);
+  cursor: pointer;
+  transition: background-color var(--bb-transition);
+
+  &:hover { background: rgba(255, 255, 255, 0.14); }
+  .material-symbols-outlined { font-size: 1.15rem; }
+}
+
+.chat-messages {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  min-height: 240px;
+  padding: 1.15rem;
+  background: var(--bb-surface-2);
+}
+
+.message-bubble {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  max-width: 80%;
+  padding: 0.65rem 0.95rem 0.5rem;
+  border-radius: 16px;
+  font-size: var(--bb-text-sm);
+  line-height: 1.45;
+  animation: pop 0.5s var(--bb-ease) both;
+
+  &.buyer {
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+    background: var(--bb-green-800);
+    color: #fff;
+    .message-sender { text-align: right; }
+  }
+
+  &.admin {
+    align-self: flex-start;
+    border: 1px solid var(--bb-border-soft);
+    border-bottom-left-radius: 4px;
+    background: var(--bb-surface);
+    color: var(--bb-ink);
+    animation-delay: 0.25s;
+  }
+
+  &.typing {
+    flex-direction: row;
+    gap: 0.3rem;
+    padding: 0.85rem 1rem;
+    animation-delay: 0.6s;
+  }
+}
+
+.message-sender {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.6;
+}
+
+.typing-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--bb-green-500);
+  animation: blink 1.2s ease-in-out infinite;
+
+  &:nth-child(2) { animation-delay: 0.2s; }
+  &:nth-child(3) { animation-delay: 0.4s; }
+}
+
+.chat-input-area {
+  display: flex;
+  gap: 0.6rem;
+  padding: 0.8rem;
+  border-top: 1px solid var(--bb-border-soft);
+  background: var(--bb-surface);
+
+  input {
+    flex: 1;
+    min-width: 0;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--bb-border);
+    border-radius: var(--bb-radius-pill);
+    background: var(--bb-surface-2);
+    color: var(--bb-ink);
+    font: inherit;
+    font-size: var(--bb-text-sm);
+  }
+}
+
+.chat-send {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: var(--bb-gold-400);
+  color: var(--bb-green-900);
+
+  &:disabled { opacity: 0.55; cursor: not-allowed; }
+  .material-symbols-outlined { font-size: 1.2rem; }
+}
+
+.chat-note {
+  margin: var(--bb-space-4) 0 0;
+  font-size: var(--bb-text-xs);
+  line-height: 1.65;
+  color: var(--bb-muted);
+}
+
+/* ---- regional teams --------------------------------------------------------------------- */
 
 .regional-teams-section {
-  background-color: $color-bg-dark;
-  padding: 60px 20px;
-  color: $color-text-light;
-  display: flex;
-  justify-content: center;
-  font-family: Arial, sans-serif;
+  padding: clamp(4rem, 8vw, 6rem) clamp(1rem, 5vw, 2rem);
+  background: var(--bb-cream-alt);
+  scroll-margin-top: var(--bb-navbar-h);
 }
 
 .teams-wrapper {
-  max-width: 800px;
-  width: 100%;
-  text-align: center;
+  max-width: var(--bb-container);
+  margin: 0 auto;
 }
 
-/* --- Header Styles --- */
-.teams-header {
-  margin-bottom: 40px;
-
-  .main-title {
-    font-size: 2.5rem;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
-
-  .subtitle {
-    font-size: 1.1rem;
-    color: rgba($color-text-light, 0.8);
-  }
+.teams-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 460px) minmax(0, 1fr);
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: center;
+  max-width: 1040px;
+  margin: 0 auto;
 }
 
-/* --- Map Container --- */
-.map-container {
-  position: relative;
-  width: 100%;
-  padding-bottom: 25px; 
-  overflow: hidden; 
-}
+.map-card { min-width: 0; }
 
 .map-visual {
-  background-image: url('/assets/images/ContactUs/indmap.png'); 
-  background-size: contain;
-  background-repeat: no-repeat;
-  background-position: center;
-  height: 400px; /* Adjust height as needed to fit the image */
-  width: 100%;
-  margin: 0 auto;
   position: relative;
+  width: 100%;
+  max-width: 460px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--bb-radius-xl);
+  background: #255b42 url('/assets/images/ContactUs/indmap.webp') center / 100% 100% no-repeat;
+  box-shadow: var(--bb-shadow-lg);
 }
 
-/* --- Map Pointers --- */
 .map-pin {
   position: absolute;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  transform: translate(-50%, -100%); /* Centers the pin at its coordinate */
-  cursor: pointer; // Indicate it's clickable
-  z-index: 10; // Ensure pins are above the map
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  cursor: pointer;
+
+  &.active { z-index: 5; }
 }
 
-.location-label {
-  background-color: $color-accent-yellow;
-  color: $color-bg-dark;
-  padding: 5px 10px;
-  border-radius: 4px;
-  font-weight: bold;
-  font-size: 0.9rem;
-  white-space: nowrap;
-  margin-bottom: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease-in-out;
-}
+.pin-dot {
+  position: relative;
+  display: block;
+  width: 16px;
+  height: 16px;
+  border: 3px solid #fff;
+  border-radius: 50%;
+  background: var(--bb-gold-500);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: transform var(--bb-transition);
 
-.pin-icon {
-  font-size: 2rem;
-  color: $color-accent-yellow;
-  line-height: 1;
-  transition: transform 0.2s ease-in-out;
-}
-
-// Hover effect for the pins
-.map-pin:hover .location-label,
-.map-pin:hover .pin-icon {
-  transform: translateY(-5px); // Slightly lift on hover
-}
-
-
-/* 🎯 ABSOLUTE POSITIONING FOR MAP PINS
-   You will need to fine-tune these 'top' and 'left' values.
-   Use your browser's developer tools (F12) to adjust them precisely.
-   The values below are starting estimates for the generated map. */
-
-.map-pin.shimla { top: 27%; left: 48%; } /* Estimate based on your image */
-.map-pin.srinagar { top: 15%; left: 47%; } /* Estimate based on your image */
-.map-pin.coimbatore { top: 84%; left: 47%; } /* Estimate based on your image */
-.map-pin.chennai { top: 77%; left: 52%; } /* Estimate based on your image */
-
-
-/* --- Contact Table (rest of the styles are the same) --- */
-.contact-table {
-  width: 100%;
-  border-collapse: collapse;
-  margin-top: 30px;
-  text-align: left;
-}
-
-.contact-table th, .contact-table td {
-  padding: 15px 10px;
-  font-size: 1rem;
-}
-
-.contact-table thead th {
-  font-weight: 700;
-  color: $color-accent-yellow;
-  border-bottom: 1px solid rgba($color-text-light, 0.5);
-}
-
-.contact-table tbody td {
-  border-bottom: 1px solid rgba($color-text-light, 0.15);
-  vertical-align: middle;
-}
-
-.contact-table tbody tr:hover {
-  background-color: rgba($color-accent-yellow, 0.1);
-}
-
-.contact-table a {
-  color: $color-text-light;
-  text-decoration: none;
-  &:hover {
-    text-decoration: underline;
-    color: $color-accent-yellow;
+  /* pulsing ring */
+  &::after {
+    content: '';
+    position: absolute;
+    inset: -7px;
+    border: 2px solid var(--bb-gold-300);
+    border-radius: 50%;
+    animation: ping 2.2s ease-out infinite;
   }
 }
 
-.contact-table td:nth-child(1) { width: 25%; }
-.contact-table td:nth-child(2) { width: 40%; }
-.contact-table td:nth-child(3) { width: 35%; }
+.pin-label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  padding: 0.28rem 0.75rem;
+  border-radius: var(--bb-radius-pill);
+  background: var(--bb-cream);
+  color: var(--bb-green-900);
+  font-size: var(--bb-text-xs);
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
+  transition: background-color var(--bb-transition), transform var(--bb-transition);
+}
+
+.map-pin.right .pin-label { left: calc(100% + 10px); }
+.map-pin.left .pin-label { right: calc(100% + 10px); }
+
+.map-pin.active,
+.map-pin:hover {
+  .pin-dot { transform: scale(1.35); }
+  .pin-label { background: var(--bb-gold-400); transform: translateY(-50%) scale(1.06); }
+}
+
+/* Pin coordinates (percent of the square map). */
+.map-pin.shimla { top: 27%; left: 48%; }
+.map-pin.srinagar { top: 15%; left: 47%; }
+.map-pin.coimbatore { top: 84%; left: 47%; }
+.map-pin.chennai { top: 77%; left: 52%; }
+
+.team-list {
+  display: grid;
+  gap: var(--bb-space-3);
+}
+
+.team-card {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--bb-space-4);
+  padding: 1.15rem 1.3rem;
+  border: 1px solid var(--bb-border-soft);
+  border-radius: var(--bb-radius-lg);
+  background: var(--bb-surface);
+  box-shadow: var(--bb-shadow-xs);
+  transition: transform var(--bb-transition), box-shadow var(--bb-transition), border-color var(--bb-transition);
+
+  &:hover,
+  &.active {
+    transform: translateX(6px);
+    border-color: var(--bb-gold-400);
+    box-shadow: var(--bb-shadow-md);
+  }
+}
+
+.team-icon {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  background: var(--bb-green-800);
+  color: var(--bb-gold-300);
+}
+
+.team-body { min-width: 0; }
+
+.team-region {
+  margin: 0;
+  font-family: var(--bb-font-display);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--bb-green-900);
+}
+
+.team-focus {
+  margin: 0.15rem 0 0.55rem;
+  font-size: var(--bb-text-xs);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--bb-gold-700);
+}
+
+.team-mail {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: var(--bb-text-sm);
+  font-weight: 600;
+  color: var(--bb-green-700);
+  text-decoration: none;
+  overflow-wrap: anywhere;
+
+  .material-symbols-outlined { font-size: 1.1rem; color: var(--bb-gold-700); }
+  &:hover { color: var(--bb-green-900); text-decoration: underline; text-underline-offset: 3px; }
+  &:focus-visible { outline: 2px solid var(--bb-gold-500); outline-offset: 3px; border-radius: 4px; }
+}
+
+.teams-cta {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  text-align: center;
+
+  p { margin: 0 0 var(--bb-space-3); color: var(--bb-ink-soft); }
+}
+
+.teams-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-height: 52px;
+  padding: 0 2rem;
+  border: 0;
+  border-radius: var(--bb-radius-pill);
+  background: var(--bb-green-800);
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform var(--bb-transition), background-color var(--bb-transition), box-shadow var(--bb-transition);
+
+  .material-symbols-outlined { color: var(--bb-gold-300); transition: transform var(--bb-transition); }
+  &:hover { transform: translateY(-2px); background: var(--bb-green-600); box-shadow: var(--bb-shadow-md); }
+  &:hover .material-symbols-outlined { transform: translateX(4px); }
+  &:focus-visible { outline: 2px solid var(--bb-gold-500); outline-offset: 3px; }
+}
+
+/* ---- motion ---------------------------------------------------------------------------------- */
+
+@keyframes nudge {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(4px); }
+}
+
+@keyframes ping {
+  0%   { transform: scale(0.6); opacity: 0.9; }
+  80%, 100% { transform: scale(1.5); opacity: 0; }
+}
+
+@keyframes blink {
+  0%, 80%, 100% { transform: translateY(0); opacity: 0.35; }
+  40%           { transform: translateY(-4px); opacity: 1; }
+}
+
+@keyframes pop {
+  from { opacity: 0; transform: translateY(10px) scale(0.96); }
+  to   { opacity: 1; transform: none; }
+}
+
+@keyframes reveal {
+  from { opacity: 0; translate: 0 26px; }
+  to   { opacity: 1; translate: 0 0; }
+}
+
+/* scroll-driven reveal where supported; elsewhere the content just shows */
+@supports (animation-timeline: view()) {
+  .channel-card,
+  .chat-widget,
+  .team-card,
+  .map-card,
+  .teams-cta {
+    animation: reveal linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 40%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .channel-card, .chat-widget, .team-card, .map-card, .teams-cta,
+  .message-bubble, .typing-dot, .pin-dot::after, .quick-arrow { animation: none !important; }
+}
+
+/* ---- responsive --------------------------------------------------------------------------------- */
+
+@media (max-width: 960px) {
+  .quick-grid { grid-template-columns: 1fr; }
+  .quick-arrow { display: none; }
+
+  .contact-columns { grid-template-columns: 1fr; }
+  .chat-column { max-width: 640px; width: 100%; margin: 0 auto; }
+
+  .teams-layout { grid-template-columns: 1fr; }
+  .team-card:hover, .team-card.active { transform: none; }
+}
+
+@media (max-width: 560px) {
+  .channel-cards { grid-template-columns: 1fr; }
+  .map-pin .pin-label { font-size: 0.7rem; padding: 0.2rem 0.55rem; }
+}

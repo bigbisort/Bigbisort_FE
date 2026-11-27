@@ -1,132 +1,227 @@
-
-
-.hero-section {
-  background-color: #08732d; /* Dark green background */
-  padding: 20px; /* Overall padding */
-  color: #806e6e; /* White text color for contrast */
-  font-family: 'Segoe UI', sans-serif; /* Consistent font */
-  position: relative; /* For the top-bar-placeholder positioning */
-  overflow: hidden; /* Ensures globe image doesn't cause scroll issues */
-}
-
-.top-bar-placeholder {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  max-width: 1200px;
-  margin: 0 auto 30px auto; /* Center with bottom margin */
-  background-color: #fddb3a; /* Yellow background for the bar */
-  padding: 10px 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Optional shadow */
-  color: #044d00; /* Dark green text for contrast on yellow */
-}
-
-.top-bar-placeholder .logo {
-  font-size: 24px;
-  font-weight: bold;
-}
-
-.top-bar-placeholder .search-box {
-  display: flex;
-  align-items: center;
-}
-
-.top-bar-placeholder .search-box input {
-  border: 1px solid #686161;
-  padding: 8px 12px;
-  border-radius: 5px;
-  margin-right: 5px;
-  font-size: 16px;
-  width: 60rem; /* Adjust as needed */
-}
-
-.top-bar-placeholder .search-box button {
-  background-color: #044d00; /* Dark green button */
-  color: rgb(60, 234, 11);
-  border: none;
-  padding: 8px 12px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 16px;
-}
-// for the above is for the search bar
-
-
 .prdlandpg-container {
-  padding: 20px;
-  font-family: 'Poppins', sans-serif;
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: clamp(2rem, 5vw, 4rem) clamp(1rem, 4vw, 2rem) clamp(3rem, 6vw, 5rem);
+  font-family: var(--bb-font-body);
 
-  .filter-bar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    margin-bottom: 25px;
+  .page-head {
+    margin-bottom: var(--bb-space-7);
+    text-align: center;
 
-    button {
-      padding: 8px 16px;
-      border: none;
-      border-radius: 20px;
-      background-color: #f1f1f1;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      font-weight: 500;
+    &--left { text-align: left; margin-bottom: var(--bb-space-6); }
 
-      &.active,
-      &:hover {
-        background-color: #2e7d32;
-        color: white;
-      }
+    .eyebrow {
+      margin: 0 0 var(--bb-space-2);
+      font-size: var(--bb-text-xs);
+      font-weight: 700;
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      color: var(--bb-gold-700);
     }
+
+    h1 {
+      margin: 0 0 var(--bb-space-3);
+      font-family: var(--bb-font-display);
+      font-size: clamp(2rem, 4.4vw, 3rem);
+      font-weight: 700;
+      line-height: var(--bb-leading-tight);
+      letter-spacing: var(--bb-tracking-tight);
+      color: var(--bb-green-900);
+    }
+
+    .sub {
+      max-width: 60ch;
+      margin: 0 auto;
+      color: var(--bb-ink-soft);
+      line-height: var(--bb-leading-snug);
+    }
+
+    &--left .sub { margin: 0; }
+  }
+
+  /* ---- category cards ------------------------------------------------- */
+  .category-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: var(--bb-space-5);
+  }
+
+  .cat-card {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    padding: var(--bb-space-3) var(--bb-space-3) var(--bb-space-4);
+    text-decoration: none;
+    border: 1px solid var(--bb-border);
+    border-radius: var(--bb-radius-xl);
+    background: #f9eedd;
+    box-shadow: var(--bb-shadow-xs);
+    transition: transform var(--bb-transition), box-shadow var(--bb-transition);
+
+    &:hover,
+    &:focus-visible {
+      transform: translateY(-5px);
+      box-shadow: var(--bb-shadow-lg);
+      .cat-photo img { transform: scale(1.06); }
+    }
+
+    &:focus-visible { outline: 2px solid var(--bb-gold-500); outline-offset: 3px; }
+  }
+
+  .cat-photo {
+    position: relative;
+    aspect-ratio: 16 / 10;
+    margin-bottom: var(--bb-space-3);
+    overflow: hidden;
+    border-radius: var(--bb-radius-lg);
+    background: var(--bb-green-100);
+
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 500ms var(--bb-ease);
+    }
+
+    &.cat-photo--empty {
+      display: grid;
+      place-items: center;
+      background: linear-gradient(135deg, var(--bb-green-200), var(--bb-gold-100));
+    }
+
+    .cat-placeholder { font-size: 3.5rem; color: rgba(26, 60, 42, 0.35); }
+  }
+
+  .cat-badge {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #fff;
+    color: var(--bb-green-800);
+    box-shadow: var(--bb-shadow-sm);
+  }
+
+  .cat-count {
+    padding: 0 var(--bb-space-2);
+    font-size: 0.74rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--bb-gold-700);
+  }
+
+  .cat-name {
+    padding: 0 var(--bb-space-2);
+    font-family: var(--bb-font-display);
+    font-size: var(--bb-text-xl);
+    font-weight: 700;
+    color: var(--bb-green-900);
+  }
+
+  /* ---- products in a category ---------------------------------------- */
+  .back-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: var(--bb-space-5);
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--bb-green-700);
+
+    &:hover { color: var(--bb-green-900); }
   }
 
   .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-    gap: 20px;
+    gap: var(--bb-space-5);
   }
 
   .card {
-    background: #fff;
-    border-radius: 15px;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: block;
     overflow: hidden;
-    transition: transform 0.2s ease-in-out;
+    text-decoration: none;
+    border: 1px solid var(--bb-border);
+    border-radius: var(--bb-radius-lg);
+    background: #fff;
+    box-shadow: var(--bb-shadow-sm);
+    transition: transform var(--bb-transition), box-shadow var(--bb-transition);
 
-    &:hover {
+    &:hover,
+    &:focus-visible {
       transform: translateY(-5px);
+      box-shadow: var(--bb-shadow-lg);
     }
 
+    &:focus-visible { outline: 2px solid var(--bb-gold-500); outline-offset: 3px; }
+
     img {
+      display: block;
       width: 100%;
-      height: 160px;
+      aspect-ratio: 4 / 3;
       object-fit: cover;
+      background: var(--bb-cream);
     }
 
     .card-content {
-      padding: 15px;
+      padding: var(--bb-space-4);
       text-align: center;
 
       h3 {
-        font-size: 1.1rem;
-        margin-bottom: 5px;
-        color: #333;
+        margin: 0 0 var(--bb-space-1);
+        font-family: var(--bb-font-display);
+        font-size: var(--bb-text-lg);
+        font-weight: 700;
+        color: var(--bb-green-900);
       }
 
-      .category {
-        color: #666;
-        font-size: 0.9rem;
-      }
-
-      .price {
-        margin-top: 10px;
-        color: #2e7d32;
+      .card-action {
+        font-size: var(--bb-text-xs);
         font-weight: 600;
+        color: var(--bb-green-700);
       }
     }
   }
+
+  .empty-state {
+    max-width: 560px;
+    padding: var(--bb-space-7) var(--bb-space-5);
+    margin: var(--bb-space-5) 0;
+    border: 1px dashed var(--bb-green-400);
+    border-radius: var(--bb-radius-lg);
+    background: var(--bb-green-50);
+
+    p { margin: 0 0 var(--bb-space-4); color: var(--bb-ink-soft); line-height: var(--bb-leading-body); }
+  }
+
+  .btn-contact {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: var(--bb-space-3) var(--bb-space-6);
+    border-radius: var(--bb-radius-pill);
+    background: var(--bb-green-800);
+    color: #fff;
+    font-weight: 600;
+    text-decoration: none;
+
+    &:hover { background: var(--bb-green-900); }
+  }
 }
 
+@media (max-width: 900px) {
+  .prdlandpg-container .category-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
 
-
-
+@media (max-width: 480px) {
+  .prdlandpg-container {
+    .category-grid { gap: var(--bb-space-3); }
+    .card-container { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--bb-space-3); }
+  }
+}

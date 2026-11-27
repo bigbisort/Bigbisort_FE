@@ -63,7 +63,7 @@ BananaVarieties = [
 
 coconutBenefitsLeft = [
   { icon: 'fa-solid fa-suitcase-medical', text: 'Boosts immunity with antibacterial and antiviral properties' },
-  { icon: 'fa-solid fa-gut', text: 'Improves digestion and supports gut health' },
+  { icon: 'fa-solid fa-bowl-food', text: 'Improves digestion and supports gut health' },
   { icon: 'fa-solid fa-bolt', text: 'Provides quick natural energy from healthy fats' },
   { icon: 'fa-solid fa-heart-pulse', text: 'Promotes heart health with good cholesterol (HDL)' },
   { icon: 'fa-solid fa-face-smile-beam', text: 'Enhances skin and hair health naturally' },
@@ -109,28 +109,28 @@ processingSteps = [
 
 features = [
   {
-    icon: 'fa-solid fa-hand-holding-seedling',
-    title: 'Sourced from Premium Pineapple Farms',
+    icon: 'fa-solid fa-tractor',
+    title: 'Sourced from Trusted Coconut Farmers',
     description:
-      'Directly procured from certified growers in Tamil Nadu, Kerala, Andhra Pradesh & West Bengal — ensuring traceable and high-quality produce.'
+      'Directly procured from growers in Kerala, Tamil Nadu, Karnataka, Andhra Pradesh and Goa — ensuring traceable, high-quality produce.'
   },
   {
     icon: 'fa-solid fa-certificate',
     title: 'Export-Grade Quality & Certification',
     description:
-      'Pineapples are graded for sweetness, size, ripeness, and shell strength. Fully compliant with APEDA, Global GAP, and international export standards.'
+      'Coconuts are graded for size, weight, water content and shell condition, and packed to meet APEDA and importer specifications.'
   },
   {
     icon: 'fa-solid fa-seedling',
-    title: 'Top Pineapple Varieties',
+    title: 'Tender, Mature & Dry Coconut',
     description:
-      'Includes Queen, Mauritius, Kew (Giant), and MD-2 varieties — known for superior flavor, aroma, and excellent shelf life.'
+      'Tender coconut, mature husked coconut and dry copra — each graded and packed for fresh and processing markets.'
   },
   {
     icon: 'fa-solid fa-globe',
-    title: 'Global Export Excellence',
+    title: 'Strong Global Export Network',
     description:
-      'Supplying fresh pineapples to Middle East, Europe, Maldives & Sri Lanka with strong cold-chain logistics and reliable packaging.'
+      'Supplying the Middle East, Europe and Southeast Asia with efficient logistics and reliable packaging.'
   }
 ];
 
@@ -194,8 +194,8 @@ sellers = [
 
  onSubmit() {
     if (this.formData.name && this.formData.email && this.formData.quantity) {
-      console.log('Avocado Enquiry:', this.formData);
-      alert('Your enquiry for bulk avocados has been sent successfully!');
+      console.log('Coconut Enquiry:', this.formData);
+      alert('Your enquiry for bulk coconut has been sent successfully!');
       this.formData = { name: '', email: '', quantity: '' };
     } else {
       alert('Please fill out all fields before submitting.');

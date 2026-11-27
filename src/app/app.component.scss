@@ -1,0 +1,394 @@
+/* ============================================================================
+   Public site header
+   Solid sticky bar on inner pages; on /home (.navbar--overlay) it floats
+   transparently over the hero and turns solid once the page scrolls.
+   ========================================================================= */
+
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1030;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--bb-space-5);
+  min-height: var(--bb-navbar-h);
+  padding: var(--bb-space-4) clamp(1rem, 7vw, 8.5rem);
+  font-family: var(--bb-font-body);
+  background: linear-gradient(180deg, var(--bb-green-800) 0%, var(--bb-green-900) 100%);
+  border-bottom: 1px solid rgba(212, 168, 67, 0.28);
+  box-shadow: var(--bb-shadow-md);
+  transition: background-color 300ms var(--bb-ease), box-shadow 300ms var(--bb-ease),
+              padding 300ms var(--bb-ease);
+}
+
+.navbar--overlay {
+  position: fixed;
+  left: 0;
+  right: 0;
+  padding-top: var(--bb-space-5);
+  padding-bottom: var(--bb-space-5);
+  background: transparent;
+  border-bottom-color: transparent;
+  box-shadow: none;
+}
+
+.navbar--overlay.navbar--scrolled,
+.navbar--overlay.menu-open {
+  padding-top: var(--bb-space-3);
+  padding-bottom: var(--bb-space-3);
+  background: rgba(18, 41, 29, 0.94);
+  backdrop-filter: blur(8px);
+  border-bottom-color: rgba(212, 168, 67, 0.22);
+  box-shadow: var(--bb-shadow-md);
+}
+
+/* ---- Brand: mark + wordmark ------------------------------------------- */
+.brand {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--bb-space-3);
+  flex: 0 0 auto;
+  color: #fff;
+  text-decoration: none;
+
+  .brand-mark {
+    height: 52px;
+    width: auto;
+    max-width: 64px;
+    object-fit: contain;
+  }
+
+  .brand-text {
+    display: flex;
+    flex-direction: column;
+    line-height: 1;
+  }
+
+  .brand-name {
+    font-family: var(--bb-font-display);
+    font-size: 2rem;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+    color: #fff;
+
+    sup {
+      font-family: var(--bb-font-body);
+      font-size: 0.4em;
+      top: -1.3em;
+      margin-left: 1px;
+    }
+  }
+
+  .brand-tag {
+    margin-top: 6px;
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255, 255, 255, 0.85);
+  }
+}
+
+/* ---- Links ------------------------------------------------------------- */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--bb-space-2);
+}
+
+.nav-links > a,
+.nav-dropdown > a {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: var(--bb-space-2) var(--bb-space-4);
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-size: 1.05rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: color var(--bb-transition);
+
+  i { font-size: 0.75em; }
+
+  /* Gold underline, as under "Home" in the design. */
+  &::after {
+    content: '';
+    position: absolute;
+    left: var(--bb-space-4);
+    right: var(--bb-space-4);
+    bottom: -4px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--bb-gold-400);
+    transform: scaleX(0);
+    transition: transform var(--bb-transition);
+  }
+
+  &:hover,
+  &:focus-visible { color: #fff; }
+  &:hover::after { transform: scaleX(1); }
+
+  &:focus-visible {
+    outline: 2px solid var(--bb-gold-300);
+    outline-offset: 2px;
+    border-radius: var(--bb-radius-sm);
+  }
+}
+
+.active-link {
+  color: #fff !important;
+  &::after { transform: scaleX(1) !important; }
+}
+
+/* ---- Products dropdown -------------------------------------------------- */
+.nav-dropdown {
+  position: relative;
+
+  .dropdown-panel {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 50%;
+    min-width: 220px;
+    padding: var(--bb-space-2);
+    display: flex;
+    flex-direction: column;
+    background: rgba(18, 41, 29, 0.97);
+    border: 1px solid rgba(212, 168, 67, 0.25);
+    border-radius: var(--bb-radius-md);
+    box-shadow: var(--bb-shadow-lg);
+    opacity: 0;
+    visibility: hidden;
+    transform: translate(-50%, 6px);
+    transition: opacity var(--bb-transition), transform var(--bb-transition),
+                visibility var(--bb-transition);
+
+    /* Bridge the gap so the panel doesn't close on the way down. */
+    &::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: -12px;
+      height: 12px;
+    }
+
+    a {
+      padding: var(--bb-space-2) var(--bb-space-4);
+      border-radius: var(--bb-radius-sm);
+      color: rgba(255, 255, 255, 0.88);
+      text-decoration: none;
+      font-size: var(--bb-text-sm);
+      white-space: nowrap;
+
+      &:hover,
+      &:focus-visible {
+        background: rgba(255, 255, 255, 0.08);
+        color: var(--bb-gold-300);
+      }
+    }
+  }
+
+  &:hover .dropdown-panel,
+  &:focus-within .dropdown-panel {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, 0);
+  }
+}
+
+/* ---- Contact pill: gold outline ----------------------------------------- */
+.nav-links > a.contact-pill {
+  margin-left: var(--bb-space-4);
+  padding: var(--bb-space-3) var(--bb-space-6);
+  border: 1.5px solid var(--bb-gold-300);
+  border-radius: var(--bb-radius-pill);
+  color: #fff;
+  font-weight: 600;
+  transition: background-color var(--bb-transition), color var(--bb-transition);
+
+  &::after { content: none; }
+
+  &:hover,
+  &:focus-visible {
+    background: var(--bb-gold-300);
+    color: var(--bb-green-900);
+  }
+}
+
+/* ---- Mobile menu toggle ------------------------------------------------- */
+.menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  padding: 0;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: var(--bb-radius-md);
+  background: transparent;
+  color: #fff;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+/* ---- Responsive -------------------------------------------------------- */
+@media (max-width: 1280px) {
+  .navbar { padding-left: clamp(1rem, 4vw, 3rem); padding-right: clamp(1rem, 4vw, 3rem); }
+  .nav-links > a,
+  .nav-dropdown > a { padding: var(--bb-space-2) var(--bb-space-3); font-size: var(--bb-text-sm); }
+  .nav-links > a.contact-pill { margin-left: var(--bb-space-2); padding: var(--bb-space-2) var(--bb-space-5); }
+}
+
+@media (max-width: 1024px) {
+  .navbar { flex-wrap: wrap; }
+  .menu-toggle { display: inline-flex; }
+
+  .brand .brand-mark { height: 42px; }
+  .brand .brand-name { font-size: 1.6rem; }
+  .brand .brand-tag { font-size: 0.62rem; }
+
+  .nav-links {
+    display: none;
+    flex: 1 1 100%;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    padding: var(--bb-space-3) 0 var(--bb-space-2);
+  }
+
+  .menu-open .nav-links { display: flex; }
+
+  .nav-links > a,
+  .nav-dropdown > a {
+    padding: var(--bb-space-3) var(--bb-space-2);
+    font-size: var(--bb-text-base);
+    &::after { content: none; }
+  }
+
+  .nav-dropdown .dropdown-panel {
+    position: static;
+    min-width: 0;
+    padding: 0 0 var(--bb-space-2) var(--bb-space-4);
+    background: none;
+    border: none;
+    box-shadow: none;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+  }
+
+  .nav-links > a.contact-pill {
+    margin: var(--bb-space-3) 0 0;
+    justify-content: center;
+  }
+
+  .active-link { color: var(--bb-gold-300) !important; }
+}
+
+/* ============================================================================
+   Session Expired modal
+   ========================================================================= */
+.session-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(18, 41, 29, 0.62);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--bb-space-4);
+  backdrop-filter: blur(6px);
+  animation: overlayFade 200ms var(--bb-ease);
+}
+
+.session-modal {
+  background: var(--bb-surface);
+  border: 1px solid var(--bb-border);
+  border-radius: var(--bb-radius-lg);
+  width: 100%;
+  max-width: 420px;
+  box-shadow: var(--bb-shadow-lg);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  font-family: var(--bb-font-body);
+  animation: modalPop 0.3s var(--bb-ease);
+
+  .modal-icon {
+    background: linear-gradient(180deg, var(--bb-gold-100) 0%, var(--bb-cream) 100%);
+    border-bottom: 1px solid var(--bb-border);
+    padding: var(--bb-space-7) var(--bb-space-6) var(--bb-space-5);
+    text-align: center;
+    font-size: 44px;
+    line-height: 1;
+    color: var(--bb-gold-500);
+  }
+
+  .modal-content-text {
+    padding: var(--bb-space-6);
+    text-align: center;
+
+    h3 {
+      margin: 0 0 var(--bb-space-2);
+      font-family: var(--bb-font-display);
+      font-size: var(--bb-text-xl);
+      font-weight: 600;
+      letter-spacing: var(--bb-tracking-tight);
+      color: var(--bb-green-800);
+    }
+
+    p {
+      margin: 0;
+      color: var(--bb-ink-soft);
+      font-size: var(--bb-text-sm);
+      line-height: var(--bb-leading-body);
+    }
+  }
+
+  .modal-footer-actions {
+    padding: var(--bb-space-4) var(--bb-space-6) var(--bb-space-6);
+    display: flex;
+    justify-content: center;
+
+    .btn-ok {
+      background: var(--bb-green-800);
+      color: #fff;
+      border: none;
+      padding: var(--bb-space-3) var(--bb-space-8);
+      border-radius: var(--bb-radius-pill);
+      font-family: var(--bb-font-body);
+      font-size: var(--bb-text-sm);
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: var(--bb-shadow-sm);
+      transition: background var(--bb-transition), transform var(--bb-transition),
+                  box-shadow var(--bb-transition);
+
+      &:hover {
+        background: var(--bb-green-900);
+        transform: translateY(-1px);
+        box-shadow: var(--bb-shadow-md);
+      }
+
+      &:active { transform: translateY(0); }
+
+      &:focus-visible {
+        outline: 2px solid var(--bb-gold-400);
+        outline-offset: 2px;
+      }
+    }
+  }
+}
+
+@keyframes overlayFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes modalPop {
+  from { transform: scale(0.94) translateY(8px); opacity: 0; }
+  to   { transform: scale(1) translateY(0); opacity: 1; }
+}

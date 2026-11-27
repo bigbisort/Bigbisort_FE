@@ -1,7 +1,11 @@
-import { Component, ElementRef, ViewChild, AfterViewInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
-
-
+import { BuyerService, BuyerDashboardSummary, MarketHighlight } from 'src/app/services/buyer.service';
+import { ProductService } from './service/product.service';
+import { WatchListService } from './service/watch-list.service';
+import { Product } from './buyersproducts/product.model';
+import { getProductDisplay, getTagLabel, getTagColor } from './shared/product-display.util';
 
 @Component({
     selector: 'app-buyer-dashboard',
@@ -9,152 +13,122 @@ import { AuthService } from 'src/app/services/auth.service';
     styleUrls: ['./buyer-dashboard.component.scss'],
     standalone: false
 })
-export class BuyerDashboardComponent implements AfterViewInit, OnDestroy {
+export class BuyerDashboardComponent implements OnInit {
 
+  buyerName = '';
+  buyerCompany = '';
+  buyerCountry = '';
+  buyerId: string | null = null;
 
-   constructor(private authService: AuthService) {} // ✅ inject AuthService
-   
+  summary: BuyerDashboardSummary | null = null;
+  recommendedProducts: Product[] = [];
+  marketHighlights: MarketHighlight[] = [];
+  savedProductIds = new Set<string>();
 
-  @ViewChild('scrollContainer', { static: false }) scrollContainer!: ElementRef;
-
-
-   ngOnInit(): void {
-    this.buyerName = this.authService.getBuyerName() || 'Buyer';
-  }
-
-
-  scrollInterval: any;
-  buyerName: string = ''; 
-
-
-
-  iconClass = 'bi bi-bag-check';
-
-quickActions = [
-  { label: 'My Orders', icon: 'bi-cart', route: '/buyer/orders' },
-  { label: 'Messages', icon: 'bi-chat-left-text', route: '/buyer/messages' },
-  { label: 'Categories', icon: 'bi-grid', route: '/buyer/categories' },
-  { label: 'New Arrivals', icon: 'bi-person-lines-fill', route: '/buyer/newarr' },
-  { label: 'Watchlist', icon: 'bi-grid', route: '/buyer/WL' },
-];
-
-
-featuredProducts = [
-  {
-    id: 1,
-    name: 'Organic Tomatoes',
-    description: 'Fresh and juicy tomatoes directly from farms.',
-    image: 'assets/images/toma.jpg',
-    cssClass:'color1'
-  },
-  {
-    id: 2,
-    name: 'Basmati Rice',
-    description: 'Premium quality basmati rice for daily meals.',
-    image: 'assets/images/rice.png',
-    cssClass:'color2'
-  },
-  {
-    id: 3,
-    name: 'COFFEE',
-    description: 'Free-range eggs with high protein content.',
-    image: 'assets/images/cof.jpg',
-    cssClass:'color3'
-  },
-  {
-    id: 4,
-    name: 'Alphonso Mangoes',
-    description: 'Sweet and flavorful seasonal mangoes.',
-    image: 'assets/images/mango.jpg',
-    cssClass:'color4'
-  },
-  {
-    id: 5,
-    name: 'Red Chilly',
-    description: 'Fresh and juicy tomatoes directly from farms.',
-    image: 'assets/images/chilly.jpg',
-    cssClass:'color5'
-  },
-  {
-    id: 6,
-    name: 'Honey',
-    description: 'Fresh and juicy tomatoes directly from farms.',
-    image: 'assets/images/honey.jpg',
-    cssClass:'color6'
-  },
-  {
-    id: 7,
-    name: 'Apple',
-    description: 'Fresh and juicy tomatoes directly from farms.',
-    image: 'assets/images/apple.jpg',
-    cssClass:'color7'
-  },
-  {
-    id: 8,
-    name: 'Jaggery',
-    description: 'Fresh and juicy tomatoes directly from farms.',
-    image: 'assets/images/jagg.jpeg',
-    cssClass:'color8'
-  },
-  {
-    id: 9,
-    name: 'Guva',
-    description: 'Fresh and juicy tomatoes directly from farms.',
-    image: 'assets/images/guva.jfif',
-    cssClass:'color9'
-  },
-  {
-    id: 10,
-    name: 'Jackfruit',
-    description: 'Fresh and juicy tomatoes directly from farms.',
-    image: 'assets/images/jack.webp',
-    cssClass:'color10'
-  },
-  
-];
-
-
-
-
-  orders = [
-    {
-      productId: 'P101',
-      productName: 'Product A',
-      orderDate: '2025-06-18',
-      paymentMethod: 'Credit Card',
-      quantity: 5
-    },
-    {
-      productId: 'P102',
-      productName: 'Product B',
-      orderDate: '2025-06-17',
-      paymentMethod: 'Net Banking',
-      quantity: 3
-    },
-    {
-      productId: 'P103',
-      productName: 'Product C',
-      orderDate: '2025-06-16',
-      paymentMethod: 'UPI',
-      quantity: 2
-    }
+  quickActions = [
+    { icon: '🛍', label: 'Browse Products', description: 'Explore a wide range of agri products from India.', colorClass: 'q1' },
+    { icon: '📄', label: 'Request Quote', description: 'Get the best price for your requirements.', colorClass: 'q2' },
+    { icon: '💬', label: 'Contact Support', description: "We're here to help you anytime.", colorClass: 'q3' },
+    { icon: '📍', label: 'Track Shipments', description: 'Track your orders and shipments in real-time.', colorClass: 'q4' },
   ];
 
-    ngAfterViewInit(): void {
-    this.scrollInterval = setInterval(() => {
-      const container = this.scrollContainer.nativeElement;
-      container.scrollBy({ left: 3, behavior: 'smooth' });
+  constructor(
+    private authService: AuthService,
+    private buyerService: BuyerService,
+    private productService: ProductService,
+    private watchListService: WatchListService,
+    private router: Router
+  ) {}
 
-      // Reset when it reaches end
-      if (container.scrollLeft + container.clientWidth >= container.scrollWidth) {
-        container.scrollTo({ left: 0, behavior: 'auto' });
-      }
-    }, 30); // speed of scroll
+  ngOnInit(): void {
+    this.buyerName = this.authService.getBuyerName() || 'Buyer';
+    this.buyerCompany = this.authService.getBuyerCompany() || '';
+    this.buyerCountry = this.authService.getBuyerCountry() || '';
+    this.buyerId = this.authService.getBuyerId();
+
+    if (this.buyerId) {
+      this.buyerService.getDashboardSummary(this.buyerId).subscribe({
+        next: (data) => (this.summary = data),
+        error: () => (this.summary = null)
+      });
+
+      this.watchListService.getSavedProductIds(this.buyerId).subscribe({
+        next: (ids) => (this.savedProductIds = new Set(ids)),
+        error: () => (this.savedProductIds = new Set())
+      });
+    }
+
+    this.productService.getRecommendedProducts(4).subscribe({
+      next: (products) => (this.recommendedProducts = products),
+      error: () => (this.recommendedProducts = [])
+    });
+
+    this.buyerService.getMarketHighlights(5).subscribe({
+      next: (highlights) => (this.marketHighlights = highlights),
+      error: () => (this.marketHighlights = [])
+    });
   }
 
-  ngOnDestroy(): void {
-    clearInterval(this.scrollInterval);
+  display(product: Product) {
+    return getProductDisplay(product.productName, product.category);
   }
 
+  marketIcon(highlight: MarketHighlight): string {
+    return getProductDisplay(highlight.productName, highlight.category).icon;
+  }
+
+  tagLabel(product: Product): string {
+    return getTagLabel(product.productTag);
+  }
+
+  tagColor(product: Product): string {
+    return getTagColor(product.productTag);
+  }
+
+  isSaved(product: Product): boolean {
+    return this.savedProductIds.has(product.productId);
+  }
+
+  toggleSave(product: Product, event: Event): void {
+    event.stopPropagation();
+    if (!this.buyerId) return;
+
+    if (this.isSaved(product)) {
+      this.watchListService.removeFromWatchList(this.buyerId, product.productId).subscribe(() => {
+        this.savedProductIds.delete(product.productId);
+      });
+    } else {
+      this.watchListService.addToWatchList({
+        buyerId: this.buyerId,
+        productId: product.productId,
+        productName: product.productName
+      }).subscribe(() => {
+        this.savedProductIds.add(product.productId);
+      });
+    }
+  }
+
+  priceRange(product: Product): string {
+    const variety = product.varietiesList?.[0];
+    if (!variety || (variety.priceMin == null && variety.priceMax == null)) return 'Price on request';
+    return `$${variety.priceMin ?? '-'} - $${variety.priceMax ?? '-'} / MT`;
+  }
+
+  moqLabel(product: Product): string {
+    const variety = product.varietiesList?.[0];
+    return variety?.moq != null ? `Min. Order: ${variety.moq} MT` : '';
+  }
+
+  sparklineHeight(value: number, values: number[]): number {
+    const max = Math.max(...values, 1);
+    return Math.max(10, Math.round((value / max) * 100));
+  }
+
+  navigateToExplore(): void {
+    this.router.navigate(['/buyer/explore']);
+  }
+
+  viewProduct(product: Product): void {
+    this.router.navigate(['/buyer/explore'], { queryParams: { productId: product.productId } });
+  }
 }
-

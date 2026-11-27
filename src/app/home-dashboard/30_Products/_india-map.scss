@@ -1,0 +1,82 @@
+// Shared "where it grows" map for the hand-built product pages (banana, coconut,
+// pepper, pineapple). Used with: @use '../india-map';
+//
+// The old rules for this lived inside each page's hero block (".banana-page { ... }"),
+// so they compiled to ".banana-page .india-map-wrapper" and never matched, which is
+// why the map showed unstyled with a plain list of states under it.
+
+.map-block {
+  padding: clamp(2.5rem, 6vw, 4.5rem) clamp(1rem, 6vw, 5rem);
+  text-align: center;
+  background: var(--fp-bg, #fbdc59);
+  color: var(--fp-ink, #004d00);
+  font-family: 'Poppins', sans-serif;
+
+  h2 { margin: 0 0 8px; font-size: clamp(1.6rem, 3.2vw, 2.3rem); font-weight: 700; color: var(--fp-ink, #004d00); }
+  .map-sub { margin: 0 0 24px; color: var(--fp-ink-soft, #2e7d32); }
+}
+
+.india-map-wrapper {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 860 / 928;
+  margin: 0 auto;
+}
+
+// The map is a silhouette filled with the page's green.
+.india-map {
+  position: absolute;
+  inset: 0;
+  background-color: var(--fp-map, #1f8a2e);
+  -webkit-mask: url('/assets/images/Prdpage/india-map-mask.png') center / contain no-repeat;
+          mask: url('/assets/images/Prdpage/india-map-mask.png') center / contain no-repeat;
+}
+
+.pin {
+  position: absolute;
+  z-index: 2;
+  width: 14px;
+  height: 14px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: #d32f2f;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 4px rgba(211, 47, 47, 0.25);
+}
+
+.pin-label {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 3px 10px;
+  border-radius: 6px;
+  background: #fff;
+  color: var(--fp-ink, #004d00);
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
+}
+
+.pin--l .pin-label { bottom: auto; top: 50%; left: auto; right: 20px; transform: translateY(-50%); }
+.pin--r .pin-label { bottom: auto; top: 50%; left: 20px; transform: translateY(-50%); }
+.pin--b .pin-label { bottom: auto; top: 20px; }
+
+.region-chips {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 8px;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+
+  li { padding: 4px 14px; border-radius: 999px; background: #fff; color: var(--fp-ink, #004d00); font-size: 0.85rem; font-weight: 600; box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14); }
+}
+
+// On phones the map is too small for labels; the chips below name the regions.
+@media (max-width: 600px) {
+  .pin-label { display: none; }
+  .pin { width: 12px; height: 12px; }
+}

@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { AuthService } from 'src/app/services/auth.service';
 
 
 
@@ -9,7 +11,10 @@ interface ContactChannel {
   description: string;
   buttonText: string;
   buttonClass: string;
-  route: string;
+  /** Which login form this card sends the visitor to. */
+  loginType: 'buyer' | 'seller';
+  /** Where they land once signed in — the dashboard page that chats with the admin team. */
+  messagesRoute: string;
 }
 
 interface RegionalContact {
@@ -17,6 +22,8 @@ interface RegionalContact {
   location: string; // Used for map pointers (e.g., coordinates or unique ID)
   focus: string;
   email: string;
+  /** Which side of its map pin the label sits on, so neighbouring labels never overlap. */
+  side: 'left' | 'right';
 }
 
 @Component({
@@ -25,88 +32,84 @@ interface RegionalContact {
     styleUrls: ['./contact.component.scss'],
     standalone: false
 })
-export class ContactComponent {
- 
+export class ContactComponent implements OnInit {
+
 
 
 contactChannels: ContactChannel[] = [
-
     {
-      // 🎯 CHANGE THE ICON STRING HERE 
-      //icon: 'assets/images/ContactUs/plant.png',
-      icon: 'yard',
+      icon: 'inventory_2',
       title: 'Buyer Enquiry',
-      description: 'Get quotations, check availability, logistics details.',
+      description: 'Log in to your buyer account to message our team directly. Share your requirements, ask about pricing and availability, and keep every enquiry in one conversation you can come back to anytime.',
       buttonText: 'Send Enquiry',
       buttonClass: 'buyer',
-      route: '/contact/buyer'
+      loginType: 'buyer',
+      messagesRoute: '/buyer/messages'
     },
     {
-     
-      //icon: 'assets/images/ContactUs/plant.png',
-       icon: 'globe',
+      icon: 'public',
       title: 'Farmer Support',
-      description: 'Get listed, update your product data, or ask for help.',
+      description: 'Log in to your seller account to message our team directly. Get help with your listings, discuss buyer enquiries, and keep every conversation with our team in one place you can come back to anytime.',
       buttonText: 'Contact Team',
-      buttonClass: 'farmer', // Renamed for better class-to-card mapping
-      route: '/contact/farmer' 
-    },
- 
-    {
-      // icon: 'assets/images/ContactUs/plant.png',
-       icon: 'handshake',
-      title: 'Partnerships',
-      description: 'Join hands to scale India\'s export network.',
-      buttonText: 'Partner with Us',
-      buttonClass: 'partner', // Renamed for better class-to-card mapping
-      route: '/contact/partner' 
-    },
-    {
-      icon: 'robot',
-      title: 'Tech / AI Support',
-      description: 'Facing issues with DeepSeek chat or login?',
-      buttonText: 'Chat with Support',
-      buttonClass: 'tech', // Renamed for better class-to-card mapping
-      route: '/support/chat' 
+      buttonClass: 'farmer',
+      loginType: 'seller',
+      messagesRoute: '/seller/messages'
     }
   ];
-  constructor() { }
+  constructor(private route: ActivatedRoute, private router: Router, private auth: AuthService) { }
 
+  /**
+   * Channel cards don't open the enquiry modal — they take the visitor to the login for their
+   * role and, once signed in, straight to the dashboard page where they message the admin team.
+   * Already signed in as that role? Skip the login step.
+   */
+  goToChannel(channel: ContactChannel) {
+    const expectedRole = channel.loginType === 'seller' ? 'SELLER' : 'BUYER';
+    if (this.auth.getRole() === expectedRole) {
+      this.router.navigateByUrl(channel.messagesRoute);
+      return;
+    }
+    this.router.navigate(['/login'], {
+      queryParams: { type: channel.loginType, returnUrl: channel.messagesRoute }
+    });
+  }
 
-  contactData = {
-    name: '',
-    email: '',
-    message: ''
-  };
+  // The hero buttons open the Send Enquiry modal (the channel cards go to login instead, see
+  // goToChannel). The topic isn't shown in the modal, but is sent with the enquiry so the team
+  // email says what the visitor clicked ("Regarding: Buyer Enquiry").
+  enquiryOpen = false;
+  selectedTopic = 'General Enquiry';
 
-  onSubmit() {
-    console.log('Contact Form Submitted:', this.contactData);
+  openEnquiry(topic: string = 'General Enquiry') {
+    this.selectedTopic = topic;
+    this.enquiryOpen = true;
+  }
 
-    // ✅ Later, you can send this to your backend:
-    // this.http.post('http://localhost:8081/bigbisort-imp-exp/contact', this.contactData).subscribe(...);
+  // Head-office details, same as the footer.
+  hqEmail = 'contact@bigbisort.com';
+  hqAddress = '# 269 Anbalagan nagar Kambar Street, Minjur, Chennai-601203';
 
-    alert('Thank you for contacting us, ' + this.contactData.name + '!');
-    this.contactData = { name: '', email: '', message: '' }; // reset form
+  // Regional desk hovered/focused in the list or on the map - highlights both.
+  activeRegion: string | null = null;
+
+  scrollTo(id: string) {
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    document.getElementById(id)?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
+  }
+
+  ngOnInit(): void {
+    // Arriving from a product's "Enquire" button (?topic=...) — open the modal straight away.
+    const topic = this.route.snapshot.queryParamMap.get('topic');
+    if (topic) {
+      this.openEnquiry(topic);
+    }
   }
 
 
 
 
-  aiFeatures: string[] = [
-  "24×7 Instant Assistance",
-  "Product Suggestions for Buyers",
-  "Export Regulation Guidance",
-  "Farmer Listing Support"
-];
 
-// Add these properties to your existing component's class (e.g., ProductsComponent or a new component).
-loggedInBuyerFeatures: string[] = [
-  "Secure",
-  "Instant",
-  "Personalized"
-];
 
-// If you want to list the tags with their own text (for flexibility)
 loggedInBuyerTags: { text: string, color: string }[] = [
   { text: "SECURE", color: "yellow" },
   { text: "INSTANT", color: "yellow" },
@@ -120,25 +123,29 @@ regionalTeams: RegionalContact[] = [
     region: 'Shimla, HP',
     location: 'shimla', // Used for map pin placement
     focus: 'Apple Exports',
-    email: 'hp@bigbisort.com'
+    email: 'hp@bigbisort.com',
+    side: 'right'
   },
   {
     region: 'Srinagar, J&K',
     location: 'srinagar',
     focus: 'Premium Fruits',
-    email: 'jk@bigbisort.com'
+    email: 'jk@bigbisort.com',
+    side: 'left'
   },
   {
     region: 'Coimbatore, TN',
     location: 'coimbatore',
     focus: 'Logistics & South Ops',
-    email: 'south@bigbisort.com'
+    email: 'south@bigbisort.com',
+    side: 'left'
   },
   {
     region: 'Chennai (HQ)',
     location: 'chennai',
     focus: 'Corporate & Investor Desk',
-    email: 'contact@bigbisort.com'
+    email: 'contact@bigbisort.com',
+    side: 'right'
   }
 ];
 

@@ -1,0 +1,134 @@
+<div class="product-page" *ngIf="product" [ngStyle]="vars">
+
+  <!-- 1. Hero -->
+  <section class="fp-hero">
+    <div class="fp-hero-text">
+      <h1>{{ product.name }} – India’s Pride in Global {{ label.trade }} Trade</h1>
+      <p class="fp-tagline">{{ product.tagline }}</p>
+      <button type="button" class="fp-btn fp-btn--gold" (click)="enquiryOpen = true">Enquire Now</button>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <i class="fa-solid fa-map-location-dot"></i>
+          <div><p class="label">Origin:</p><p class="value">{{ product.origin }}</p></div>
+        </div>
+        <div class="info-item">
+          <i class="fa-solid fa-seedling"></i>
+          <div><p class="label">Top Varieties:</p><p class="value">{{ product.topVarieties }}</p></div>
+        </div>
+        <div class="info-item">
+          <i class="fa-solid fa-temperature-low"></i>
+          <div><p class="label">Shelf Life:</p><p class="value">{{ product.shelfLife }}</p></div>
+        </div>
+        <div class="info-item">
+          <i class="fa-solid fa-globe"></i>
+          <div><p class="label">Export Reach:</p><p class="value">{{ product.exportReach }}</p></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="fp-hero-plate">
+      <img [src]="img(0)" [alt]="product.name">
+    </div>
+  </section>
+
+  <!-- 2. Where it grows -->
+  <section class="fp-map-section">
+    <h2>Where Our {{ product.name }} Grows</h2>
+    <p class="fp-sub">Sourced from India’s main {{ product.name | lowercase }} growing regions.</p>
+    <div class="india-map-wrapper">
+      <div class="india-map" role="img" aria-label="Map of India"></div>
+      <div class="pin" *ngFor="let p of pins" [ngClass]="'pin--' + p.side" [style.left.%]="p.left" [style.top.%]="p.top">
+        <span class="pin-label">{{ p.label }}</span>
+      </div>
+    </div>
+    <ul class="region-chips"><li *ngFor="let p of pins">{{ p.label }}</li></ul>
+  </section>
+
+  <!-- 3. Varieties -->
+  <section class="varieties-section">
+    <h2>Varieties Showcase</h2>
+    <p class="fp-sub">India's Top {{ product.name }} Varieties</p>
+
+    <div class="scroll-container" #scrollContainer
+         (mouseenter)="setPaused(true)" (mouseleave)="setPaused(false)"
+         (focusin)="setPaused(true)" (focusout)="setPaused(false)" (touchstart)="setPaused(true)">
+      <article class="variety-card" *ngFor="let v of product.varieties.concat(product.varieties); let i = index">
+        <img [src]="v.image || img(i)" [alt]="v.name" loading="lazy">
+        <div class="card-text">
+          <h3>{{ v.name }}</h3>
+          <p>{{ v.description }}</p>
+        </div>
+      </article>
+    </div>
+  </section>
+
+  <!-- 4. Benefits -->
+  <section class="benefits-section">
+    <div class="fp-split">
+      <div class="fp-split-img"><img [src]="img(1)" [alt]="product.name"></div>
+      <div class="fp-split-body">
+        <h2>Nutritional &amp; Health Benefits of {{ product.name }}</h2>
+        <div class="benefit-grid">
+          <div class="benefit-item" *ngFor="let b of product.benefits">
+            <span class="icon"><i [class]="b.icon"></i></span>
+            <p>{{ b.text }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5. Processing -->
+  <section class="processing-section">
+    <div class="fp-split fp-split--reverse">
+      <div class="fp-split-body">
+        <h2>From Farm to Export</h2>
+        <div class="process-card" *ngFor="let s of product.steps">
+          <div class="card-header"><i [class]="s.icon"></i><h3>{{ s.title }}</h3></div>
+          <p>{{ s.description }}</p>
+          <small>{{ s.note }}</small>
+        </div>
+      </div>
+      <div class="fp-split-img"><img [src]="img(2)" [alt]="product.name + ' packing'"></div>
+    </div>
+  </section>
+
+  <!-- 6. Why choose -->
+  <section class="why-section">
+    <div class="fp-split">
+      <div class="fp-split-body">
+        <h2>Why Choose Bigbisort {{ product.name }}?</h2>
+        <p class="fp-sub fp-sub--left">Direct farmer sourcing, careful grading and global reach – trusted supply for importers and retailers.</p>
+        <div class="feature-grid">
+          <div class="feature-card" *ngFor="let f of product.features">
+            <span class="icon"><i [class]="f.icon"></i></span>
+            <h3>{{ f.title }}</h3>
+            <p>{{ f.description }}</p>
+          </div>
+        </div>
+        <button type="button" class="fp-btn fp-btn--green" (click)="enquiryOpen = true">Enquire for Bulk {{ product.name }}</button>
+      </div>
+      <div class="fp-split-img"><img [src]="img(0)" [alt]="product.name"></div>
+    </div>
+  </section>
+
+  <!-- 7. Enquiry -->
+  <section class="enquiry-section">
+    <div class="enquiry-box">
+      <h2>Enquire for Bulk {{ product.name }} — Start Your Trade</h2>
+      <p class="fp-sub">Direct farmer-to-importer supply | Verified quality | Export-ready logistics</p>
+      <button type="button" class="fp-btn fp-btn--green" (click)="enquiryOpen = true">Send Enquiry</button>
+      <p class="contact-line">
+        <i class="fa-solid fa-location-dot"></i> Contact office: Chennai, Tamil Nadu
+        &nbsp;|&nbsp; <a routerLink="/contact">All contact details</a>
+      </p>
+    </div>
+  </section>
+
+  <p class="fp-credit" *ngIf="product.credit">Photos: {{ product.credit }}, via Wikimedia Commons.</p>
+
+  <a class="fp-back" routerLink="/prdland" [queryParams]="{ category: product.category }"><i class="bi bi-arrow-left"></i> All {{ label.plural }}</a>
+</div>
+
+<app-enquiry-dialog *ngIf="enquiryOpen && product" [topic]="product.name + ' Enquiry'" (closed)="enquiryOpen = false"></app-enquiry-dialog>

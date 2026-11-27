@@ -6,9 +6,8 @@
       <p><strong>Bigbisort</strong></p>
       <p>Connecting buyers and sellers worldwide with trust and transparency.</p>
       <ul>
-        <li><a href="#">About Us</a></li>
-        <li><a href="#">Our Values</a></li>
-        <li><a href="#">Careers</a></li>
+        <li><a routerLink="/about">About Us</a></li>
+        <li><a routerLink="/login">Become a Seller</a></li>
       </ul>
     </div>
 
@@ -16,9 +15,8 @@
     <div class="footer-section">
       <h3>Quick Links</h3>
       <ul>
-        <li><a href="#">Products</a></li>
-        <li><a href="#">Sellers</a></li>
-        <li><a href="#">Blog</a></li>
+        <li><a routerLink="/products">Products</a></li>
+        <li><a routerLink="/contact">Contact Us</a></li>
       </ul>
     </div>
 
@@ -26,22 +24,23 @@
     <div class="footer-section">
       <h3>Contact</h3>
       <p>📍 # 269 Anbalagan nagar Kambar Street, Minjur ,Chennai-601203</p>
-      <p>📧 CEO&#64;bigbisort.com</p>
-      <p>📞 +123-456-7890</p>
+      <p>📧 <a href="mailto:contact@bigbisort.com">contact&#64;bigbisort.com</a></p>
+      <p>📞 <a routerLink="/contact" fragment="contact-form">Send us a message</a></p>
     </div>
 
     <!-- Newsletter -->
     <div class="footer-section">
       <h3>Newsletter</h3>
       <p>Subscribe to our newsletter</p>
-      <form>
-        <input type="email" placeholder="Your email address" />
+      <form *ngIf="!newsletterSubmitted" (ngSubmit)="subscribeNewsletter()">
+        <input type="email" name="newsletterEmail" [(ngModel)]="newsletterEmail" placeholder="Your email address" required />
         <button type="submit">Subscribe</button>
       </form>
+      <p *ngIf="newsletterSubmitted">Thanks — you're on the list!</p>
     </div>
   </div>
 
   <div class="footer-bottom">
-    <p>© Bigbisort 2024. All rights reserved.</p>
+    <p>© Bigbisort {{ currentYear }}. All rights reserved.</p>
   </div>
 </footer>

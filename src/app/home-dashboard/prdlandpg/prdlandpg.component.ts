@@ -1,4 +1,9 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { Subscription } from 'rxjs';
+import {
+  CATALOG_CATEGORIES, CatalogCategory, CatalogProduct, productsIn
+} from '../catalog.data';
 
 @Component({
     selector: 'app-prdlandpg',
@@ -6,57 +11,33 @@ import { Component, OnInit } from '@angular/core';
     styleUrls: ['./prdlandpg.component.scss'],
     standalone: false
 })
-export class PrdlandpgComponent implements OnInit {
+export class PrdlandpgComponent implements OnInit, OnDestroy {
 
-  // filter categories
-  categories = ['All', 'Fruits', 'Vegetables', 'Coffee', 'Sweetener'];
+  categories = CATALOG_CATEGORIES;
 
-  // selected filter
-  selectedCategory: string = 'All';
+  // null = show the category cards; otherwise the category whose products are listed.
+  selected: CatalogCategory | null = null;
+  products: CatalogProduct[] = [];
 
-  // product list (can later come from API)
-  products = [                                             
-    { name: 'Apple', category: 'Fruits',   image: 'assets/images/Prdimg/app1.jpg',link: '/apple' } ,
+  private sub?: Subscription;
 
-    { name: 'Avocado', category: 'Vegetables',  image: 'assets/images/Prdimg/av3.jpg',link: '/avocado' },
-
-    { name: 'Carrot', category: 'Vegetables',  image: 'assets/images/Prdimg/carrs1.png',link: '/carrot' },
-
-    { name: 'Banana', category: 'Fruits',  image: 'assets/images/Prdimg/dp1.png',link: '/banana' },
-
-    { name: 'Pineapple', category: 'Fruits',  image: 'assets/images/Prdpage/Pineapple/ip.png',link: '/pineapple' },
-
-    { name: 'Coconut', category: 'Fruits',  image: 'assets/images/Prdpage/Coconut/coc.avif',link: '/coconut' },
-
-    { name: 'pepper', category: 'Fruits',  image: 'assets/images/Prdpage/Pepper/ld1.png',link: '/pepper' },
- 
-
-
-
-
-
-
-
-    { name: 'Carrot', category: 'Vegetables', price: 40, image: 'assets/images/carrot.jpg' },
-    { name: 'Broccoli', category: 'Vegetables', price: 80, image: 'assets/images/broccoli.jpg' },
-    { name: 'Arabica Coffee', category: 'Coffee', price: 200, image: 'assets/images/coffee.jpg' },
-    { name: 'Brown Sugar', category: 'Sweetener', price: 90, image: 'assets/images/sugar.jpg' }
-  ];
-
-  filteredProducts: any[] = [];
+  constructor(private route: ActivatedRoute) {}
 
   ngOnInit(): void {
-    this.filteredProducts = this.products; // load all initially
+    // /prdland?category=fruits - kept in the URL so a category can be linked to.
+    this.sub = this.route.queryParamMap.subscribe(params => {
+      const slug = params.get('category');
+      this.selected = this.categories.find(c => c.slug === slug) || null;
+      this.products = this.selected ? productsIn(this.selected.slug) : [];
+      window.scrollTo({ top: 0 });
+    });
   }
 
-  // filter function
-  filterProducts(category: string) {
-    this.selectedCategory = category;
-    this.filteredProducts = category === 'All'
-      ? this.products
-      : this.products.filter(p => p.category === category);
+  ngOnDestroy(): void {
+    this.sub?.unsubscribe();
   }
 
-
-  
+  count(slug: string): number {
+    return productsIn(slug).length;
+  }
 }
